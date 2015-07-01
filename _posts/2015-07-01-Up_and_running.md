@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Up and running!
+title: Up and running..!
 ---
 
 Finally! I launched my new hacking site. Following a recommendation on [Andrej Karpathy's blog](https://karpathy.github.io/2014/07/01/switching-to-jekyll/) I decided to use Jekyll and host it on Github.
