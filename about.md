@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I'm Matthias M. Lind, short Matt, a machine intelligence (artificial intelligence / AI) enthusiast and hobby hacker based in Shanghai.
+I'm Matthias Michael Lind, short Matt, a hobby hacker and machine intelligence (artificial intelligence) enthusiast based in Shanghai.
 
 ### Machine Intelligence
 
