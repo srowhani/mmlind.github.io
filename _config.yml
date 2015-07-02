@@ -3,10 +3,10 @@
 #
 
 # Name of your site (displayed in the header)
-name: Matt[hias M.] Lind 林明硕
+name: Artificial Intelligence & Machine Learning
 
 # Short bio or description (displayed in the header)
-description: Artificial Intelligence & Machine Learning
+description: Matt[hias M.] Lind 林明硕
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://mmlind.github.io/images/mml.jpg
@@ -21,12 +21,12 @@ footer-links:
   email: lindmatt @ qq.com
   facebook:
   flickr:
-  github: mmlind.github.io
+  github: mmlind
   instagram:
   linkedin: 
   pinterest:
   rss: # just type anything here for a working RSS icon, make sure you set the "url" above!
-  twitter: jekyllrb
+  twitter: 
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/
