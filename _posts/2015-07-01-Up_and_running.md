@@ -3,7 +3,7 @@ layout: post
 title: Up and running!
 ---
 
-Finally! I launched my new hacking site. 
+Finally! I launched my new blog about my hacking adventures in the world of artificial intelligence and machine learning. 
 
 ![_config.yml]({{ site.baseurl }}/images/blog.jpg)
 
