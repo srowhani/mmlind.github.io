@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I'm Matt[hias Michael] Lind, short Matt, a hobby hacker and artificial intelligence (more accurately machine intelligence) enthusiast based in Shanghai.
+I'm Matt[hias Michael] Lind, a hobby hacker and artificial intelligence (more accurately machine intelligence) enthusiast based in Shanghai.
 
 ### Machine Intelligence
 
