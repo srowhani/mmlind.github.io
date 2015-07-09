@@ -53,9 +53,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.80720719"
-     inkscape:cx="372.11304"
-     inkscape:cy="162.36492"
+     inkscape:zoom="1.1415634"
+     inkscape:cx="296.86848"
+     inkscape:cy="179.03337"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -218,5 +218,27 @@
          d="m 281.21652,136.12723 1.23884,16.10491"
          style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="489.2424"
+       y="569.40399"
+       id="text3015-9-3"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.89657456,0.44289282,-0.44289282,0.89657456,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan4781"
+         x="489.2424"
+         y="569.40399">Weight 0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:17.99999995px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="-249.20421"
+       y="862.08649"
+       id="text3015-9-3-9"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.8847323,-0.46609952,0.46609952,0.8847323,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan4825">Weight 1</tspan></text>
   </g>
 </svg>
