@@ -95,3 +95,14 @@ Yet, it still works.
 To put this to a test, let's start coding. A few lines of code typically make things a lot clearer than pages of detailed explanations (at least for the programmer's mind).
 I
 n my next post we'll apply the above to the problem of automatic image recognition of handwritten digits. 
+
+---
+
+### Further Readings
+
+Following readings are suggested to further deepen your knowledge of the above:
+
+* [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html) 
+* [Nature of Code](http://natureofcode.com/book/chapter-10-neural-networks/)
+* [Neural Networks in Plain English](http://www.ai-junkie.com/ann/evolved/nnt1.html)
+
