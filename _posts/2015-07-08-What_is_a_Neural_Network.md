@@ -3,7 +3,7 @@ layout: post
 title: What is a Neural Network?
 ---
 
-When people talk about artificial intelligence and machine learning, they most often refer to neural networks (NN). 
+When people talk about artificial intelligence and machine learning, they most often refer to (artificial) neural networks (ANN or NN). 
 Let's explore some machine learning basics, without excessive math, purely from a programmer's perspective.
 
 ![_config.yml]({{ site.baseurl }}/images/neuralnetwork.gif)
@@ -65,7 +65,7 @@ It receives inputs, does some processing and spits out an output.
 
 The input connections of the perceptron are assigned different weights. 
 These weights are values between 0 to 1 and can be thought of as an expression of *priority* or *importance* of the respective input. 
-In the beginning, ie. for our first *guess*, we use random numbers for these weights.
+In the beginning, i.e. for our first *guess*, we use random numbers for these weights.
 
 The perceptron's output is simply the sum of the weighted inputs.
 
@@ -84,7 +84,7 @@ error = target - output
 
 Now the network not only knows that its *guess* was wrong but also by how much (`error`).
 We now want the network to try again, but of course not using the same but new values.
-Since the `input` to the system is a given, the only values we can change are the `weights` of these inputs.
+Since the `input` to the system is a given and fix, the only values we can change are the `weights` of these inputs.
 And that's exactly what we do.
 
 ```
@@ -93,7 +93,7 @@ weight1 += input1 * error * learning_rate
 
 ```
 
-The `learning_rate` defines the interval for changing the weights, i.e. high rates mean faster but likely less accurate change, low rates mean more accurate but slower change.
+The `learning_rate` defines the interval for changing the weights, i.e. a high rate mean faster but likely less accurate change, a low rate mean more accurate but slower change.
 
 Above 3 steps form the basic algorithm of the most simple neural network one can think of. 
 There is no hidden layer, no sigmoid function, no back propagation, or any other mechanism neural networks usually have.
@@ -111,9 +111,9 @@ But before you move on, I strongly suggest you take a look at below readings whi
 
 I recommend the following readings to get a more in-depth understanding of what neural networks are and how they work:
 
-* [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html) by Christos Stergiou and Dimitrios Siganos 
-* [Neural Networks in Plain English](http://www.ai-junkie.com/ann/evolved/nnt1.html)
-* [Nature of Code: 10 Neural Networks](http://natureofcode.com/book/chapter-10-neural-networks/) by Daniel Shiffman
+* [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html), by Christos Stergiou and Dimitrios Siganos 
+* [Neural Networks in Plain English](http://www.ai-junkie.com/ann/evolved/nnt1.html), 
+* [Nature of Code: 10 Neural Networks](http://natureofcode.com/book/chapter-10-neural-networks/), by Daniel Shiffman
 
 If you've fully digested these you should have a pretty good understanding of the basics of neural networks and are ready to move on.
 
