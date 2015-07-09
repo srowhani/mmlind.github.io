@@ -48,18 +48,21 @@ So, now let's look how this works in detail.
 
 ## The Perceptron
 
+`error`
+
 I mentioned above that a neural network consists of individual units (in the brain these units are called *neurons*). 
 In the computer and machine learning world we refer to this unit as a *perceptron*, a computational model of a neuron.
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
 The *perceptron* consists of a cell which is linked/connected to at least two inputs an one output.
-It receives and processes inputs and spits out an output. 
+It receives inputs, does some processing and spits out an output. 
 
-Now, let's look at the *processing* that's going on inside the perceptron. It's very simple. 
+*Processing*? Let's look at what's going on inside the perceptron. It's very simple. 
 
 The connections on which the inputs are fed into the cell are assigned different weights. 
-These weights, always using values from 0 to 1, can be thought of as an expression of *priority* or *importance* of the respective input. 
+These weights are values between 0 to 1 and can be thought of as an expression of *priority* or *importance* of the respective input. 
+In the beginning, ie. for our first *guess*, we use random numbers for these weights.
 
 The perceptron's output is simply the sum of the weighted inputs.
 
@@ -68,8 +71,8 @@ output = (input0 * weight0) + (input1 * weight1)
 
 ```
 
-This perceptron's `output` is the neural network's *guess* for the result.
-In the scenario of *supervised learning*, as described above, this output is then compared to the *desired* output or `target` and the difference between both (error) is calculated.
+This perceptron's `output` is the neural network's *guess* for the desired result.
+In the scenario of *supervised learning*, as described above, this output is then compared to the desired output or `target` and the difference between both (error) is calculated.
 
 ```
 error = target - output
