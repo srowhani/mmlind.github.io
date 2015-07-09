@@ -46,23 +46,29 @@ There is always a certain error rate (those cases where the neural network *gues
  
 So, now let's look how this works in detail.
 
-## The Perceptron
+`target`
 
-`error`
+## The Perceptron
 
 I mentioned above that a neural network consists of individual units (in the brain these units are called *neurons*). 
 In the computer and machine learning world we refer to this unit as a *perceptron*, a computational model of a neuron.
+
+`target`
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
 The *perceptron* consists of a cell which is linked/connected to at least two inputs an one output.
 It receives inputs, does some processing and spits out an output. 
 
+`target`
+
 *Processing*? Let's look at what's going on inside the perceptron. It's very simple. 
 
 The connections on which the inputs are fed into the cell are assigned different weights. 
 These weights are values between 0 to 1 and can be thought of as an expression of *priority* or *importance* of the respective input. 
 In the beginning, ie. for our first *guess*, we use random numbers for these weights.
+
+`target`
 
 The perceptron's output is simply the sum of the weighted inputs.
 
@@ -95,4 +101,5 @@ Above outlines the basics of the most simple neural network one can think of.
 There is no hidden layer, no sigmoid function, no back propagation, or any other mechanism neural networks usually have.
 Yet, it still works.
 To put this to a test, let's start coding. A few lines of code typically make things a lot clearer than pages of detailed explanations (at least for the programmer's mind).
-In my next post we'll apply the above to the problem of automatic recognition of handwritten digits. 
+I
+n my next post we'll apply the above to the problem of automatic image recognition of handwritten digits. 
