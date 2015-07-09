@@ -7,17 +7,50 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="740"
+   height="400"
+   id="svg2"
    version="1.1"
-   width="744.09448"
-   height="1052.3622"
-   id="svg2">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="perceptron.svg">
   <defs
      id="defs4">
     <inkscape:path-effect
        effect="skeletal"
-       id="path-effect3021" />
+       id="path-effect3021"
+       is_visible="true"
+       pattern="M 0,0 0,10 10,5 z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
   </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.80720719"
+     inkscape:cx="372.11304"
+     inkscape:cy="162.36492"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="997"
+     inkscape:window-height="698"
+     inkscape:window-x="4"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     width="740px" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -31,27 +64,57 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1">
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-652.36218)">
     <rect
+       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:2.67587805;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3008"
        width="737.3241"
        height="397.32413"
-       x="3.4509909"
-       y="3.0156457"
-       id="rect3008"
-       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:2.67587805;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+       x="1.337939"
+       y="653.70013" />
     <path
-       d="m 451.42857,125.21932 a 67.14286,64.285713 0 1 1 -134.28572,0 67.14286,64.285713 0 1 1 134.28572,0 z"
-       transform="translate(-12.354916,82.700894)"
+       sodipodi:type="arc"
+       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:1.48818898;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="path3010"
-       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:1.48818898;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+       sodipodi:cx="384.28571"
+       sodipodi:cy="125.21932"
+       sodipodi:rx="67.14286"
+       sodipodi:ry="64.285713"
+       d="m 451.42857,125.21932 a 67.14286,64.285713 0 1 1 -134.28572,0 67.14286,64.285713 0 1 1 134.28572,0 z"
+       transform="translate(-22.26563,720.70314)" />
     <text
-       x="340.68079"
-       y="217.38449"
-       id="text3015"
        xml:space="preserve"
-       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"><tspan
-         x="340.68079"
-         y="217.38449"
-         id="tspan3017">Cell</tspan></text>
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="328.77008"
+       y="855.38678"
+       id="text3015"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3017"
+         x="328.77008"
+         y="855.38678">Cell</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="78.675781"
+       y="747.60779"
+       id="text3015-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3063"
+         x="78.675781"
+         y="747.60779">Input 0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="78.675781"
+       y="928.47833"
+       id="text3015-9-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3086">Input 1</tspan></text>
   </g>
 </svg>
