@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Simple 1-Layer Neural Network
+title: Simple 1-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
 Simple 1-Layer NN to process MNIST Handwriting Images
