@@ -44,6 +44,10 @@ So, now let's look how this works in detail.
 
 ## The Perceptron
 
+I mentioned above that a neural network consists of individual units (in the brain these are called neurons).
+For our computing and coding purpose we call this unit a *cell* or a *perceptron*.
+
+![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
 
 
