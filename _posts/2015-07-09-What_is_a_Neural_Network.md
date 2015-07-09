@@ -109,11 +109,11 @@ But before you move on, I strongly suggest you take a look at below readings whi
 
 ### Further Readings
 
-I recommend the following readings to get a more in-depth understanding of what neural networks are and how they work:
+I found below sources extremely helpful when writing this post and strongly recommend these readings to get a much more in-depth understanding of what neural networks are and how they work.
 
 * [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html), by Christos Stergiou and Dimitrios Siganos, 1996
 * [Neural Networks in Plain English](http://www.ai-junkie.com/ann/evolved/nnt1.html), by Mat Buckland, 2002
 * [Nature of Code: 10 Neural Networks](http://natureofcode.com/book/chapter-10-neural-networks/), by Daniel Shiffman, 2014
 
-If you've fully digested these you should have a pretty good understanding of the basics of neural networks and are ready to move on.
+After you've fully digested these you're ready to move on.
 
