@@ -19,6 +19,20 @@
      id="defs4">
     <inkscape:path-effect
        effect="skeletal"
+       id="path-effect3092"
+       is_visible="true"
+       pattern="M 0,0 0,10 10,5 z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
        id="path-effect3021"
        is_visible="true"
        pattern="M 0,0 0,10 10,5 z"
@@ -116,5 +130,23 @@
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3086">Input 1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 178.39286,100.20089 106.54018,53.27009 0,0"
+       id="path3098"
+       inkscape:connector-curvature="0"
+       transform="translate(0,652.36218)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 267.58929,160.90401 16.10491,-8.67187 0,0 0,0 0,0"
+       id="path3100"
+       inkscape:connector-curvature="0"
+       transform="translate(0,652.36218)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 281.21652,136.12723 1.23884,16.10491"
+       id="path3102"
+       inkscape:connector-curvature="0"
+       transform="translate(0,652.36218)" />
   </g>
 </svg>
