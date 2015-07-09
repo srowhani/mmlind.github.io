@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Test
+title: Simple 1-Layer NN for MNIST Handwriting Recognition
 ---
 
 Simple 1-Layer NN to process MNIST Handwriting Images
