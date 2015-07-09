@@ -8,7 +8,7 @@ Let's explore some machine learning basics, without excessive math, purely from 
 
 ![_config.yml]({{ site.baseurl }}/images/neuralnetwork.gif)
 
-A neural network is a computation framework modeling the brain where individual nodes (neurons) form an organism (a network) to process information. 
+A neural network is a computation model imaging the brain where individual nodes (neurons) form an organism (a network) to process information. 
 In order to understand what this means and how this is special, let's start by looking at how a computer *normally* works.  
 
 ## Conventional Computing
