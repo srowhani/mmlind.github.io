@@ -4,29 +4,32 @@ title: What is a Neural Network?
 ---
 
 When people talk about artificial intelligence and machine learning, they most often refer to neural networks (NN). 
-Let's explore some ML basics, without excessive math, purely from a programmer's perspective.
+Let's explore some machine learning basics, without excessive math, purely from a programmer's perspective.
 
-![_config.yml]({{ site.baseurl }}/images/neuralnetwork.jpg)
+![_config.yml]({{ site.baseurl }}/images/neuralnetwork.gif)
 
-A neural network is a concept modeled after the brain where individual units (neurons) form an organism (a network) to process information. 
+A neural network is a computation framework modeling the brain where individual units (neurons) form an organism (a network) to process information. 
 In order to understand what this means and how this is special, let's start by looking at how a computer *normally* works.  
 
 ## Conventional Computing
 
-Conventional computers use an algorithmic approach to solve a problem. 
-They are provided with a set of instructions (the program) which they follow step by step to reach the objective.
+Conventional computers use an algorithmic approach to solving a problem. 
+Provided with a set of instructions (the program) they follow it step by step to reach the desired result.
 
 ![_config.yml]({{ site.baseurl }}/images/traditionalcomputing.svg)
 
-Therefore, they can only solve what we already know. 
-Somebody must first design all the required steps to solve the problem and thus knows exactly what the result will be.
+Therefore, the conventional computing approach can only solve what we already know. 
+The software developer must first design all the required steps (instructions) that are required for solving the problem. 
+Thus s/he must know already what the result will be.
 
 Conventional computers/programs are **deterministic** (always lead to the same result) and **predictable** (the result is known in advance). 
 
 ## Neural Networks
 
 A neural network uses a different approach to solve a problem. 
-Instead of *calculating* the result, it's *guessing* it! 
+Instead of *calculating* the result, it's *guessing* it!
+*What!?* Yes, you read correctly, *guessing*.
+Or more scientifically, the network is *approximating* the solution.
 Instead of providing the computer with an exact method how to calculate the output, we're providing it with data (lots of it) and let it start *guessing*. 
 
 Every time the neural network guesses the output, we're letting it know whether its prediction (guess) was correct or not. 
@@ -44,7 +47,7 @@ Of course, even after training any prediction is still, strictly speaking, *gues
 Therefore one cannot be 100% sure that its prediction is correct. 
 There is always a certain error rate (those cases where the neural network *guessed* wrong) and ML experts use this measure to compare the performance of each other's networks.
  
-So, now let's look how this works in detail.
+So, now let's look how this works.
 
 ## The Perceptron
 
@@ -100,9 +103,10 @@ n my next post we'll apply the above to the problem of automatic image recogniti
 
 ### Further Readings
 
-Following readings are suggested to further deepen your knowledge of the above:
+I recommend the following readings to get a more in-depth understanding of what neural networks are and how they work:
 
-* [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html) 
-* [Nature of Code](http://natureofcode.com/book/chapter-10-neural-networks/)
+* [Neural Networks](http://www.doc.ic.ac.uk/~nd/surprise_96/journal/vol4/cs11/report.html) by Christos Stergiou and Dimitrios Siganos 
+* [Nature of Code: 10 Neural Networks](http://natureofcode.com/book/chapter-10-neural-networks/) by Daniel Shiffman
 * [Neural Networks in Plain English](http://www.ai-junkie.com/ann/evolved/nnt1.html)
 
+---
