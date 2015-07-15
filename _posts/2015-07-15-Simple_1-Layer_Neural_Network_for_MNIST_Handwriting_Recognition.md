@@ -4,7 +4,7 @@ title: Simple 1-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
 In this post I'll explore how to use a very simple 1-layer neural network to recognize the handwritten digits in the MNIST image files.
-If you want to jump straight to the code, you can find its [code documentation here](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html) and [Github project page here](https://github.com/mmlind/mnist-1lnn/).
+If you want to jump straight to the code, you can find the [code documentation here](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html) and the [Github project page here](https://github.com/mmlind/mnist-1lnn/).
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
 
