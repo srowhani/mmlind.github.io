@@ -57,17 +57,21 @@ So, a target value of "0" would be expressed as
 ```
 {1,0,0,0,0,0,0,0,0,0}
 ```
+
 a value of "1" as
+
 ```
 {0,1,0,0,0,0,0,0,0,0}
 ```
+
 and a value of "9" as
+
 ```
 {0,0,0,0,0,0,0,0,0,9}
 ```
 
-Since each image has 28*28 pixels we design out input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
-This gives us a total of 28*28*10 connections, and a network structure as follows:
+Since each image has 28 * 28 pixels we design out input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
+This gives us a total of 28 * 28 * 10 connections, and a network structure as follows:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
 
