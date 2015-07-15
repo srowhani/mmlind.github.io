@@ -9,7 +9,7 @@ In this post I'll explore how to use a very simple 1-layer neural network to rec
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
 
-In my previous blog post I gave a brief introduction [what neural networks are and how they work](../2015-07-09-What_is_a_Neural_Network.md).
+In my previous blog post I gave a brief introduction [what neural networks are and how they work](../What_is_a_Neural_Network/).
 Everything was theory, so let's apply this know-how by writing some code.
 
 Our first challenge will be image recognition. 
