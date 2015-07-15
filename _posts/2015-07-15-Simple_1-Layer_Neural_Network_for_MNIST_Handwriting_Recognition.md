@@ -18,7 +18,7 @@ State-of-the-art neural networks nowadays are already able identify faces, or pr
 We'll start, much much simpler, with recognizing handwritten digits stored as images.
 (A possible use case for this is automatically recognizing handwritten ZIP codes in the mail.)
 
-The *Gold-standard* in this area is called [MNIST](http://yann.lecun.com/exdb/mnist/), maintained by one of the most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com).
+The *Gold-standard* in this area is called [MNIST](http://yann.lecun.com/exdb/mnist/), maintained by one of the nowadays most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com).
 It holds 60,000 standardized images of handwritten digits to *train* our neural network (*training set*), and another 10,000 to *test* it (*testing set*).
 
 ```
@@ -42,6 +42,8 @@ That means we neither consider colors nor stroke strength.
 ![_config.yml]({{ site.baseurl }}/images/mnist-image.svg)
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
+
+![_config.yml]({{ site.baseurl }}/images/mnist_numbers.png)
 
 
 
