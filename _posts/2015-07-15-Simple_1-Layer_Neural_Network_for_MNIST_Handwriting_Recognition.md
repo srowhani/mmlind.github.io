@@ -3,8 +3,6 @@ layout: post
 title: Simple 1-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
-Simple 1-Layer NN to process MNIST Handwriting Images
-
 In this post I'll explore how to use a very simple 1-layer neural network to recognize the handwritten digits in the MNIST image files.
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
