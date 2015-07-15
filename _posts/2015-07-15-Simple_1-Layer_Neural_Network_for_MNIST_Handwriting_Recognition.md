@@ -58,13 +58,13 @@ So, a target value of "0" would be expressed as
 {1,0,0,0,0,0,0,0,0,0}
 ```
 
-a value of "1" as
+a target value of "1" would be expressed as 
 
 ```
 {0,1,0,0,0,0,0,0,0,0}
 ```
 
-and a value of "9" as
+and a target value of "9" would be expressed as 
 
 ```
 {0,0,0,0,0,0,0,0,0,9}
@@ -75,7 +75,7 @@ This gives us a total of 28 * 28 * 10 connections, and a network structure as fo
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
 
-Enough theorectical preparation, let's start coding.
+Enough theoretical preparation, let's start coding.
 
 ## Start Coding
 
