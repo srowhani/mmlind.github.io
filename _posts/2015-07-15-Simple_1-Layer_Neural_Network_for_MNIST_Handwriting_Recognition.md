@@ -126,6 +126,7 @@ struct Layer{
 ### Initialize Neural Network Layer
 
 At start we need to reset or initialize our network layer by doing 3 things for each cell:
+
 ```
 1. Set all cell inputs to 0
 2. Set all cell weights to a random value 0-1
@@ -139,7 +140,7 @@ void initLayer(Layer *l){
     
     for (int o=0; o<10; o++){
         
-        for (int i=0; i<10; i++){
+        for (int i=0; i<(28*28); i++){
             l->cell[o].input[i]=0;
             l->cell[o].weight[i]=rand()/(double)(RAND_MAX);
         }
@@ -154,13 +155,13 @@ void initLayer(Layer *l){
 Next we loop through all 60,000 images and do the following for each image:
 
 ```
-1. Load the MNIST image and its corresponding label from the MNIST files
-2. Set the target output according to the correct label
-3. Train each cell in the layer
-   a. Set the cell's input values according to the MNIST image's pixels
-   b. Calculate the cell's output value by summing all weighted inputs
-   c. Update the cell's weights based on the cell's error 
-4. Get the layer's prediction and compare with correct label
+(1) Load the MNIST image and its corresponding label from the MNIST files
+(2) Define a target output vector based on correct label
+(3) Loop through all cells in the layer
+    (a) Set the cell's input according to the MNIST image pixels
+    (b) Calculate the cell's output by summing all weighted inputs
+    (c) Update the cell's weights based on the comparison with target
+(4) Get the layer's prediction
 ```
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn2.svg)
@@ -224,11 +225,9 @@ void calcCellOutput(Cell *c){
         c->output += c->input[i] * c->weight[i];
     }
     
-    c->output /= NUMBER_OF_INPUT_CELLS;             // normalize output (0-1)
+    c->output /= (28*28);             // normalize output (0-1)
 }
 ```
-
-
 
 ### Calculate a cell's error
 
@@ -241,8 +240,6 @@ double getCellError(Cell *c, int target){
 }
 ```
 
-
-
 ### Update cell's weights
 
 ```
@@ -253,8 +250,6 @@ void updateCellWeights(Cell *c, double err){
     }
 }
 ```
-
-
 
 
 ![_config.yml]({{ site.baseurl }}/images/mnist_numbers.png)
