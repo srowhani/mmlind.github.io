@@ -47,42 +47,46 @@ Using prior known correct answers to train a network is called *supervised learn
 
 Each MNIST image has a size of 28*28 pixels or a total of 784 pixels. 
 Each pixel is a number between 0-255 indicating its density which, however, we'll ignore.
-
 To keep things simple, I treat each pixel in an image either as ON (1) or OFF (0).
-That means I don't consider colors or stroke strength. 
+That means I don't consider colors and stroke strength. 
 
-The code representing a MNIST image is simply an object (`struct`) called `MNIST_Image` containing the 28*28 pixels which we read from the MNIST file:
+The code representing a MNIST image is simply an object (`struct`) called `MNIST_Image` containing the 28*28 pixels:
 
 ```
 typedef struct MNIST_Image MNIST_Image;
+
 struct MNIST_Image{
     uint8_t pixel[28*28];
 };
 ```
 
-For the MNIST label we don't even need a `struct` and can simply use an 8 bit integer and call it `MNIST_Label`:
+For the MNIST label we don't use a `struct` but simply an 8 bit integer and call it `MNIST_Label`:
 
 ```
 typedef uint8_t MNIST_Label;
 ```
 
-When opening the files you first and only once read each file's header in order to move the read pointer to the position of the 1st image.
+When opening the files you first and only once need to read each file's header in order to move the read pointer to the position of the first image.
 The *file header* contains information such as number of images in the file and the respective width and height of each image. 
 Since the content of the headers is not critical for our network's function I don't go into further details here. 
 Yet, I briefly want to highlight that the numbers in the header are stored in reversed byte order and therefore need to be reversed back in order to use them.
-For more details on this you can check the [MNIST homepage](http://yann.lecun.com/exdb/mnist/) or [the code for this project](https://github.com/mmlind/mnist-1lnn/). 
-
-Enough preparation, let's start coding the neural network.
+For more details on this you can check the [MNIST homepage](http://yann.lecun.com/exdb/mnist/) or [my project code](https://github.com/mmlind/mnist-1lnn/). 
 
 ## Design the Neural Network
 
-As outlined above each MNIST image has 28 * 28 pixels and each pixel is represented as either "1" (ON/BLACK) or "0" (OFF/WHITE).
+Enough preparation, let's start coding the neural network.
 
-We convert the 28 * 28 matrix into a simple 784 one dimensional input vector containing 0s and 1s.
+### Pixel Input
+
+As outlined above each MNIST image has 28*28 pixels and each pixel is represented as either a "1" (ON/BLACK) or a "0" (OFF/WHITE).
+The 28*28 matrix is converted into a simple 784 one dimensional input vector:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
 
+### The Neural Network Cell
+
 In my last blog post I explained what the basic unit of a neural network, the *perceptron* or in our code `cell` looks like.
+A *perceptron* is a cell
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
