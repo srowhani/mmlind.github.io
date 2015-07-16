@@ -68,10 +68,23 @@ a target value of "1" would be expressed as
 and a target value of "9" would be expressed as 
 
 ```
-{0,0,0,0,0,0,0,0,0,9}
+{0,0,0,0,0,0,0,0,0,1}
 ```
 
-Since each image has 28 * 28 pixels we design out input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
+The code for this looks like this:
+
+```
+struct Vector{
+    int val[10];
+};
+
+Vector targetOutput;
+
+```
+
+
+
+Since each image has 28 * 28 pixels we design our input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
 This gives us a total of 28 * 28 * 10 connections, and a network structure as follows:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
@@ -87,6 +100,161 @@ struct MNIST_Image{
     uint8_t pixel[28*28];
 };
 ```
+
+In my last blog post I explained what the basic unit of a neural network, the *perceptron* or in our code `cell` looks like.
+
+![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
+
+We define a cell as follows:
+
+```
+struct Cell{
+    double input [28*28];
+    double weight[28*28];
+    double output;
+};
+```
+
+and 10 of these cells will form the *intelligence* layer in our 1-layer neural network.
+
+```
+struct Layer{
+    Cell cell[10];
+};
+```
+
+### Initialize Neural Network Layer
+
+At start we need to reset or initialize our network layer by doing 3 things for each cell:
+```
+1. Set all cell inputs to 0
+2. Set all cell weights to a random value 0-1
+3. Set the cell output to 0 
+```
+
+The respective code can look like this:
+
+```
+void initLayer(Layer *l){
+    
+    for (int o=0; o<10; o++){
+        
+        for (int i=0; i<10; i++){
+            l->cell[o].input[i]=0;
+            l->cell[o].weight[i]=rand()/(double)(RAND_MAX);
+        }
+        
+        l->cell[o].output = 0;
+    }
+}
+```
+
+## Feed image into the network
+
+Next we loop through all 60,000 images and do the following for each image:
+
+```
+1. Load the MNIST image and its corresponding label from the MNIST files
+2. Set the target output according to the correct label
+3. Train each cell in the layer
+   a. Set the cell's input values according to the MNIST image's pixels
+   b. Calculate the cell's output value by summing all weighted inputs
+   c. Update the cell's weights based on the cell's error 
+4. Get the layer's prediction and compare with correct label
+```
+
+![_config.yml]({{ site.baseurl }}/images/1lnn2.svg)
+
+### Load MNIST image and label
+
+```
+	MNIST_Image img = getImage(imageFile);
+	MNIST_Label lbl = getLabel(labelFile);
+
+```
+
+### Define target output vector
+
+```
+    Vector targetOutput;
+    targetOutput = getTargetOutput(lbl);
+```
+
+### Loop through all cells
+
+```
+	for (int i=0; i < 10; i++){
+        trainCell(&l->cell[i], &img, targetOutput.val[i]);
+    }
+
+```
+
+### Train each cell
+
+```
+void trainCell(Cell *c, MNIST_Image *img, int target){
+    
+    setCellInput(c, img);
+    calcCellOutput(c);
+    
+    double err = getCellError(c, target);
+    updateCellWeights(c, err);
+}
+```
+
+### Set a cell's Input
+
+```
+void setCellInput(Cell *c, MNIST_Image *img){
+    
+    for (int i=0; i<(28*28); i++){
+        c->input[i] = img->pixel[i] ? 1 : 0;
+    }
+}
+```
+
+### Calculate the cell's actual output
+
+```
+void calcCellOutput(Cell *c){
+    
+    c->output=0;
+    
+    for (int i=0; i<(28*28); i++){
+        c->output += c->input[i] * c->weight[i];
+    }
+    
+    c->output /= NUMBER_OF_INPUT_CELLS;             // normalize output (0-1)
+}
+```
+
+
+
+### Calculate a cell's error
+
+```
+double getCellError(Cell *c, int target){
+
+    double err = target - c->output;
+
+    return err;
+}
+```
+
+
+
+### Update cell's weights
+
+```
+void updateCellWeights(Cell *c, double err){
+    
+    for (int i=0; i<(28*28); i++){
+        c->weight[i] += LEARNING_RATE * c->input[i] * err;
+    }
+}
+```
+
+
 
 
 ![_config.yml]({{ site.baseurl }}/images/mnist_numbers.png)
