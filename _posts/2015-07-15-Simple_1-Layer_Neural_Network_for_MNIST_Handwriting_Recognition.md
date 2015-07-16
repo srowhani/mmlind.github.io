@@ -4,70 +4,91 @@ title: Simple 1-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
 In this post I'll explore how to use a very simple 1-layer neural network to recognize the handwritten digits in the MNIST image files.
-If you want to jump straight to the code, you can find the [code documentation here](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html) and the [Github project page here](https://github.com/mmlind/mnist-1lnn/).
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
 
 In my previous blog post I gave a brief introduction [what neural networks are and how they work](../What_is_a_Neural_Network/).
-Everything was theory, so let's apply this know-how by writing some code.
+In this post, I will apply these ideas to the problem of image recognition and write the code for a simple 1-layer neural network recognizing images of handwritten digits.
 
-Our first challenge will be image recognition. 
+## Image Recognition
+
 For a computer an image is just a collection of pixels with different colors.
-So, whatever is on them is very hard for a computer to identify.
+Whatever is actually in the picture is very very hard for a computer to identify.
 
-State-of-the-art neural networks nowadays are already able identify faces, or prescribe the content of a photo.
-We'll start, much much simpler, with recognizing handwritten digits stored as images.
-(A possible use case for this is automatically recognizing handwritten ZIP codes in the mail.)
+Yet, state-of-the-art neural networks are already able to identify faces, or prescribe the content of a photo.
+In this post, I'll do something much much simpler, which is recognizing handwritten digits in images.
+(A common practical use case for this problem is the automatic classification of handwritten ZIP codes in the mail.)
 
-## MNIST
+## The MNIST Database
 
-The *Gold-standard* in this area is called [MNIST](http://yann.lecun.com/exdb/mnist/), maintained by one of the nowadays most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com).
-It holds 60,000 standardized images of handwritten digits to *train* our neural network (*training set*), and another 10,000 to *test* it (*testing set*).
-
-```
-mnist-1lnn/data/train-images-idx3-ubyte
-mnist-1lnn/data/t10k-images-idx3-ubyte
-```
-
-Since we're using a *supervised learning* method we must know the *correct* content of each image. 
-For the developer's convenience these are provided in the accompanying *label* files:
+The *Gold-standard* in machine learning for handwritten digits is called the [MNIST database](http://yann.lecun.com/exdb/mnist/), maintained by one of the most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com), who is also leading the machine learning endeavours of Facebook.
+The MNIST database contains 70,000 standardized images of handwritten digits. 
+It consists of 4 files:
 
 ```
-mnist-1lnn/data/train-labels-idx1-ubyte
-mnist-1lnn/data/t10k-labels-idx1-ubyte
+(1) A training set of 60,000 images:
+*mnist-1lnn/data/train-images-idx3-ubyte*
+
+(2) The labels (correct answers) for the training set:
+*mnist-1lnn/data/train-labels-idx1-ubyte*
+
+(3) A testing set of 10,000 images:
+*mnist-1lnn/data/t10k-images-idx3-ubyte*
+
+(4) The labels (correct answers) for the testing set:
+*mnist-1lnn/data/t10k-labels-idx1-ubyte*
 ```
+
+The idea is to *train* the neural network first using the *training set*, and then to switch off training and *test* the effectiveness of the trained network using the *testing set*.
+
+Using prior known correct answers to train a network is called *supervised learning* which is exactly what we're doing in this excercise.
+
+![_config.yml]({{ site.baseurl }}/images/mnist-image.svg)
 
 Each MNIST image has a size of 28*28 pixels or a total of 784 pixels. 
 Each pixel is a number between 0-255 indicating its density which, however, we'll ignore.
 
-![_config.yml]({{ site.baseurl }}/images/mnist-image.svg)
+To keep things simple, I treat each pixel in an image either as ON (1) or OFF (0).
+That means I don't consider colors or stroke strength. 
 
-To keep things simple, we'll regard each pixel in an image either as ON (1) or OFF (0).
-That means we neither consider colors nor stroke strength. 
-
-![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
-
-Enough theoretical preparation, let's start coding.
-
-## Design the Neural Network
-
-Next, we need to consider how to design our neural network. 
-Since it will only have 1 layer,  this will be pretty straight forward.
-
-First, we create an object (or a `struct`in C) called `MNIST_Image` containing the 28*28 pixels which we read from the MNIST file.
+The code representing a MNIST image is simply an object (`struct`) called `MNIST_Image` containing the 28*28 pixels which we read from the MNIST file:
 
 ```
+typedef struct MNIST_Image MNIST_Image;
 struct MNIST_Image{
     uint8_t pixel[28*28];
 };
 ```
 
+For the MNIST label we don't even need a `struct` and can simply use an 8 bit integer and call it `MNIST_Label`:
+
+```
+typedef uint8_t MNIST_Label;
+```
+
+When opening the files you first and only once read each file's header in order to move the read pointer to the position of the 1st image.
+The *file header* contains information such as number of images in the file and the respective width and height of each image. 
+Since the content of the headers is not critical for our network's function I don't go into further details here. 
+Yet, I briefly want to highlight that the numbers in the header are stored in reversed byte order and therefore need to be reversed back in order to use them.
+For more details on this you can check the [MNIST homepage](http://yann.lecun.com/exdb/mnist/) or [the code for this project](https://github.com/mmlind/mnist-1lnn/). 
+
+Enough preparation, let's start coding the neural network.
+
+## Design the Neural Network
+
+As outlined above each MNIST image has 28 * 28 pixels and each pixel is represented as either "1" (ON/BLACK) or "0" (OFF/WHITE).
+
+We convert the 28 * 28 matrix into a simple 784 one dimensional input vector containing 0s and 1s.
+
+![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
+
 In my last blog post I explained what the basic unit of a neural network, the *perceptron* or in our code `cell` looks like.
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
-For recognizing a MNIST image each cell (node) needs to be linked to 28 * 28 = 724 pixel and each link (=connection) has a [0-1] weight.
+For recognizing a MNIST image each cell (node) needs to be linked to 724 pixels and each link (=connection) has a [0-1] weight.
 Each of the 724 input values is either 0 or 1.
+
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
 
@@ -263,6 +284,7 @@ void updateCellWeights(Cell *c, double err){
 }
 ```
 
+You can find all the fully running code for the above excercise on the [Github project page](https://github.com/mmlind/mnist-1lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html).
 
 ![_config.yml]({{ site.baseurl }}/images/mnist_numbers.png)
 
