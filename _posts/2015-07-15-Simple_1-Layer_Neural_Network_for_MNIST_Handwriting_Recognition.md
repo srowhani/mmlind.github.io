@@ -45,12 +45,59 @@ Each pixel is a number between 0-255 indicating its density which, however, we'l
 To keep things simple, we'll regard each pixel in an image either as ON (1) or OFF (0).
 That means we neither consider colors nor stroke strength. 
 
+![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
+
+Enough theoretical preparation, let's start coding.
+
 ## Design the Neural Network
 
 Next, we need to consider how to design our neural network. 
-Since it will only have 1 layer, in addition to its output layer, this will be pretty straight forward.
+Since it will only have 1 layer,  this will be pretty straight forward.
 
-Let's start at the end, the output layer. 
+First, we create an object (or a `struct`in C) called `MNIST_Image` containing the 28*28 pixels which we read from the MNIST file.
+
+```
+struct MNIST_Image{
+    uint8_t pixel[28*28];
+};
+```
+
+In my last blog post I explained what the basic unit of a neural network, the *perceptron* or in our code `cell` looks like.
+
+![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
+
+For recognizing a MNIST image each cell (node) needs to be linked to 28 * 28 = 724 pixel and each link (=connection) has a [0-1] weight.
+Each of the 724 input values is either 0 or 1.
+
+![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
+
+The corresponding code looks like this:
+
+```
+struct Cell{
+    double input [28*28];
+    double weight[28*28];
+    double output;
+};
+```
+
+In order to be able to recognize 10 different digits [0-9] we need to define 10 such cells. 
+These 10 cells form the *intelligent* network layer in our 1-layer neural network.
+
+```
+struct Layer{
+    Cell cell[10];
+};
+```
+
+Since each image has 28 * 28 pixels we design our input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
+This gives us a total of 28 * 28 * 10 connections, and a network structure as follows:
+
+![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
+
+
+## The Target Output Vector
+
 When designing a neural network you normally want your output expressed as values between 0 and 1.
 Thus, for our problem of recognizing handwritten digits, instead of defining only one output with a value 0-9, we design a vector of 10 output values where each value is 0 except that of the target number.
 So, a target value of "0" would be expressed as
@@ -83,45 +130,6 @@ Vector targetOutput;
 ```
 
 
-
-Since each image has 28 * 28 pixels we design our input layer as 724 cells where each cell has 10 forward connections, one connection to each cell in the output vector.
-This gives us a total of 28 * 28 * 10 connections, and a network structure as follows:
-
-![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
-
-Enough theoretical preparation, let's start coding.
-
-## Start Coding
-
-First, we create an object (or a `struct`in C) called `MNIST_Image` containing the 28*28 pixels which we read from the MNIST file.
-
-```
-struct MNIST_Image{
-    uint8_t pixel[28*28];
-};
-```
-
-In my last blog post I explained what the basic unit of a neural network, the *perceptron* or in our code `cell` looks like.
-
-![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
-
-We define a cell as follows:
-
-```
-struct Cell{
-    double input [28*28];
-    double weight[28*28];
-    double output;
-};
-```
-
-and 10 of these cells will form the *intelligence* layer in our 1-layer neural network.
-
-```
-struct Layer{
-    Cell cell[10];
-};
-```
 
 ### Initialize Neural Network Layer
 
@@ -166,6 +174,7 @@ Next we loop through all 60,000 images and do the following for each image:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
 ![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
+![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_full.svg)
 
