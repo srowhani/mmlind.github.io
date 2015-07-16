@@ -164,7 +164,10 @@ Next we loop through all 60,000 images and do the following for each image:
 (4) Get the layer's prediction
 ```
 
-![_config.yml]({{ site.baseurl }}/images/1lnn2.svg)
+![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
+![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
+
+![_config.yml]({{ site.baseurl }}/images/1lnn_full.svg)
 
 ### Load MNIST image and label
 
