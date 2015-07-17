@@ -157,11 +157,11 @@ struct Layer{
 
 ### The Output
 
-The *output* of a neural network is the value we expect it to *predict*. 
+The *output* of a neural network is the network's *classification* of the input. 
 When designing a neural network you want your output expressed a value between 0 and 1.
 Thus, for our problem of recognizing handwritten digits, instead of defining a single output with a value 0-9, we design a vector of 10 outputs.
 Each output value is either 0 or 1. 
-The _index_ of the one output that is switched ON ("1") represents the network's *prediction*.
+The _index_ of the one output that is switched ON ("1") represents the network's *classification*.
 
 Example: If the MNIST image contains the digit "1" this "1" becomes the network's *target value* and is modeled as an output vector of
 
@@ -184,6 +184,8 @@ struct Vector{
 
 ```
 
+### The 1-Layer MNIST Neural Network's Design
+
 Adding all the above pieces together we'll end up with a network design like this:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_full.svg)
@@ -191,10 +193,10 @@ Adding all the above pieces together we'll end up with a network design like thi
 Once we've finished designing our network structure we can (almost) start *training* the network by feeding the MNIST images into it.
 
 
-## Initialize Neural Network Layer
+## Initialize the Network
 
-Before we start training our network we need to reset or initialize our network layer. 
-In particular, all 3 components of a `cell` (*perceptron*) need to be reset:
+Before we start training our network we need to reset or initialize all values in the layer. 
+All 3 components of a `cell` (*perceptron*) need to be reset:
 
 ```
 1. Set all inputs to 0
@@ -222,27 +224,27 @@ void initLayer(Layer *l){
 
 ## Train the Network
 
-The nextwork is trained by looping through all 60,000 images and letting the network *predict* each image's digit.
-Its prediction is then compared with the correct answer (given in the label file) and cell weights are adjusted according to the difference between the two (the *error*).
+The network is trained by looping through all 60,000 images and letting the network *classify* each image's digit.
+Its classification is then compared with the correct answer (given in the label file) and cell weights are adjusted according to the difference between the two (the *error*).
 
 The training algorithm looks like this:	
 
 ```
-(1) Load a MNIST image and its corresponding label from the database
-
-(2) Define the target output vector for this specific label
-
-(3) Loop through all 10 cells in the layer and:
-    (a) Set the cell's inputs according to the MNIST image pixels
-    (b) Calculate the cell's output by summing all weighted inputs
-    (c) Calculate the difference between actual and desired output
-    (c) Update the cell's weights based on this difference (the error)
-
-(4) Get the layer's prediction using the index of the highest output 
-
-(5) Define the network's success rate by comparing prediction and label
-
-(6) Go to (1) for processing the next image
+1. Load a MNIST image and its corresponding label from the database
+  
+2. Define the target output vector for this specific label
+  
+3. Loop through all 10 cells in the layer and:
+   1. Set the cell's inputs according to the MNIST image pixels
+   2. Calculate the cell's output by summing all weighted inputs
+   3. Calculate the difference between actual and desired output
+   4. Update the cell's weights based on this difference (the error)
+  
+4. Get the layer's classification using the index of the highest output 
+  
+5. Define the network's success rate by comparing classification and label
+  
+6. Go to (1) for processing the next image
 ```
 
 Now, let's go though the code for each of the steps above:
@@ -418,8 +420,8 @@ double getCellError(Cell *c, int target){
 
 ### Update the cell's weights
 
-In *supervised learning* we train the network by letting it know how far off its previous *guess* or *prediction* was.
-The network then slightly adjusts its weights in order to reduce the *error*, i.e. in order to allow its next *guess* or *prediction* to move closer to the *target*.
+In *supervised learning* we train the network by letting it know how far off its previous *guess* or *classification* was.
+The network then slightly adjusts its weights in order to reduce the *error*, i.e. in order to allow its next *guess* or *classification* to move closer to the *target*.
 The size of the incremental change is given to the network in the form of a constant which is normally called the `LEARNING_RATE`. 
 
 ```c
@@ -432,9 +434,10 @@ void updateCellWeights(Cell *c, double err){
 ```
 
 
-## Get the Network's Prediction
+## Get the Network's Classification
 
-After we looped through and trained all 10 cells on the current image we can get the network's *guess* or *prediction* by comparing the output values of all 10 cells.
+After we looped through and trained all 10 cells on the current image we can get the network's *guess* or *classification* by comparing the output values of all 10 cells.
+In the code I decided to use the term *prediction* rather than *classification*. 
 The corresponding function
 
 ```c
@@ -477,7 +480,8 @@ if (predictedNum!=lbl) errCount++;
 After running all of the 60,000 images we can calculate the layer's success rate
 
 ```
-successRate = errCount / 60000 * 100;
+// NUMBER_OF_IMAGES = 60000 for training or 10000 for testing
+successRate = errCount / NUMBER_OF_IMAGES * 100;
 ```
 
 The training of the network is now finished. 
@@ -493,14 +497,19 @@ The testing process is exactly the same as the training process, the only differ
 
 Our simple 1-layer neural network's success rate in the testing set is 85%.
 This value is embarrassingly low when comparing it to state of the art networks achieving a success rate of up to 99.97%. 
-Given the simple algorithm of this exercise, however, this is no surprise, and not too far away from the 88% achieved by Yann Lecun using a similar 1-layer network approach.
+Given the simple algorithm of this exercise, however, this is no surprise and close to the 88% achieved by Yann Lecun using a similar 1-layer network approach.
 
 
 ---
 
-### Code & Documentation
+## Code & Documentation
 
 You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-1lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html).
+
+When I run it on my 2010 MacBook Pro it takes about 19 seconds to process all 70,000 images.
+
+And the only reason why it is so *slow* is that I'm rendering each image (using "." and "X") in the console while processing.
+Once I switch that off the program runs less than 10 seconds which is why I love C. :-)
 
 Happy Hacking!
 
