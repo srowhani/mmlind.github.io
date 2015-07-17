@@ -26,7 +26,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.2330169"
      inkscape:cx="297.04707"
-     inkscape:cy="203.02251"
+     inkscape:cy="235.46326"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -768,15 +768,19 @@
        transform="translate(0,582.36218)" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Courier New;-inkscape-font-specification:Courier New"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Courier New;-inkscape-font-specification:Courier New"
        x="197.67735"
-       y="605.74854"
+       y="609.74854"
        id="text15563-1"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan3308">Connections from each </tspan><tspan
+         id="tspan3308"
+         x="201.27501"
+         y="609.74854">Connections from each </tspan><tspan
          sodipodi:role="line"
-         id="tspan3310">input to each NN cell</tspan></text>
+         id="tspan3310"
+         x="197.67735"
+         y="624.74854">input to each NN cell</tspan></text>
     <rect
        style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:1.06986499;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect3008"
