@@ -293,12 +293,18 @@ MNIST_Label getLabel(FILE *labelFile){
 
 ### Define target output vector
 
-Next we want to define an output vector of the type {0,0,0,0,0,0,1,0,0,0} for the particular *label* that we just loaded from the database.
+Next we want to define an output vector of the type 
+
+`
+{0,0,0,0,0,0,1,0,0,0}
+` 
+
+for the particular *label* that we just loaded from the database.
 The function we need looks like this:
 
 ```c
-    Vector targetOutput;
-    targetOutput = getTargetOutput(lbl);
+Vector targetOutput;
+targetOutput = getTargetOutput(lbl);
 ```
 
 and is implemented like this:
@@ -314,7 +320,7 @@ Vector getTargetOutput(int lbl){
 ```
 
 
-### Loop through all cells
+### Looping through all cells
 
 While the output vector above defines our *target* or *desired output* we now calculate the network's *actual* output and compare the two.
 
@@ -374,9 +380,9 @@ void setCellInput(Cell *c, MNIST_Image *img){
 Next, we calculate the cell's output, i.e. its *guess* whether this image represents e.g. a "1".
 This is done simply by summing the product of all 724 inputs multiplied by their weights:
 
-`
+```
 output = sum (input * weight)
-`
+```
 
 The code to do this looks like this
 
@@ -477,15 +483,14 @@ For before we'll move on to train the network on the next image we update an err
 if (predictedNum!=lbl) errCount++;
 ```
 
-After running all of the 60,000 images we can calculate the layer's success rate
+After running all of the 60,000 images we can calculate the layer's success rate which, for training and using my example code, is around 83%.
 
-```
+```c
 // NUMBER_OF_IMAGES = 60000 for training or 10000 for testing
 successRate = errCount / NUMBER_OF_IMAGES * 100;
 ```
 
-The training of the network is now finished. 
-Our 1-layer network achieves a success rate (for training) of around 83%. 
+Done. That was pretty much it. Only thing remaining is testing.
 
 
 ## Test the Network
@@ -493,7 +498,7 @@ Our 1-layer network achieves a success rate (for training) of around 83%.
 After the network has been *trained* on 60,000 images we'll *test* it using another 10,000 images.
 The testing process is exactly the same as the training process, the only difference being we switch off *learning*, i.e. we do NOT update the weights but maintain their values deducted from training.
 
-![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-screenshot)
+![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-screenshot.png)
 
 Our simple 1-layer neural network's success rate in the testing set is 85%.
 This value is embarrassingly low when comparing it to state of the art networks achieving a success rate of up to 99.97%. 
@@ -507,9 +512,8 @@ Given the simple algorithm of this exercise, however, this is no surprise and cl
 You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-1lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html).
 
 When I run it on my 2010 MacBook Pro it takes about 19 seconds to process all 70,000 images.
-
 And the only reason why it is so *slow* is that I'm rendering each image (using "." and "X") in the console while processing.
-Once I switch that off the program runs less than 10 seconds which is why I love C. :-)
+Once I switch that off the program runs less than 10 seconds ... which is why I love C. :-)
 
 Happy Hacking!
 
