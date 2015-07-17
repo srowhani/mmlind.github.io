@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="400"
+   width="700"
    height="470"
    id="svg2"
    version="1.1"
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2330169"
-     inkscape:cx="199.7248"
+     inkscape:cx="297.04707"
      inkscape:cy="332.78553"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -495,11 +495,11 @@
          sodipodi:role="line"
          id="tspan15841"
          x="417.02393"
-         y="616.08606"></tspan><tspan
+         y="616.08606" /><tspan
          sodipodi:role="line"
          id="tspan15843"
          x="417.02393"
-         y="629.06073"></tspan><tspan
+         y="629.06073" /><tspan
          sodipodi:role="line"
          id="tspan15845"
          x="417.02393"
@@ -507,11 +507,11 @@
          sodipodi:role="line"
          id="tspan15847"
          x="417.02393"
-         y="655.01001"></tspan><tspan
+         y="655.01001" /><tspan
          sodipodi:role="line"
          id="tspan15849"
          x="417.02393"
-         y="667.98462"></tspan><tspan
+         y="667.98462" /><tspan
          sodipodi:role="line"
          id="tspan15851"
          x="417.02393"
@@ -519,11 +519,11 @@
          sodipodi:role="line"
          id="tspan15853"
          x="417.02393"
-         y="693.9339"></tspan><tspan
+         y="693.9339" /><tspan
          sodipodi:role="line"
          id="tspan15855"
          x="417.02393"
-         y="706.90857"></tspan><tspan
+         y="706.90857" /><tspan
          sodipodi:role="line"
          id="tspan15857"
          x="417.02393"
@@ -531,11 +531,11 @@
          sodipodi:role="line"
          id="tspan15859"
          x="417.02393"
-         y="732.85785"></tspan><tspan
+         y="732.85785" /><tspan
          sodipodi:role="line"
          id="tspan15861"
          x="417.02393"
-         y="745.83246"></tspan><tspan
+         y="745.83246" /><tspan
          sodipodi:role="line"
          id="tspan15863"
          x="417.02393"
@@ -543,11 +543,11 @@
          sodipodi:role="line"
          id="tspan15865"
          x="417.02393"
-         y="771.78174"></tspan><tspan
+         y="771.78174" /><tspan
          sodipodi:role="line"
          id="tspan15867"
          x="417.02393"
-         y="784.75641"></tspan><tspan
+         y="784.75641" /><tspan
          sodipodi:role="line"
          id="tspan15869"
          x="417.02393"
@@ -555,11 +555,11 @@
          sodipodi:role="line"
          id="tspan15871"
          x="417.02393"
-         y="810.70569"></tspan><tspan
+         y="810.70569" /><tspan
          sodipodi:role="line"
          id="tspan15873"
          x="417.02393"
-         y="823.6803"></tspan><tspan
+         y="823.6803" /><tspan
          sodipodi:role="line"
          id="tspan15875"
          x="417.02393"
@@ -567,11 +567,11 @@
          sodipodi:role="line"
          id="tspan15877"
          x="417.02393"
-         y="849.62958"></tspan><tspan
+         y="849.62958" /><tspan
          sodipodi:role="line"
          id="tspan15879"
          x="417.02393"
-         y="862.60425"></tspan><tspan
+         y="862.60425" /><tspan
          sodipodi:role="line"
          id="tspan15881"
          x="417.02393"
@@ -579,11 +579,11 @@
          sodipodi:role="line"
          id="tspan15883"
          x="417.02393"
-         y="888.55353"></tspan><tspan
+         y="888.55353" /><tspan
          sodipodi:role="line"
          id="tspan15885"
          x="417.02393"
-         y="901.52814"></tspan><tspan
+         y="901.52814" /><tspan
          sodipodi:role="line"
          id="tspan15887"
          x="417.02393"
@@ -591,11 +591,11 @@
          sodipodi:role="line"
          id="tspan15889"
          x="417.02393"
-         y="927.47742"></tspan><tspan
+         y="927.47742" /><tspan
          sodipodi:role="line"
          id="tspan15891"
          x="417.02393"
-         y="940.45209"></tspan><tspan
+         y="940.45209" /><tspan
          sodipodi:role="line"
          id="tspan15893"
          x="417.02393"
@@ -789,5 +789,12 @@
          id="tspan15979"
          x="197.67735"
          y="620.74854">pixel to each possible output</tspan></text>
+    <rect
+       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:1.06986499;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3008"
+       width="698.93018"
+       height="468.93015"
+       x="0.53493249"
+       y="582.89709" />
   </g>
 </svg>
