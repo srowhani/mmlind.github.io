@@ -21,7 +21,7 @@ In this post, I show how this can be done in principal, but using something much
 (A common practical use case for this problem is the automatic classification of handwritten ZIP codes in the mail.)
 
 
-### The MNIST Database
+## The MNIST Database
 
 The *Gold-standard* in machine learning for handwritten digits is called the [MNIST database](http://yann.lecun.com/exdb/mnist/), maintained by one of the most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com), who is also leading the machine learning endeavours of Facebook.
 The MNIST database contains 70,000 standardized images of handwritten digits and consists of 4 files:
@@ -120,7 +120,7 @@ It consists of a node with at least 2 inputs and 2 weights, and one output value
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
-For recognizing a MNIST image a slightly bigger *perceptron* is needed, one with 724 inputs (one for each of the 28 * 28 pixel) and each link (=connection) has a [0-1] weight.
+For recognizing a MNIST image a slightly bigger *perceptron* is needed, one with 724 inputs (one for each of the 28 * 28 pixel) and each input connection has a [0-1] weight.
 
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
