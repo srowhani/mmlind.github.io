@@ -410,7 +410,7 @@ Please note that we need to *normalize* our output to enforce a value [0-1] inst
 The logic behind is as follows:
 A cell's output can be regarded as its distance or closeness to being the target cell.
 I.e. the higher a cell's output the more likely the index of this cell represents the desired target output.
-Since the target output as provided via a binary vector, its value is always 1. 
+Since the target output is provided via a binary vector, its value is always 1. 
 Thus the closer the cell output is to 1 the closer this cell is to the target output.
 
 
@@ -435,9 +435,9 @@ double getCellError(Cell *c, int target){
 }
 ```
 
-For those cells where the target output is "0" (the incorrect targets) the resulting `error` will be negative, while for the one cell where the target output is "1" (the correct target) the error will be positive.
+For those cells where the target output is "0" (the incorrect targets) the resulting `error` will be negative, while for the one cell where the target output is "1" (the correct target) the `error` will be positive.
 
-In this way the weights of the connections towards the *incorrect* cells will be reduced, while the weights of the connections toward the *correct* cell will be increased.
+In this way the weights of the connections towards the *incorrect* cells will be reduced, while the weights of the connections towards the *correct* cell will be increased.
 
 
 ### Update Cell Weights
@@ -459,16 +459,11 @@ void updateCellWeights(Cell *c, double err){
 
 ## Classify Output
 
-
-*******
-The output of cell represents the network's attempt to *classify* the inputs as representing the particular digit that this ce.
-And the output of cell 9 (10th cell) represents the network's attempt to *classify* the inputs as representing a "9".
-*******
-
-
 After we looped through and trained all 10 cells on the current image we can get the network's *classification attempt* by comparing the output values of all 10 cells.
-In the code I decided to use the term *prediction* rather than *classification*. 
-The corresponding function
+
+The output of a cell represents the network's attempt to *classify* the inputs as representing a particular digit.
+
+In the code I decided to use the term *prediction* rather than *classification*. The corresponding function
 
 ```c
 int predictedNum = getLayerPrediction(l);
@@ -500,8 +495,9 @@ The logic behind is simple: since the correct answer, provided via the target ou
 
 ## Calculate Success Rate
 
-The network's success rate is defined as the ratio of correct answers to the total number of attempts. 
-For before we'll move on to train the network on the next image we update an error counter to keep track of how many digits "*we missed*" (classified incorrectly).
+The network's success rate is defined as the ratio of correct answers to the total number of images processed. 
+
+Before we'll move on to train the network on the *next* image we update an error counter to keep track of how many digits "*we missed*" (classified incorrectly).
 
 ```c
 if (predictedNum!=lbl) errCount++;
