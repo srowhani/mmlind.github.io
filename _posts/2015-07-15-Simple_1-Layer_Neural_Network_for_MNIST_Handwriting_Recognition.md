@@ -3,12 +3,12 @@ layout: post
 title: Simple 1-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
-In this post I'll explore how to use a very simple 1-layer neural network to recognize the handwritten digits in the MNIST image files.
+In this post I'll explore how to use a very simple 1-layer neural network to recognize the handwritten digits in the MNIST database.
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
 
-In my previous blog post I gave a brief introduction [what neural networks are and how they work](../What_is_a_Neural_Network/).
-In this post I will apply these ideas to the problem of image recognition and write the code for a simple 1-layer neural network recognizing images of handwritten digits.
+In my previous blog post I gave a brief introduction [how neural networks basically work](../What_is_a_Neural_Network/).
+In this post I want to apply this know-how and write some code to recognize handwritten digits in images.
 
 
 ## Image Recognition
@@ -16,14 +16,16 @@ In this post I will apply these ideas to the problem of image recognition and wr
 For the computer an image is just a collection of pixels with different colors.
 Whatever is actually in the picture is very very hard for a computer to identify.
 
-Yet, state-of-the-art neural networks are already able to identify faces, or prescribe the content of a photo.
-In this post, I show how this can be done in principal, but using something much simpler to start with: recognizing handwritten digits in images.
+Yet, state-of-the-art neural networks are already able to automatically [identify faces](http://www.technologyreview.com/news/525586/facebook-creates-software-that-matches-faces-almost-as-well-as-you-do/), or [describe the actual content of a photo](https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures).
+
+In this post, I show how this is done using a much simpler problem to start with: recognizing handwritten digits in images.
 (A common practical use case for this problem is the automatic classification of handwritten ZIP codes in the mail.)
 
 
 ## The MNIST Database
 
-The *Gold-standard* in machine learning for handwritten digits is called the [MNIST database](http://yann.lecun.com/exdb/mnist/), maintained by one of the most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com), who is also leading the machine learning endeavours of Facebook.
+The *Gold-standard* in machine learning for handwritten digits is called the [MNIST database](http://yann.lecun.com/exdb/mnist/), maintained by one of the most-cited experts in machine learning, [Yann Lecun](http://yann.lecun.com), who also happens to lead the machine learning endeavours of Facebook.
+
 The MNIST database contains 70,000 standardized images of handwritten digits and consists of 4 files:
 
 (1) A training set of 60,000 images:
@@ -52,16 +54,15 @@ mnist-1lnn/data/t10k-labels-idx1-ubyte
 
 The idea is to *train* the neural network first using the *training set*, and then to switch off training and *test* the effectiveness of the trained network using the *testing set*.
 
-Using prior known correct answers to train a network is called *supervised learning* which is exactly what we're doing in this excercise.
+Using prior known correct answers to train a network is called *supervised learning* which is what we're doing in this excercise.
 
-Each MNIST image has a size of 28*28 pixels or a total of 784 pixels. 
-Each pixel is a number between 0-255 indicating its density which, however, we'll ignore.
-To keep things simple, I treat each pixel in an image either as ON (1) or OFF (0).
-That means I don't consider colors and stroke strength. 
+Each MNIST image has a size of 28*28 = 784 pixels. 
+Each pixel is provided as a number between 0-255 indicating its density.
+To keep things simple, we'll ignore the density (grey-scale) and treat each pixel either as ON or OFF (black-and-white).
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-image.svg)
 
-To model a MNIST image in code I use an object (`struct`) called `MNIST_Image` containing the 28*28 pixels:
+To model a MNIST image in code we define an object (`struct`) called `MNIST_Image` containing the 28*28 integers [0,1]:
 
 ```c
 typedef struct MNIST_Image MNIST_Image;	
@@ -71,14 +72,14 @@ struct MNIST_Image{
 };
 ```
 
-For the *MNIST label* a simple 8-bit integer will do:
+The *MNIST label* is modeled as a single 8-bit integer:
 
 ```c
 typedef uint8_t MNIST_Label;
 ```
 
-<sidenote> When opening the files you first and only once need to read each file's header in order to move the read pointer to the position of the first image.
-The *file header* contains information such as number of images in the file and the respective width and height of each image.
+Note: When opening the files you first and only once need to read each file's header in order to move the read pointer to the position of the first image.
+The file header contains information such as the number of images in the file and the respective width and height of each image.
 
 ```c
 struct MNIST_ImageFileHeader{
@@ -94,21 +95,23 @@ struct MNIST_LabelFileHeader{
 };
 ```
  
-Since the content of the headers is not critical for our network's function I don't go into further details here. 
-Yet, I briefly want to highlight that the values (maxImages, imgWidth,imgHeight, etc.) in the header are stored in reversed byte order and therefore need to be reversed back in order to use them.
-For more details on this you can check the [MNIST homepage](http://yann.lecun.com/exdb/mnist/) or [my project code](https://github.com/mmlind/mnist-1lnn/). </sidenote>
+Since the content of the MNIST file headers is not critical for the functionality of our neural network I don't go into further details here. 
+I just want to briefly highlight that the values (maxImages, imgWidth,imgHeight, etc.) in the header are stored in reversed byte order and therefore need to be reversed back in order to use them.
+For more details on this you can check the [MNIST homepage](http://yann.lecun.com/exdb/mnist/) or [my project code](https://github.com/mmlind/mnist-1lnn/).
 
 
-## Designing the Neural Network
+## Designing the Network
 
-Before we start coding the neural network, we need to consider its design. 
-I.e. every neural network's structure is likely somewhat different, always trying to best suit the particular problem to be solved.
+Before we start coding the network, we need to consider its design.
+As the name of this post suggests we only want a single layer (no hidden layers, no deep learning).
+
+Every neural network's structure is somewhat different, so we always need to consider how to best suit the particular problem to be solved.
 
 
 ### The Input 
 
 As outlined above each MNIST image has 28x28 pixels and each pixel is represented as either a "1" (ON/BLACK) or a "0" (OFF/WHITE).
-The 28x28 matrix is converted into a simple 784 one dimensional input vector containg 0s and 1s:
+The 28x28 matrix is converted into a simple 784-byte-long one dimensional input vector (containing 0s and 1s) and serves as the input to our neural network.
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_input.svg)
 
@@ -116,17 +119,18 @@ The 28x28 matrix is converted into a simple 784 one dimensional input vector con
 ### The Core 
 
 In [my last blog post](../What_is_a_Neural_Network/) I explained what the basic unit of a neural network, the *perceptron*, looks like.
-It consists of a node with at least 2 inputs and 2 weights, and one output value.
+It consists of a node with multiple (at least 2) inputs, a scalar  2 weights, and one output value.
+The output value is the cell's attempt to *classify* the respective input. 
 
 ![_config.yml]({{ site.baseurl }}/images/perceptron.svg)
 
-For recognizing a MNIST image a slightly bigger *perceptron* is needed, one with 724 inputs (one for each of the 28 * 28 pixel) and each input connection has a [0-1] weight.
+For recognizing a MNIST image a slightly bigger *perceptron* is needed, one with 28*28=724 inputs [0,1] and 28*28=724 connection weights [0-1].
 
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
 
 
-In our code the *perceptron* is modeled as a `cell`:
+In our code the *perceptron* is modeled as a `cell` as follows:
 
 ```c
 struct Cell{
@@ -139,14 +143,12 @@ struct Cell{
 
 ### The Network Layer
 
-A neural *network* normally consists of more than just 1 cell. 
-In order to be able to recognize 10 different handwritten digits [0-9] we need to define 10 such cells. 
-Combined these 10 cells form the *intelligent* network layer in our 1-layer neural network.
+A neural *network* by definition consists of more than just 1 cell. 
+Since we want to recognize 10 different handwritten digits our network needs 10 cells, each representing one of the digits 0-9. 
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
 
-Using 10 cells with 28 * 28 input values (0,1) and 28 * 28 respective weights (0-1) the network layer can be defined as follows:
-
+In our code the layer is simply modeled as an array of `cells`:
 
 ```c
 struct Layer{
@@ -155,27 +157,26 @@ struct Layer{
 ```
 
 
-### The Output
+### The Target (Output)
 
-The *output* of a neural network is the network's *classification* of the input. 
-When designing a neural network you want your output expressed a value between 0 and 1.
-Thus, for our problem of recognizing handwritten digits, instead of defining a single output with a value 0-9, we design a vector of 10 outputs.
-Each output value is either 0 or 1. 
-The _index_ of the one output that is switched ON ("1") represents the network's *classification*.
+The target *output* is the binary representation of our desired output. 
+Since our desired output (provided via the MNIST label file) is always a number between 0-9 the target output is modeled as vector of 10 values, each either 0 or 1. 
 
-Example: If the MNIST image contains the digit "1" this "1" becomes the network's *target value* and is modeled as an output vector of
+In particular, the vector contains nine "0"s and only one "1" where the _index_ of the one output that is switched ON ("1") represents our desired output value.
+
+Example: If the MNIST image contains the digit "1" then our *target output vector* is modeled as 
 
 ```
-{0,1,0,0,0,0,0,0,0,0}
+{0,1,0,0,0,0,0,0,0,0}		// Remember: arrays (and vectors) always start at 0
 ```
 
-(Remember, the *index* in coding always starts at 0 not at 1.) A target value of "9" would be modeled as an output vector of	
+A target value of "9" would be modeled as an output vector of	
 
 ```
 {0,0,0,0,0,0,0,0,0,1}
 ```
 
-The code for modeling the output vector is:
+In our code the output vector is hence simply modeled as an array of 10 integer values:
 
 ```c
 struct Vector{
@@ -184,18 +185,18 @@ struct Vector{
 
 ```
 
-### The 1-Layer MNIST Neural Network's Design
+### The Network Design
 
 Adding all the above pieces together we'll end up with a network design like this:
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn_full.svg)
 
-Once we've finished designing our network structure we can (almost) start *training* the network by feeding the MNIST images into it.
+Once we've finished designing our network structure we can now (almost) start *training* the network by feeding the MNIST images into it.
 
 
 ## Initialize the Network
 
-Before we start training our network we need to reset or initialize all values in the layer. 
+Before we start training we need to reset or initialize all values in the network layer. 
 All 3 components of a `cell` (*perceptron*) need to be reset:
 
 ```
@@ -224,7 +225,7 @@ void initLayer(Layer *l){
 
 ## Train the Network
 
-The network is trained by looping through all 60,000 images and letting the network *classify* each image's digit.
+The network is trained by looping through all 60,000 images and making the network *classify* each image.
 Its classification is then compared with the correct answer (given in the label file) and cell weights are adjusted according to the difference between the two (the *error*).
 
 The training algorithm looks like this:	
@@ -247,7 +248,7 @@ The training algorithm looks like this:
 6. Go to (1) for processing the next image
 ```
 
-Now, let's go though the code for each of the steps above:
+Now, let's go through the code for each of the steps above:
 
 
 ### Load MNIST image and label
@@ -290,16 +291,20 @@ MNIST_Label getLabel(FILE *labelFile){
 
 ```
 
+Of course, before we can do that we need to open both (image and label) files and read the respective file headers in order to move the read pointer towards the position of the first image / label.
+If you're interested in the code for opening the files and reading the file headers check out the project code on Github.
+Since this is not important for the network's image recognition functionality I'll skip it here.
+
 
 ### Define target output vector
 
-Next we want to define an output vector of the type 
+Next we want to define a binary output vector of the type 
 
 ```
 {0,0,0,0,0,0,1,0,0,0}
 ``` 
 
-for the particular *label* that we just loaded from the database.
+representing the particular *label* that we just loaded from the database.
 The function we need looks like this:
 
 ```c
@@ -320,16 +325,12 @@ Vector getTargetOutput(int lbl){
 ```
 
 
-### Looping through all cells
+### Train the Network Layer
 
-While the output vector above defines our *target* or *desired output* we now calculate the network's *actual* output and compare the two.
+While the output vector above defines our *target* or *desired output* we need to calculate the network's *actual* output, compare the two and feedback the error back into the system.
+This is called *training* the system.
 
-Each of the 10 cells in our neural network layer represents one of the digits 0-9.
-So the output of cell 1 represents, figuratively speaking, the probability that the image that is processed, contains a 1.
-And the output of cell 2 gives the probability that this image is actually a 2.
-So what we need to do is to calculate all 10 outputs and check which cell's output is the highest.
-
-So we'll loop through all 10 cells and train them on the current image:
+We'll loop through all 10 cells and train *them* on the current image:
 
 ```c
 	// Layer l
@@ -342,10 +343,11 @@ So we'll loop through all 10 cells and train them on the current image:
 
 ```
 
+## Train a Cell
 
-## Train each cell
+Each of the 10 cells in our neural network layer represents one of the digits 0-9.
 
-As outlined in the algorithm above our `trainCell` function needs 4 steps: 
+As outlined in the algorithm description above our `trainCell` function needs 4 steps: 
 
 ```c
 void trainCell(Cell *c, MNIST_Image *img, int target){
@@ -359,11 +361,10 @@ void trainCell(Cell *c, MNIST_Image *img, int target){
 ```
 
 
-### Set a cell's Input
+### Set Cell Inputs
 
-First, we need to set the cell's input to match the current image's pixels.
+First, we need to set the cell's inputs to match the current image's pixels.
 I.e. our cell's input values should be the same 724 long sequence of 0s and 1s as the images's pixels.
-For simplicity I'll only consider whether a pixel is ON or OFF, i.e. 0 or 1, and neglect a pixel's density.
 
 ```c
 void setCellInput(Cell *c, MNIST_Image *img){
@@ -375,10 +376,14 @@ void setCellInput(Cell *c, MNIST_Image *img){
 ```
 
 
-### Calculate the cell's actual output
+### Calculate Cell Output
 
-Next, we calculate the cell's output, i.e. its *guess* whether this image represents e.g. a "1".
-This is done simply by summing the product of all 724 inputs multiplied by their weights:
+The output of cell 0 (1st cell) represents the network's attempt to *classify* the inputs as representing a "0".
+And the output of cell 9 (10th cell) represents the network's attempt to *classify* the inputs as representing a "9".
+
+So, the cell's output can be regarded as its *guess* that this image (these inputs) represents a particular digit.
+
+Mathematically the output simply calculated by sum of all 724 weighted inputs:
 
 ```
 output = sum (input * weight)
@@ -399,20 +404,20 @@ void calcCellOutput(Cell *c){
 }
 ```
 
-Please note that at the end we need to *normalize* our output, i.e. enforce a value between 0 and 1, to be able to compare it to our target output (which will always be either 0 or 1).
+Please note that we need to *normalize* our output, i.e. enforce a value between 0 and 1, to be able to compare it to our target output (which will always be either 0 or 1).
 
 
-### Calculate the cell's error
+### Calculate Cell Error
 
-Next, the calculated cell output is compared to our desired output. 
-Let's say our image shows a "6", then our target output vector would look like this 
+Next, the *calculated* cell output is compared to the *desired* output and the difference between both is the cell's `error`.
+
+Example: Let's say our MNIST image shows a "6", then our target output vector would look like this 
 
 ```
 {0,0,0,0,0,0,1,0,0,0}
 ```
 
-I.e. the value at the index position 6 (remember, counting starts from 0) is a "1" while all others are "0".
-So the *desired* or *target* output is either a "0" for a "1". 
+For 9 of the 10 layer cells the target output is "0", and only for 1 of the 10 layer cells, i.e. for the correct one, the target output will be a "1".
 
 ```c
 double getCellError(Cell *c, int target){
@@ -424,10 +429,11 @@ double getCellError(Cell *c, int target){
 ```
 
 
-### Update the cell's weights
+### Update Cell Weights
 
-In *supervised learning* we train the network by letting it know how far off its previous *guess* or *classification* was.
-The network then slightly adjusts its weights in order to reduce the *error*, i.e. in order to allow its next *guess* or *classification* to move closer to the *target*.
+In *supervised learning* we train the network by letting it know how far *off* its previous *classification attempt* was.
+The network then slightly adjusts its weights in order to reduce the *error*, i.e. in order to allow its next *classification attempt* move closer to the desired *target*.
+
 The size of the incremental change is given to the network in the form of a constant which is normally called the `LEARNING_RATE`. 
 
 ```c
@@ -442,7 +448,7 @@ void updateCellWeights(Cell *c, double err){
 
 ## Classify Output
 
-After we looped through and trained all 10 cells on the current image we can get the network's *guess* or *classification* by comparing the output values of all 10 cells.
+After we looped through and trained all 10 cells on the current image we can get the network's *classification attempt* by comparing the output values of all 10 cells.
 In the code I decided to use the term *prediction* rather than *classification*. 
 The corresponding function
 
