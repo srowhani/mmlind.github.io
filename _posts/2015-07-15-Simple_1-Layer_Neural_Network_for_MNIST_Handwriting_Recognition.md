@@ -512,10 +512,10 @@ Given the simple algorithm of this exercise, however, this is no surprise and cl
 You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-1lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-1lnn/master/doc/html/index.html).
 
 When I run it on my 2010 MacBook Pro it takes about 19 seconds to process all 70,000 images.
-And the only reason why it is so *slow* is that I'm rendering each image (using "." and "X") in the console while processing.
-Once I switch that off the program runs less than 10 seconds ... which is why I love C. :-)
+And the only reason why it is so *slow* is that I'm rendering each image (using "." and "X") in the console while processing. (See above screenshot.)
+Once I switch the rendering off the program runs less than 10 seconds ... which is why I love C. :-)
 
 Happy Hacking!
 
-![_config.yml]({{ site.baseurl }}/images/mnist_numbers.png)
+![_config.yml]({{ site.baseurl }}/images/mnist_logo.png)
 
