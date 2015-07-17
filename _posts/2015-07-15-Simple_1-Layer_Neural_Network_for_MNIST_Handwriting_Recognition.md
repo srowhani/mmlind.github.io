@@ -248,19 +248,19 @@ The training algorithm looks like this:
 6. Go to (1) for processing the next image
 ```
 
-Now, let's go through the code for each of the steps above:
+Now, let's write the code for each of the steps above:
 
 
-### Load MNIST image and label
+### Load MNIST Image and Label
 
-To load a MNIST image and its corresponding label we need to call two simple functions
+To load a MNIST image and its corresponding label we call two simple functions
 
 ```c
-	MNIST_Image img = getImage(imageFile);
-	MNIST_Label lbl = getLabel(labelFile);
+MNIST_Image img = getImage(imageFile);
+MNIST_Label lbl = getLabel(labelFile);
 ```
 
-which can be implemented like this:
+and implement them like this:
 
 ```c
 MNIST_Image getImage(FILE *imageFile){
@@ -291,12 +291,12 @@ MNIST_Label getLabel(FILE *labelFile){
 
 ```
 
-Of course, before we can do that we need to open both (image and label) files and read the respective file headers in order to move the read pointer towards the position of the first image / label.
+Of course, before we can read anything we need to open both (image and label) files first and read their respective file headers to move the read pointer towards the position of the first image or label.
 If you're interested in the code for opening the files and reading the file headers check out the project code on Github.
 Since this is not important for the network's image recognition functionality I'll skip it here.
 
 
-### Define target output vector
+### Define Target Output Vector
 
 Next we want to define a binary output vector of the type 
 
@@ -304,15 +304,15 @@ Next we want to define a binary output vector of the type
 {0,0,0,0,0,0,1,0,0,0}
 ``` 
 
-representing the particular *label* that we just loaded from the database.
-The function we need looks like this:
+for the particular *label* that we just loaded from the database.
+We call the function 
 
 ```c
 Vector targetOutput;
 targetOutput = getTargetOutput(lbl);
 ```
 
-and is implemented like this:
+and implement it as follows:
 
 ```c
 Vector getTargetOutput(int lbl){
@@ -327,10 +327,12 @@ Vector getTargetOutput(int lbl){
 
 ### Train the Network Layer
 
-While the output vector above defines our *target* or *desired output* we need to calculate the network's *actual* output, compare the two and feedback the error back into the system.
-This is called *training* the system.
+While the output vector above defines our *target* or *desired output* we need to calculate the network's *actual* output, compare the two and feed the error back into the system.
+This is called *training* the network.
 
-We'll loop through all 10 cells and train *them* on the current image:
+With each image that the network is trained on its effectiveness (success rate) increases. 
+
+For each image we need to loop through all 10 cells and *train* them on this particular image:
 
 ```c
 	// Layer l
@@ -378,16 +380,15 @@ void setCellInput(Cell *c, MNIST_Image *img){
 
 ### Calculate Cell Output
 
-The output of cell 0 (1st cell) represents the network's attempt to *classify* the inputs as representing a "0".
-And the output of cell 9 (10th cell) represents the network's attempt to *classify* the inputs as representing a "9".
-
-So, the cell's output can be regarded as its *guess* that this image (these inputs) represents a particular digit.
-
-Mathematically the output simply calculated by sum of all 724 weighted inputs:
+Mathematically each cell's output is calculated by summing all of its 724 *weighted inputs*.
 
 ```
 output = sum (input * weight)
 ```
+
+Let's understand this in more detail. The input is binary [0,1] and the weight is scalar [0-1]. 
+Thus, a cell's output would be somewhere in the range of [0-794].
+The more pixels in an image are switched ON, the higher its output value.
 
 The code to do this looks like this
 
@@ -404,12 +405,18 @@ void calcCellOutput(Cell *c){
 }
 ```
 
-Please note that we need to *normalize* our output, i.e. enforce a value between 0 and 1, to be able to compare it to our target output (which will always be either 0 or 1).
+Please note that we need to *normalize* our output to enforce a value [0-1] instead of [0-794].
+
+The logic behind is as follows:
+A cell's output can be regarded as its distance or closeness to being the target cell.
+I.e. the higher a cell's output the more likely the index of this cell represents the desired target output.
+Since the target output as provided via a binary vector, its value is always 1. 
+Thus the closer the cell output is to 1 the closer this cell is to the target output.
 
 
 ### Calculate Cell Error
 
-Next, the *calculated* cell output is compared to the *desired* output and the difference between both is the cell's `error`.
+Next, the *calculated* cell output is compared to the *desired* output and the difference between both is regarded as the cell's `error`.
 
 Example: Let's say our MNIST image shows a "6", then our target output vector would look like this 
 
@@ -417,7 +424,7 @@ Example: Let's say our MNIST image shows a "6", then our target output vector wo
 {0,0,0,0,0,0,1,0,0,0}
 ```
 
-For 9 of the 10 layer cells the target output is "0", and only for 1 of the 10 layer cells, i.e. for the correct one, the target output will be a "1".
+For nine of the ten cells the target output is "0", and only for one of the ten cells, i.e. for the correct one, the target output will be a "1".
 
 ```c
 double getCellError(Cell *c, int target){
@@ -427,6 +434,10 @@ double getCellError(Cell *c, int target){
     return err;
 }
 ```
+
+For those cells where the target output is "0" (the incorrect targets) the resulting `error` will be negative, while for the one cell where the target output is "1" (the correct target) the error will be positive.
+
+In this way the weights of the connections towards the *incorrect* cells will be reduced, while the weights of the connections toward the *correct* cell will be increased.
 
 
 ### Update Cell Weights
@@ -447,6 +458,13 @@ void updateCellWeights(Cell *c, double err){
 
 
 ## Classify Output
+
+
+*******
+The output of cell represents the network's attempt to *classify* the inputs as representing the particular digit that this ce.
+And the output of cell 9 (10th cell) represents the network's attempt to *classify* the inputs as representing a "9".
+*******
+
 
 After we looped through and trained all 10 cells on the current image we can get the network's *classification attempt* by comparing the output values of all 10 cells.
 In the code I decided to use the term *prediction* rather than *classification*. 
