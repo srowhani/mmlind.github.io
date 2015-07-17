@@ -130,7 +130,7 @@ For recognizing a MNIST image a slightly bigger *perceptron* is needed, one with
 ![_config.yml]({{ site.baseurl }}/images/1lnn_nnlayer.svg)
 
 
-In our code the *perceptron* is modeled as a `cell` as follows:
+In the code I modeled the *perceptron* as a `cell` as follows:
 
 ```c
 struct Cell{
@@ -148,7 +148,7 @@ Since we want to recognize 10 different handwritten digits our network needs 10 
 
 ![_config.yml]({{ site.baseurl }}/images/1lnn.svg)
 
-In our code the layer is simply modeled as an array of `cells`:
+In the code the layer is simply modeled as an array of `cells`:
 
 ```c
 struct Layer{
@@ -176,7 +176,7 @@ A target value of "9" would be modeled as an output vector of
 {0,0,0,0,0,0,0,0,0,1}
 ```
 
-In our code the output vector is hence simply modeled as an array of 10 integer values:
+In the code the output vector is hence simply modeled as an array of 10 integer values:
 
 ```c
 struct Vector{
