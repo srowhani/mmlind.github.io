@@ -295,9 +295,9 @@ MNIST_Label getLabel(FILE *labelFile){
 
 Next we want to define an output vector of the type 
 
-`
+```
 {0,0,0,0,0,0,1,0,0,0}
-` 
+``` 
 
 for the particular *label* that we just loaded from the database.
 The function we need looks like this:
@@ -440,7 +440,7 @@ void updateCellWeights(Cell *c, double err){
 ```
 
 
-## Get the Network's Classification
+## Classify Output
 
 After we looped through and trained all 10 cells on the current image we can get the network's *guess* or *classification* by comparing the output values of all 10 cells.
 In the code I decided to use the term *prediction* rather than *classification*. 
@@ -490,7 +490,7 @@ After running all of the 60,000 images we can calculate the layer's success rate
 successRate = errCount / NUMBER_OF_IMAGES * 100;
 ```
 
-Done. That was pretty much it. Only thing remaining is testing.
+Done. That was pretty much it. The only thing remaining is testing.
 
 
 ## Test the Network
