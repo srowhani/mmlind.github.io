@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="600"
+   width="700"
    height="470"
    id="svg2"
    version="1.1"
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2330169"
-     inkscape:cx="199.7248"
-     inkscape:cy="289.95644"
+     inkscape:cx="232.16556"
+     inkscape:cy="354.83795"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -342,7 +342,7 @@
          sodipodi:role="line"
          id="tspan15687"
          x="46.27906"
-         y="711.26562">.</tspan><tspan
+         y="711.26569">.</tspan><tspan
          sodipodi:role="line"
          id="tspan15689"
          x="46.27906"
@@ -354,7 +354,7 @@
          sodipodi:role="line"
          id="tspan15693"
          x="46.27906"
-         y="748.11224">.</tspan><tspan
+         y="748.1123">.</tspan><tspan
          sodipodi:role="line"
          id="tspan15695"
          x="46.27906"
@@ -366,7 +366,7 @@
          sodipodi:role="line"
          id="tspan15699"
          x="46.27906"
-         y="784.95886">722</tspan><tspan
+         y="784.95892">722</tspan><tspan
          sodipodi:role="line"
          id="tspan15701"
          x="46.27906"
@@ -515,5 +515,12 @@
          x="53.532974"
          sodipodi:role="line"
          id="tspan3984-3" /></text>
+    <rect
+       style="opacity:0.8;color:#000000;fill:none;stroke:#4d4d4d;stroke-width:1.06986499;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3008"
+       width="698.93011"
+       height="468.93015"
+       x="0.53493249"
+       y="582.89709" />
   </g>
 </svg>
