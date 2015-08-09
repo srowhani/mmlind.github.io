@@ -6,7 +6,7 @@ title: Simple 3-Layer Neural Network for MNIST Handwriting Recognition
 I've extended my simple 1-Layer neural network to include a hidden layer and use the back propagation algorithm for updating connection weights.
 The size of the network (number of neurons per layer) is dynamic, yet it's accuracy in classifying the handwritten digits in the MNIST database is still disappointing. Read why...
 
-![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
+![_config.yml]({{ site.baseurl }}/images/mnist-3lnn-logo.jpg)
 
 In a aprevious blog post I introduced a simple [1-Layer neural network for MNIST handwriting recognition](../Simple_1-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/).
 It was based on a single layer of perceptrons whose connection weights are adjusted during a supervised learning process.
