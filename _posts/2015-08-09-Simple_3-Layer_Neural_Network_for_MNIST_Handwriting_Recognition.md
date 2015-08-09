@@ -4,16 +4,17 @@ title: Simple 3-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
 I've extended my simple 1-Layer neural network to include a hidden layer and use the back propagation algorithm for updating connection weights.
-The size of the network (number of neurons per layer) is dynamic, yet it's accuracy in classifying the handwritten digits in the MNIST database is still only so so. Read why...
+The size of the network (number of neurons per layer) is dynamic, yet it's accuracy in classifying the handwritten digits in the MNIST database is still disappointing. Read why...
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-1lnn-logo.jpg)
 
 In a aprevious blog post I introduced a simple [1-Layer neural network for MNIST handwriting recognition](../Simple_1-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/).
-It was based on a single layer of perceptrons whose connection weights are adjusted during a supervised learning process in such a way that the calculated weight matrix achieves an 85% accuracy in classifying the digits in the MNIST testing dataset.
+It was based on a single layer of perceptrons whose connection weights are adjusted during a supervised learning process.
+The result was an 85% accuracy in classifying the digits in the MNIST testing dataset.
 
-The network did not use a sophisticatd activation function (only simple "normalization") and no weighted error back propagation. 
-Now, I want to add these things to see how will improve its effectiveness. 
-At the same time I also want to make the code more versatile and re-usable, offering a standardized interface and allow for dyanmic network sizing. And here we go..
+The network did not use a *real* activation function (only simple "normalization") and no weighted error back propagation. 
+Now, I want to add these things to see how this will improve the network's effectiveness. 
+At the same time I also want to make the code more versatile and re-usable, offering a standardized interface and allow for dyanmic network sizing. 
 
 
 ## From 1 Layer to 3 Layers
@@ -22,23 +23,23 @@ The first major change in the design is adding a hidden layer between input and 
 So how come a 1 layer network becomes a 3 layer network?
 It's simply a different naming convention.
 The 1-layer network only had one single layer of perceptrons, the output layer. 
-In my previous design, the input to the network was NOT part of the network, ie. whenever the input was needed (ie. when calculating a node's output and when updating a node's weigths) I refered to a variable *outside* of the network, the MNIST image.
+In my previous design, the input to the network was NOT part of the network, i.e. whenever this input was needed (when calculating a node's output and when updating a node's weights) I refered to a `MNIST image`, a variable *outside* of the network.
 
-When I redesigned the network I found it advantagous to include the intput feed *inside* the network.
+When I redesigned the network I found it advantagous to include the input feed *inside* the network.
 It allows to treat the network as an independent object (data structure) without external references.
-That is why by adding the hidden layer, and now treating the intput as a network layer as well, the 1-layer network becomes a 3-layer network.
+That is why by adding the hidden layer, plus treating the input as a network layer as well, the 1-layer network becomes a 3-layer network.
 
 
-## Dynamically Sized Network Structure
+## Dynamically Sized Network
 
 One of the challenges when redesigning the network was making its size dynamic. 
-We all know that in C dynamically sized objects are not as easy to implement as in higher-level languages. 
+In C, dynamically sized objects are not as easy to implement as in higher-level languages. 
 
 
-### Designing the Data Model
+### The Data Model
 
-I decided to make use of a C feature originally refered to as the [struct hack](http://c-faq.com/struct/structhack.html) until it officially became part of C as [flexible array member](https://en.wikipedia.org/wiki/Flexible_array_member).
-The idea is simple: place an empty array *at the end of a struct* definition and manually allocate as much memory for the struct as it actually needs.
+I decided to make use of a C feature originally refered to as the *[struct hack](http://c-faq.com/struct/structhack.html)* until it officially became part of C as *[flexible array member](https://en.wikipedia.org/wiki/Flexible_array_member)*.
+The idea is simple: place an empty array _at the end_ of a struct definition and manually allocate as much memory for the struct as it actually needs.
 
 I make extensive use of this feature by stacking several layers of dynamically sized data structure. Let's start at the smallest, more inner level, a network node. (This refers to a perceptron or cell, as I previously called it. I decided to rename cell into node because I felt this name was more applicable.)
 
