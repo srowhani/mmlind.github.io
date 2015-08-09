@@ -8,13 +8,13 @@ The size of the network (number of neurons per layer) is dynamic, yet it's accur
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-3lnn-logo.jpg)
 
-In a aprevious blog post I introduced a simple [1-Layer neural network for MNIST handwriting recognition](../Simple_1-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/).
+In a previous blog post I introduced a simple [1-Layer neural network for MNIST handwriting recognition](../Simple_1-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/).
 It was based on a single layer of perceptrons whose connection weights are adjusted during a supervised learning process.
 The result was an 85% accuracy in classifying the digits in the MNIST testing dataset.
 
-The network did not use a *real* activation function (only simple "normalization") and no weighted error back propagation. 
+The network did not use a *real* activation function (only simple linear "normalization") and no weighted error back propagation. 
 Now, I want to add these things to see how this will improve the network's effectiveness. 
-At the same time I also want to make the code more versatile and re-usable, offering a standardized interface and allow for dyanmic network sizing. 
+At the same time I also want to make the code more versatile and re-usable, offering a standardized interface, and to allow for dyanmic network sizing. 
 
 ![_config.yml]({{ site.baseurl }}/images/3lnn.svg)
 
@@ -29,7 +29,8 @@ In my previous design, the input to the network was NOT part of the network, i.e
 
 When I redesigned the network I found it advantagous to include the input feed *inside* the network.
 It allows to treat the network as an independent object (data structure) without external references.
-That is why by adding the hidden layer, plus treating the input as a network layer as well, the 1-layer network becomes a 3-layer network.
+
+Therefore, by adding a hidden layer, plus treating the input as a network layer as well, the 1-layer network becomes a 3-layer network.
 
 
 ## Dynamically Sized Network
@@ -44,6 +45,7 @@ I decided to make use of a C feature originally refered to as the *[struct hack]
 The idea is simple: place an empty array _at the end_ of a struct definition and manually allocate as much memory for the struct as it actually needs.
 
 I make extensive use of this feature by stacking several layers of dynamically sized data structures. 
+
 Let's start at the smallest, most inner level of a network, the node. (*Node* refers to the same concept as a *perceptron* or *cell*, as I previously had called it.)
 
 ```c
@@ -55,12 +57,12 @@ struct Node{
 };
 ```
 
-The number of weights of a node normally depends on the number of nodes in the previous layer. 
+The number of weights of a node normally depends on the number of nodes in the previous layer (assuming a fully connected design). 
 Since we want this number to be dynamic we use an empty array or *flexible array member*.
-But we need to remember how many weights a node actually has.
+But, in order to be able to access each individual weight later, we need to remember how many weights a node actually has.
 This is what `wcount` (weight count) is for.
 
-Next we put several of these nodes to form a layer
+Next we put several of these nodes tegether to form a layer
 
 ```c
 struct Layer{
@@ -71,7 +73,7 @@ struct Layer{
 
 and use `ncount` (node count) to remember how many nodes are actually stored inside this layer.
 
-Lastly, we stack several (for now only 3: input, hidden and output) into a `network`:
+Lastly, we stack several (for now only 3: input, hidden and output) of such layers into a `network`:
 
 ```c
 struct Network{
@@ -152,10 +154,10 @@ We now need to fill this memory block with the 3-tier layer structure.
 The way we do this is by creating each layer as a temporary, independent object, i.e. in a different memory block.
 Then we copy this memory block into the larger memory block allocated for the network and delete (`free`) the memory block of the temporary layer.
 
-Obviously, the most critical point here is to copy the layer at exactly the correct memory address as required by the data model.
+Obviously, the most critical point here is to copy the layer to the correct memory address as required by the data model.
 Since we calculated each node's and each layer's size, this can be easily done using a *single byte pointer*.
 
-We put this into a separate function and call it `initializing the network`:
+I put this into a separate function and call it `initializing the network`:
 
 
 ```c
@@ -188,22 +190,22 @@ void initNetwork(Network *nn, int inpCount, int hidCount, int outCount){
 
 Let's look at this in more detail:
 A *single byte pointer* is simply a pointer pointing to memory blocks of byte size 1. 
-I.e. we can easily move the pointer throughout the address space either by incrementing it via (`pointer++`) or by adding the number of bytes that we want the pointer to move forward (`pointer += bytes_to_move_forward`).
+I.e. we can easily move the pointer throughout the address space either by incrementing it via `pointer++` or by adding the number of bytes that we want the pointer to move forward by `pointer += bytes_to_move_forward`.
 
-First, we define the pointer and make it point to the memory address where the first layer, the INPUT layer, should be located:
-
-```c
-    uint8_t *sbptr = (uint8_t*) nn->layers;     // single byte pointer
-```
-
-Then, to move the pointer forward to the memory address of the 2nd layer, the INPUT layer, we simply increase the pointer by the size of the input layer:
-
+First, we define the pointer and make it point to the memory address where the first layer, the *input* layer, should be located:
 
 ```c
-    sbptr += nn->inpLayerSize;
+uint8_t *sbptr = (uint8_t*) nn->layers;     // single byte pointer
 ```
 
-I hope this helps to understand the above `initNetwork` function.
+Then, we move the pointer forward to the memory address of the 2nd layer, the *hidden* layer, simply by increasing the pointer by the size of the input layer:
+
+
+```c
+sbptr += nn->inpLayerSize;
+```
+
+Above should help to understand the above `initNetwork()` function.
 Inside of it we are creating the layers by calling a `createInputLayer()` and `createLayer()` function.
 These functions will create and return (a pointer to) a `Layer` object which is already pre-filled with default values.
 
@@ -241,11 +243,11 @@ The *input* layer is different from the other 2 layers (*hidden* and *output*) i
 
 1. As I outlined above, the input layer is strictly speaking not a real network layer. 
 I.e. its nodes are not perceptrons because this layer does not have any connections, and hence any weights, to a previous layer.
-For our coding this means that the size of a node's weight array (`weights[]`) is 0 and that the size of an input node is the same as the *actual* size of node `sizeof(Node)`.
+For our coding this means that the size of a node's weight array (`weights[]`) is 0 and therefore the size of an input node is the same as the *actual* size of a node struct `sizeof(Node)`.
 
-2. The second major difference of the input layer is that its main objective is simply to hold the input that is fed into the network.
-But for coding consistency and simplicity I want to use the same data model for the input layer as for the other two layers.
-Therefore, I use the node's `output` variable to store the *input*. 
+2. The second major difference of the input layer is that its main objective is stoing the input that is fed into the network.
+But for coding consistency and simplicity I want to use the same data model with the same naming conventions for the input layer as for the other two layers.
+Therefore, I use the node's `output` variable to store the network's *input*. 
 (Keep this point in mind for later!)
 
 Next, let's look at the function how to create a *hidden* and an *output* layer.
@@ -384,7 +386,7 @@ However, in order to be able to know which *type of layer* we're working on we'r
 typedef enum LayerType {INPUT, HIDDEN, OUTPUT} LayerType;
 ```
 
-and pass it as an argument to the `calcLayer()` function which itself means applying the following steps to each of its nodes:
+and pass it as an argument to the `calcLayer()` function which itself applies the following steps to each of its nodes:
 
 ```
 1. Calculating the node's output
@@ -427,9 +429,10 @@ void calcNodeOutput(Network *nn, LayerType ltype, int id){
 
 To do this we need to loop through the node's connections, i.e. loop through its weights and the output values in the previous layer that it is connected to.
 However, since we defined the network's components (layer, nodes, weights) using *flexible array members* the compiler does not know where one component ends and where the next one starts. 
-Hence, it is __not__ possible to locate, for example, a node by simplying referring to the n'th member of the array (layer.node[n])!
+Hence, it is __not__ possible to locate, for example, a node by simply referring to the n'th member of the node array: ~~layer.node[n]~~!
 
-Since a layer's and a node's size is unknown to the compiler we instead use a *single byte pointer* to navigate through the allocated memory space. The above code therefore uses a `getLayer()` and `getNode()` function to access a particular layer or a particular node inside the network.
+Since both a layer's and a node's size are unknown to the compiler I use a *single byte pointer* to navigate through the allocated memory space. 
+The above code does so by calling a `getLayer()` and `getNode()` function to access a particular layer or a particular node inside the network.
 
 ```c
 Node *getNode(Layer *l, int nodeId) {
@@ -444,14 +447,14 @@ Node *getNode(Layer *l, int nodeId) {
 
 ```
 
-To access a particular node we simply set the pointer to the first node of this layer and then move the pointer forward by *the number of nodes* (given as the node's id) times *the size of a node*. 
-The latter is calculated by summing the default size of a node `sizeof(Node)`, which is the `Node struct` with an _empty_ weights array, and the product of the number of weights (`wcount`) times the size of a weight `sizeof(double)`.
-
+Let's take a more detailed look at how this works. To access a particular node we simply set the pointer to the first node of this layer and then move the pointer forward by *the number of nodes* (given as the node's id) times *the size of a node*. 
+The latter is calculated by adding the default size of a node `sizeof(Node)` to the product of the number of weights (`wcount`) times the size of a weight `sizeof(double)`.
 
 Accessing a particular `Layer` works similar. We place the pointer to the first layer (given by `nn->layers`) and then move it forward as required.
-To access the input layer, we don't need to move forward at all.
-To access the hidden layer, we need to move the pointer forward by *the size of the input layer*.
-And, to access the output layer, we need to move the pointer forward by *the size of the input layer* plus *the size of the hidden layer*.
+
+To access the *input* layer, we don't need to move forward at all since it *is* the first layer in the network.
+To access the *hidden* layer, we need to move the pointer forward by *the size of the input layer*.
+And, to access the *output* layer, we need to move the pointer forward by *the size of the input layer* plus *the size of the hidden layer*.
 
 ```c
 Layer *getLayer(Network *nn, LayerType ltype){
@@ -489,20 +492,21 @@ Yet, one line worth highlightening is:
 l = (Layer*)sbptr;
 ```
 
-We're using a *single byte pointer* to move through the address space, but actually need a *Layer* pointer as reference. Hence we need to *cast* the *single byte pointer* into a `Layer` pointer and make it point to the same address.
+I'm using a *single byte pointer* to move through the address space but I actually need to return a *Layer* pointer as reference. 
+Therefore, I *cast* the *single byte pointer* into a `Layer` pointer and make it point to the same address.
 
 
 ### Activation Function
 
 After the node's output value has been calculated we need to pass this value through an *activation function*.
-The purpose of the *activation function* is to normalize the output value (which could be of any, potentially very large, value) to a constrained range, for example, between 0 and 1, or between -1 and 1. 
+The purpose of the *activation function* is to constrain the output value (which could be very large) to a standard range, for example, to between 0 and +1, or to between -1 and +1. 
 
 The exact range depends on *what* activation function you use. The one most often refered to in the context of designing neural networks is the SIGMOID function. 
 I'm not going into the mathematical details of this function as this is outside of the scope of this post. 
 If you're interested, there are plenty of good explanations about SIGMOID and other *activation functions* on the web. 
 
-Since I want the network to be flexible as to what *activation function* it uses I decided to make this a paramter of the network.
-The current code suppports two in particular, SIGMOID and TANH, but this list can be expanded as needed.
+Since I want the network to be flexible as to what *activation function* it uses I decided to make this a parameter of the network.
+The current code suppports two in particular, SIGMOID and TANH, but this list could be expanded as needed.
 
 ```c
 typedef enum ActFctType {SIGMOID, TANH} ActFctType;
@@ -516,10 +520,10 @@ It is also possible to choose a different *activation function* for hidden and o
     nn->outLayerActType = SIGMOID;
 ```
 
-The reason why I made this parameter a part of the network and not simply an argument passed into the `activation function` is that the back-propagation algorithm (see below) requires using the derivative of this function. 
-So we need to remember how we *activated* a node and later adjust its weights using the derivate of the same function.
+The reason why I made this a network parameter instead of a function argument passed into the `activation function` is that the back-propagation algorithm (see below) requires using the derivative of this function. 
+So we need to remember how we *activated* a node because when we later adjust its weights the derivate of the same function must be used.
 
-The different types of *activation function* the network supports are implement in below `activateNode()` function which applies whathas been defined in `nn->hidLayerActType` and `nn->outLayerActType` to the hidden and ouput layer respectively:
+The different types of *activation function* the network supports are implement in below `activateNode()` function which applies what has been defined in `nn->hidLayerActType` and `nn->outLayerActType` variables to the hidden and ouput layer respectively:
 
 
 ```c
@@ -552,8 +556,7 @@ void backPropagateNetwork(Network *nn, int targetClassification){
     
     backPropagateOutputLayer(nn, targetClassification);
     
-    backPropagateHiddenLayer(nn, targetClassification);
-    
+    backPropagateHiddenLayer(nn, targetClassification); 
 }
 ```
 
@@ -585,7 +588,7 @@ Our `targetClassification` is the image's *label*, i.e. a single digit 0-9.
 The `targetOutput` of an output node, however, is of binary valye, i.e. either 0 or 1.
 
 For example: if we train on an image presenting a "3", the corresponding *label* will be the integer "3". 
-Then the `targetOutput` of the 3rd output node (it's actually the 4th node since we started at the 0th) will be a "1" while the `targetOutput` of all other 9 nodes will be "0". This is done via below command:
+Then the `targetOutput` of node 3 (which is actually the 4th node since we started at the 0th) will be a "1" while the `targetOutput` of all other 9 nodes will be "0". This is done via below command:
 
 
 ```c
@@ -594,11 +597,11 @@ int targetOutput = (o==targetClassification)?1:0;
 
 The back propagation of the *hidden* layer works the same say, yet the actual algorithm is a little more complex since it requires to first calculate the *sum of all weighted outputs* connected to a node.
 I'm not going into the details of the back propagation algorithm in this post. 
-If you're interested, there are plenty of detailed and more qualified sources on this subject on the web.
+If you're interested, there are plenty of detailed and more qualified sources about this subject on the web.
 
-In both of the above back propagation functions we need to get the derivative of the activation function and update the node's weights.
+In both of the above back propagation functions (for the *output* layer and for the *hidden* layer) we need to get the derivative of the activation function and update the node's weights.
 
-The calculation of the derivates of the supported SIGMOID and TANH functions is implemented as follows:
+The calculation of the derivates of the supported SIGMOID and TANH functions is implemented in the getActFctDerivative() function:
 
 ```c
 double getActFctDerivative(Network *nn, LayerType ltype, double outVal){
@@ -646,7 +649,7 @@ void updateNodeWeights(Network *nn, LayerType ltype, int id, double error){
 ```
 
 On a side note, I decided to make the *learning rate* part of the network (instead of a *global* constant).
-It can be defined as follows:
+It can be set as follows:
 
 ```c
 nn->learningRate    = 0.5;
@@ -680,7 +683,7 @@ int getNetworkClassification(Network *nn){
 }
 ```
 
-
+That's it. We're done. So I thought. Only to discover that this is when the *other*, less obvious part of building a neural network starts.
 
 
 ## Fine-tuning Network Performance
@@ -692,10 +695,10 @@ Using the code above, my 3-layer network achieves an out-of-the-box accuracy of 
 This post so far may give the impression that building and coding a neural network is a pretty straight forward and deterministic excercise. 
 Unfortunately, it's not. 
 
-There are a number of paramters that may strongly impact the network's performance. 
-Often, even a slight change dramatically impacts the network's accuracy which during the coding process for this post often led me to believing that my algorithm and code were wrong while they were not.
+There are a number of parameters that may strongly impact the network's performance. 
+Sometimes even a slight change dramatically impacts the network's accuracy which during the coding process for this post often led me to believe that my algorithm and/or code were wrong while they were not. It was just wrongly set parameters.
 
-In particular, I found the following parameters to most significantly impacting the network's performance:
+In particular, I found the following parameters to most significantly impact the network's performance:
 
 ```
 1. Number of nodes in the hidden layer
@@ -710,7 +713,7 @@ Let's go through them.
 ### Number of Nodes in the Hidden Layer
 
 This one is obvious. The higher the number of hidden nodes the more the network will adapt to the training data and "remember" it, thereby preventing *generalization*.
-But *generalization*, i.e. the ability to apply features that have been *learned* during training to completely new and unknown data sets, is exactly what we want from our network.
+But *generalization*, i.e. the ability to apply features that have been *learned* during training to completely new and unknown data sets, is exactly what we do want from our network.
 
 On the other side, the smaller the number of nodes in the hidden layer, the less complexity the network will be able to grasp. For example, in our MNIST database, there may be many different ways of hand-writing a "4". The more complex our data set, the more hidden nodes are needed.
 
@@ -723,19 +726,19 @@ This one is also obvious, albeit a little less so.
 I found that changing the *activation function* requires to make additional parameters change as well to avoid a significant performance hit.
 In particular, the *activation function* is linked to what initial weights were chosen (see below) and to what learning rate was defined (see below).
 
-In my tests I found that SIGMOID performed slightly better than TANH, although I suppose this is due to my overall design and network parameters. Based on my reading I had expected that TANH outperforms SIGMOID.
+In my tests I found that SIGMOID performed slightly better than TANH, although I suppose this is rather due to my overall design. Based on my reading I had expected that TANH outperforms SIGMOID.
 
 
 ### Initial Weights
 
 This one is a lot less obvious. The weights in neural networks are usually initialized using random values 0 to +1 or -1 to +1. 
-In fact, in my previous 1-layer MNIST network I had found that initializing all weights to 0.5 leads to almost the same result as initializing them to a random value 0-1.
+In fact, in my previous 1-layer MNIST network I had found that initializing all weights to 0.5 leads to almost the same result as initializing them to a random value between 0 and +1.
 
-Now, with the added hidden layer and use of an activation function, the network behaves very differently. 
+Now, with the added hidden layer and the use of an activation function, the network behaves very differently. 
 
-I started by using random values 0-1 and wondered about the desastrous performance. 
+I started by using random values between 0 and +1 and wondered about the desastrous performance. 
 I then changed to include negative values, i.e. using random values -1 to +1 which improved performance a lot. 
-If you understand how SIGMOID and TANH work, though, it's less of a surprise why this subtle change bears such a large impact.
+If you understand how SIGMOID and TANH work, though, it's less of a surprise why this subtle change has a rather large impact.
 
 Yet, while I was trying to further fine-tune the network, I found that another subtle change significantly improved the network's accuracy: 
 instead of using random values between -1 and +1 I used values between 0 and +1 and made every second value negative.
@@ -752,7 +755,7 @@ Wow! This was unexpected. It led me to the conclusion that for best performance 
 
 ### Learning Rate
 
-While this parameter is obvious, it's impact on the network's performance did surprise me several times.
+While this parameter is obvious, it's significant impact on the network's performance did surprise me several times.
 
 The *learning rate* defines the factor by which an *error* is applied as a *weight update*. 
 The higher the *learning rate* the faster the network adapts, i.e. the faster it should reach its point of optimal performance. 
@@ -760,13 +763,13 @@ However, if the rate is too high the network may *jump* over the optimum and may
 
 On the other side, a smaller *learning rate* allows the network to make very fine changes but overall it may take so long that it reaches the end of the dataset before reaching its optimal point of performance.
 
-In my tests I found that the *optimal* learning rate depends on the type of activation function. 
+In my tests I found that the *optimal* learning rate depends on the chosen type of activation function. 
 While for SIGMOID my network did well using a learning rate of 0.5, I had to change it to 0.05 to achieve an almost equal performance with TANH.
 
 
 ## Conclusion
 
-Coding this 3-layer neural network to recognize the MNIST digits has been a interesting excercise. 
+Coding this 3-layer neural network to recognize the MNIST digits has been an interesting excercise. 
 It provided valuable insights into the *unpredictability* of neural networks. 
 In particular, it helped to alert me to how small parameter changes can cause very different results.
 
@@ -774,14 +777,14 @@ Overall, the network's performance, i.e. its accuracy in recognizing the MNIST d
 Further fine-tuning is required, e.g. using a dynamic learning rate.
 I experimented with different parameters and algorithm changes which helped pushing accuracy to above 90% (but did not implement them in the published code). 
 
-To further improve performance on MNIST I rather want to tackle it using convolutional networks next. ;)
+Yet, instead of spending more time on fine tuning to further improve performance on MNIST I'd rather want to tackle it using a convolutional network next. ;)
 
 
 ---
 
 ## Code & Documentation
 
-You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-2lnn/master/doc/html/index.html).
+You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-2lnn/master/doc/html/index.html).
 
 When I run it on my 2010 MacBook Pro, using 784 input nodes, 20 hidden nodes and 10 output nodes, it takes about 19 seconds to process all 70,000 images (with the image rendering turned-off) and achieves an accuracy on the testing set of 89%.
 
