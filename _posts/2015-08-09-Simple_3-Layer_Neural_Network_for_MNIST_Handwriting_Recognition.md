@@ -777,14 +777,14 @@ Overall, the network's performance, i.e. its accuracy in recognizing the MNIST d
 Further fine-tuning is required, e.g. using a dynamic learning rate.
 I experimented with different parameters and algorithm changes which helped pushing accuracy to above 90% (but did not implement them in the published code). 
 
-Yet, instead of spending more time on fine tuning to further improve performance on MNIST I'd rather want to tackle it using a convolutional network next. ;)
+Yet, instead of spending much more time on fine tuning this rather simple feed forward network to further improve its performance on MNIST I'd rather want to move on to using a convolutional network next. ;)
 
 
 ---
 
 ## Code & Documentation
 
-You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-2lnn/master/doc/html/index.html).
+You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-3lnn/master/doc/html/index.html).
 
 When I run it on my 2010 MacBook Pro, using 784 input nodes, 20 hidden nodes and 10 output nodes, it takes about 19 seconds to process all 70,000 images (with the image rendering turned-off) and achieves an accuracy on the testing set of 89%.
 
