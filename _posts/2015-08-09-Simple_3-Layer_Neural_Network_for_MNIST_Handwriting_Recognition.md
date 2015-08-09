@@ -779,7 +779,7 @@ To further improve performance on MNIST I rather want to tackle it using convolu
 
 ## Code & Documentation
 
-You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-2lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-2lnn/master/doc/html/index.html).
+You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including [code documentation](https://rawgit.com/mmlind/mnist-2lnn/master/doc/html/index.html).
 
 When I run it on my 2010 MacBook Pro, using 784 input nodes, 20 hidden nodes and 10 output nodes, it takes about 19 seconds to process all 70,000 images (with the image rendering turned-off) and achieves an accuracy on the testing set of 89%.
 
