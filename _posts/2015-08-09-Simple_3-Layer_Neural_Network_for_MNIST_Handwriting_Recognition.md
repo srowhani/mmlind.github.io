@@ -16,6 +16,8 @@ The network did not use a *real* activation function (only simple "normalization
 Now, I want to add these things to see how this will improve the network's effectiveness. 
 At the same time I also want to make the code more versatile and re-usable, offering a standardized interface and allow for dyanmic network sizing. 
 
+![_config.yml]({{ site.baseurl }}/images/3lnn.svg)
+
 
 ## From 1 Layer to 3 Layers
 
@@ -349,7 +351,7 @@ void feedInput(Network *nn, Vector *v) {
 As I explained above, I chose to utilize the `output` field of an input node to hold the image's pixels.
 
 
-## 2. Feed Forward
+### 2. Feed Forward
 
 Once the network is filled with an image's pixels, we can start *feeding* this data *forward*, from the input layer to the hidden layer and from the hidden layer to the output layer. 
 
