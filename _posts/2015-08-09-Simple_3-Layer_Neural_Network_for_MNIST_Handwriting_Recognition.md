@@ -4,7 +4,8 @@ title: Simple 3-Layer Neural Network for MNIST Handwriting Recognition
 ---
 
 I've extended my simple 1-Layer neural network to include a hidden layer and use the back propagation algorithm for updating connection weights.
-The size of the network (number of neurons per layer) is dynamic, yet it's accuracy in classifying the handwritten digits in the MNIST database is still disappointing. Read why...
+The size of the network (number of neurons per layer) is dynamic.
+It's accuracy in classifying the handwritten digits in the MNIST database improved from 85% to >91%. 
 
 ![_config.yml]({{ site.baseurl }}/images/mnist-3lnn-logo.jpg)
 
@@ -263,10 +264,10 @@ Layer *createLayer(int nodeCount, int weightCount){
     
     // create a detault node
     Node *dn = (Node*)malloc(sizeof(Node) + ((weightCount)*sizeof(double)));
-    dn->bias = 1;
+    dn->bias = 0;
     dn->output = 0;
     dn->wcount = weightCount;
-    for (int o=0;o<weightCount;o++) dn->weights[o] = (0.5*(rand()/(double)(RAND_MAX)));
+    for (int o=0;o<weightCount;o++) dn->weights[o] = 0; // will be initialized later
     
     uint8_t *sbptr = (uint8_t*) l->nodes;     // single byte pointer
     
@@ -279,8 +280,39 @@ Layer *createLayer(int nodeCount, int weightCount){
 }
 ```
 
-The above code first creates an empty memory block for the layer and then fills it with n copies of a *default node*.
-This default node is defined with weights of random size.
+The above code first creates an empty memory block for the layer and then fills it with n copies of an empty *default node*.
+
+Lastly, the nodes' weights must be initialized with random values which we do via the following function:
+
+```
+void initWeights(Network *nn, LayerType ltype){
+    
+    int nodeSize = 0;
+    if (ltype==HIDDEN) nodeSize=nn->hidNodeSize;
+                  else nodeSize=nn->outNodeSize;
+    
+    Layer *l = getLayer(nn, ltype);
+    
+    uint8_t *sbptr = (uint8_t*) l->nodes;
+    
+    for (int o=0; o<l->ncount;o++){
+    
+        Node *n = (Node *)sbptr;
+        
+        for (int i=0; i<n->wcount; i++){
+            n->weights[i] = rand()/(double)(RAND_MAX);
+        }
+        
+        // init bias weight
+        n->bias =  rand()/(double)(RAND_MAX);
+        
+        sbptr += nodeSize;
+    }
+    
+}
+```
+
+I'll come back to this point of random initialization later (see below) as I had to find out how these initial values greatly impact network performance.
 
 
 ## Training the Network
@@ -414,8 +446,10 @@ void calcNodeOutput(Network *nn, LayerType ltype, int id){
         prevLayerNodeSize = nn->hidNodeSize;
     }
     
-    calcNode->output = 0;
     uint8_t *sbptr = (uint8_t*) prevLayer->nodes;
+    
+    // Start by adding the bias
+    calcNode->output = calcNode->bias;
     
     for (int i=0; i<prevLayer->ncount;i++){
         Node *prevLayerNode = (Node*)sbptr;
@@ -424,7 +458,6 @@ void calcNodeOutput(Network *nn, LayerType ltype, int id){
     }
 
 }
-
 ```
 
 To do this we need to loop through the node's connections, i.e. loop through its weights and the output values in the previous layer that it is connected to.
@@ -645,6 +678,9 @@ void updateNodeWeights(Network *nn, LayerType ltype, int id, double error){
         sbptr += prevLayerNodeSize;
     }
     
+    // update bias weight
+    updateNode->bias += (nn->learningRate * 1 * error);
+    
 }
 ```
 
@@ -690,7 +726,7 @@ That's it. We're done. So I thought. Only to discover that this is when the *oth
 
 The neural network's accuracy is defined as the ratio of correct classifications (_in the testing set_) to the total number of images processed. 
 
-Using the code above, my 3-layer network achieves an out-of-the-box accuracy of 89% which is *only* slightly better than the simple 1-layer network I built before. How come? 
+Using the code above, my 3-layer network achieves an out-of-the-box accuracy of (*only*) 91% which is slightly better than the 85% of the simple 1-layer network I built before. How come the improvement is so *little*? 
 
 This post so far may give the impression that building and coding a neural network is a pretty straight forward and deterministic excercise. 
 Unfortunately, it's not. 
@@ -764,7 +800,7 @@ However, if the rate is too high the network may *jump* over the optimum and may
 On the other side, a smaller *learning rate* allows the network to make very fine changes but overall it may take so long that it reaches the end of the dataset before reaching its optimal point of performance.
 
 In my tests I found that the *optimal* learning rate depends on the chosen type of activation function. 
-While for SIGMOID my network did well using a learning rate of 0.5, I had to change it to 0.05 to achieve an almost equal performance with TANH.
+While for SIGMOID my network did well using a learning rate of 0.2 (91% accuracy), I had to change it to 0.004 to achieve highest performance with TANH (78% accuracy).
 
 
 ## Conclusion
@@ -775,9 +811,9 @@ In particular, it helped to alert me to how small parameter changes can cause ve
 
 Overall, the network's performance, i.e. its accuracy in recognizing the MNIST digits, is still disappointing. 
 Further fine-tuning is required, e.g. using a dynamic learning rate.
-I experimented with different parameters and algorithm changes which helped pushing accuracy to above 90% (but did not implement them in the published code). 
+I experimented with different parameters and algorithm changes which helped pushing accuracy further into the 9x% (but did not implement them in the published code). 
 
-Yet, instead of spending much more time on fine tuning this rather simple feed forward network to further improve its performance on MNIST I'd rather want to move on to using a convolutional network next. ;)
+Next, instead of spending much more time on fine tuning this rather simple feed forward network to further improve its performance on MNIST I'd rather want to move on to using a convolutional network. ;)
 
 
 ---
@@ -786,7 +822,7 @@ Yet, instead of spending much more time on fine tuning this rather simple feed f
 
 You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-3lnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-3lnn/master/doc/html/index.html).
 
-When I run it on my 2010 MacBook Pro, using 784 input nodes, 20 hidden nodes and 10 output nodes, it takes about 19 seconds to process all 70,000 images (with the image rendering turned-off) and achieves an accuracy on the testing set of 89%.
+When I run it on my 2010 MacBook Pro, using 784 input nodes, 20 hidden nodes and 10 output nodes, it takes about 19 seconds to process all 70,000 images (with the image rendering turned-off) and achieves an accuracy on the *testing set* of 91.5%.
 
 Happy Hacking!
 
