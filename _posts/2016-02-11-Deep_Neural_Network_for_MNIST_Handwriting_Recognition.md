@@ -7,7 +7,7 @@ I finally got my hands dirty in the recent hype around deep learning by building
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_mnist-logo.png)
 
-In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. It's architecture was fixed, always using a 3-layer structure with exactly 1 hidden layer. And it only supported normal, fully connected feed forward layers. 
+In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. It's architecture was fixed, always using a 3-layer structure with exactly 1 hidden layer. And it only supported normal fully connected layers. 
 
 To achieve better results in image recognition tasks deeper networks are needed. 
 And they need to be capable of running convolutional layers.
@@ -15,9 +15,11 @@ Hence, as a next step on my journey towards *coding AI wisdom* I set out to add 
 
 So, let me introduce to you in more detail how the network works, starting off with its overall architecture.
 
+
 ## Network Architecture
 
 More than anything else did the introduction of convolutional layers influence the design of the network. 
+
 
 ### Convolutional Networks
 
@@ -37,12 +39,14 @@ If you don't I strongly recommend first reading Stanford's [CS231n Convolutional
 
 So, now let's jump into the code and let's look how the network's data structures are defined. 
 
-### Data Model
+
+## The Data Model
 
 Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. 
 So in total, the neural network is now based on below 5 structures: 
 
-#### The Network
+
+### The Network
 
 The network structure itself contains the *learning rate* and information about number and location of all *weights* in this network. 
 And most importantly this structure serves as a container for all other components of the network.
@@ -59,7 +63,8 @@ struct Network{
 };
 ```
 
-#### A Network Layer
+
+### A Network Layer
 
 Inside a network structure there is an array of layers. 
 Each layer contains a reference to its own model definition (more on that below), a pointer to its weights and all its columns.
@@ -75,7 +80,8 @@ struct Layer{
 };
 ```
 
-#### A Network Column
+
+### A Network Column
 
 Previously, the network layer directly contained the network nodes that were all aligned flat in a 1-dimensional vector. 
 A MNIST image, for example, has 28 x 28 pixels and the respective network layer thus consists of 784 nodes that are all aligned in a single row.
@@ -110,7 +116,7 @@ struct Column{
 };
 ```
 
-#### A Network Node
+### A Network Node
 
 Inside a column there is a number of network nodes. 
 In non-convolutional layers the number of nodes per column is always 1. 
@@ -128,7 +134,8 @@ struct Node{
 };
 ```
 
-#### A Node's Connections
+
+### A Node's Connections
 
 The 2nd major design change is the introduction of connections. 
 If you remember, in my previous network weights were attached directly to a node because each node had exactly 1 weight.
@@ -148,7 +155,8 @@ struct Connection{
 };
 ```
 
-#### The Weights Block
+
+### The Weights Block
 
 The most important component of a neural network is still missing in all of the above: the weights. 
 The *connection* structure only contains a pointer to a weight.
@@ -179,9 +187,6 @@ struct LayerDefinition{
 
 One can create a variable number of these layer definitions and then pass them together into a function which returns an array pointer for easier reference throught the rest of the code.
 
-Once the layers are defined, you can createe the network object by simply calling
-
-The system will automatically allocate the required memory for this type of network and return a pointer to reference the network.
 
 ### Layer Types
 
@@ -196,6 +201,7 @@ typedef enum LayerType {INPUT, CONVOLUTIONAL, FULLY_CONNECTED, OUTPUT} LayerType
 The idea here is that based on the type of layer certain rules are applied, for example, the connections between nodes are created differently.
 
 Moving forward I want to expand this further to include other layer types, for example Hierarchical Temporal Memory (HTM) layers for sequentiell learning.
+
 
 ### Activation Function
 
@@ -217,17 +223,15 @@ Hence, both of these hyper-parameters should be considered in tandem.
 
 ## Create the Network
 
-Once the network has been defined via the above *LayerDefinition* structures, it can be created via the line
-
+Once the network and its layers have been defined via the above *LayerDefinition* structures you can create the network object via the *createNetwork* function
 
 ```c
 
 Network *nn = createNetwork(numberOfLayers, layerDefs);
 
-
 ```
 
-which calls below function to automatically set aside the required memory for this network, initializes its internal structures (see below) and sets random start values for its weights.
+which automatically allocates the required memory for this network, initializes its internal structures (see below) and returns a pointer for reference.
 
 ```c
 
@@ -251,8 +255,8 @@ Network *createNetwork(int layerCount, LayerDefinition *layerDefs){
     return nn;
 }
 
-
 ```
+
 
 ### Calculate the Network's Memory Needs
 
@@ -284,6 +288,7 @@ ByteSize getNetworkSize(int layerCount, LayerDefinition *layerDefs){
 To calculate the network size, I need to calculate each layer's size which in return requires to calculate each column's size which depends on each node's size which depends on the number of connections. Wow. Sounds complicated at first, but it's actually pretty straight forward. 
 Hence, I'm going to skip a review of the detailed functions here. They can be reviewed in the code directly.
 
+
 ## Initialize the Network 
 
 In the above *createNetwork* function we saw that besides setting some default values for the network, we need to *initialize* the network and set random weights.
@@ -312,6 +317,7 @@ void initNetwork(Network *nn, int layerCount, LayerDefinition *layerDefs){
 
 First, we loop through all layers and initialize it one by one. After that, we loop again to set up each layer's forward connections.
 The reason why we need 2 loops here is that in order for the *initNetworkForwardConnections* to work, each layer's following layer must have been initialized already.
+
 The background is simple: *initNetworkForwardConnections* checks which nodes in the following layer point back to a node in this layer and then creates forward connections mirroring these backward connections.
 Obviously, if the following layer hasn't been setup yet, there wouldn't be any forward connections. Hence, 2 loops.
 
@@ -393,13 +399,11 @@ void initNetworkColumns(Network *nn, int layerId){
     
 }
 
-
 ```
 
 Again, the same logic as above applies. 
 Since the size of a column structure is variable we use a single byte pointer to determine the starting point of each column inside this layer.
 Once we've done that, we continue to intitialize all of the nodes inside this column.
-
 
 ```c
 
@@ -510,8 +514,9 @@ This quadratic region (the filter or kernel window) needs to be calculated.
 It depends on a number of parameters and changes as the filter is moved across the target layer.
 
 ```
+#### Example: 
 
-__Example:__ Let's say our network consists of 3 layers, the input layer containing the MNIST image, a convolutional layer and the output layer.
+Let's say our network consists of 3 layers, the input layer containing the MNIST image, a convolutional layer and the output layer.
 We know that the MNIST image has 28*28 pixels, hence the input layer has 784 columns. Each column only has 1 node (the *depth* of the input layer is 1) therefore there are also exactly 728 nodes. And let's assume our convolutional layer has dimensions of [24 * 24 * 10], i.e. there are 24 * 24 = 576 columns and each column has 10 nodes. And let's assume we defined a *filter* of 5 for this layer.
 
 Now we start wiring up the 1st node in the convolutional layer. We need to create connections to a region of 5 x 5 (*filter* x *filter* size) columns located at the top left of the target (in this case = input) layer. The respective ids of these columns would be: 
@@ -543,14 +548,10 @@ void calcFilterColumnIds(Layer *srcLayer, int srcColId, Layer *tgtLayer, Vector 
     int tgtHeight = tgtLayer->layerDef->nodeMap.height;
     
     int filter = srcLayer->layerDef->filter;
-    
-    // @attention For now I'm only using WIDTH to calculate STRIDE
-    // Hence this assumes images are qudratic (width=height)
     int stride = calcStride(tgtWidth, filter, srcWidth);
     
     int startX = (srcColId % srcWidth) * stride;
-    int startY = floor((double)srcColId/srcWidth) * stride;
-    
+    int startY = floor((double)srcColId/srcWidth) * stride;    
     int id=0;
 
     for (int y=0; y<filter; y++){
@@ -566,14 +567,10 @@ void calcFilterColumnIds(Layer *srcLayer, int srcColId, Layer *tgtLayer, Vector 
                 (colId >= tgtWidth * tgtHeight)            // filter exceeds nodeMap on the bottom
                 ) colId = OUT_OF_RANGE;
                 
-            filterColIds->vals[id] = colId;
-            
+            filterColIds->vals[id] = colId;            
             id++;
-            
         }
-
     }
-
 }
 
 ```
@@ -597,13 +594,6 @@ void initNetworkBackwardConnectionsConvNode(Node *node, int srcLevel, Weight *sr
             
             if (targetColId!=OUT_OF_RANGE){
                 
-                // Calculate the weight's id (=position in the weights block)
-                // @warning (need to consistently use the same logic/order
-                // (i.e. first go by target feature map, then by parent feature featureMap, then by node)
-                
-                // SHARE WEIGHTS
-                // Position the weight pointer based on srcLevel, tgtDepth, tgtLevel, filterSize and colId
-                
                 int weightPosition = (srcLevel*(tgtDepth*filterSize)) + (tgtLevel*filterSize) + posInsideFilter;
                 
                 Weight *tgtWeight = srcLayerWeightPtr + weightPosition;
@@ -612,21 +602,15 @@ void initNetworkBackwardConnectionsConvNode(Node *node, int srcLevel, Weight *sr
                 
                 conn->nodePtr   = tgtNode;
                 conn->weightPtr = tgtWeight;
-            
-            }
-    
+            }    
             else {
             // if filter pixel is out of range of the target nodes then point to NODES if THIS layer
             // this kind of pointer needs to be captured later i.e. should NOT be CALCULATED/ACTIVATED
             conn->nodePtr   = NULL;
             conn->weightPtr = nullWeight;
-    
             }
-
         }
-
     }
-        
 }
 ```
 
@@ -636,9 +620,7 @@ The idea is to *downsize* the original image layer by layer, and have each follo
 
 ```c
 int calcStride(int tgtWidth, int filter, int srcWidth){
-    
   return ceil(((double)tgtWidth - filter)/(srcWidth-1));
-    
 }
 ```
 
@@ -650,7 +632,6 @@ Remember, all weights are located in a big weight block at the end of the *netwo
 
 All we need to do is initialize each weight with a random value from 0-1. 
 For better performance I found that it helps to reduce the value to a random number smaller than 0.5 or 0.4 and also make every other number negative.
-
 
 ```c
 void initNetworkWeights(Network *nn){
@@ -676,7 +657,6 @@ void initNetworkWeights(Network *nn){
         }
     }
 }
-
 ```
 
 
@@ -720,23 +700,17 @@ void trainNetwork(Network *nn){
         // Classify image by choosing output cell with highest output
         int classification = getNetworkClassification(nn);
         if (classification!=lbl) errCount++;
-
     }
-    
     // Close files
     fclose(imageFile);
     fclose(labelFile);
-    
 }
-
 ```
 
 Once the network has been trained on the the 50,000 images in the training set, we stop training and run the network on the 10,000 images in the testing set.
 The process during testing is exactly the same as during training, the only difference is that we switch off the *learning*, i.e. we don't back propagate the error and don't update any weights.
 
-
 ```c
-
 void testNetwork(Network *nn){
     
     // open MNIST files
@@ -762,42 +736,33 @@ void testNetwork(Network *nn){
         
         // Classify image by choosing output cell with highest output
         int classification = getNetworkClassification(nn);
-        if (classification!=lbl) errCount++;
-        
+        if (classification!=lbl) errCount++;   
     }
-    
     // Close files
     fclose(imageFile);
     fclose(labelFile);
-    
 }
-
 ```
 
 In case you wondered how is the *classification* of an image in the output layer done: 
 I'm not using *softmax* or any other function. 
 Instead, I'm simply comparing all outputs of the 10 nodes in the output layer and take the highest. :)
 
-
 ```c
 int getNetworkClassification(Network *nn){
     
-    // get output layer
-    Layer *l = getNetworkLayer(nn, nn->layerCount-1);   /
+    Layer *l = getNetworkLayer(nn, nn->layerCount-1);   // get output layer
     
     Weight maxOut = 0;
     int maxInd = 0;
     
-    for (int i=0; i<l->columnCount; i++){
-        
+    for (int i=0; i<l->columnCount; i++){   
         Node *on = getNetworkNode(l,i,0); // the output layer always has a depth of 1 
-    
-        if (on->output > maxOut){
+        if (on->output > maxOut) {
             maxOut = on->output;
             maxInd = i;
         }
     }
-    
     return maxInd;
 }
 
@@ -813,7 +778,6 @@ Here's a summary of the different network designs that I tried and their respect
 
 
 ```
-
 ### Test Results
 
 | Number of Layers | Input Layer | Layer 1 | Layer 2  | Layer 3 | Output Layer | Learning Rate | Number of Trains | Accuracy | Speed |
@@ -825,15 +789,14 @@ Here's a summary of the different network designs that I tried and their respect
 | 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
 | 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
 
+```
 
-```c
-
-This leads us to the most difficult part of machine learning which is: How to find the hyper parameters that achieve the best results?
+This leads us to the most difficult part of machine learning which is: How to find the hyper-parameters that achieve the best results?
 
 
 ## Hyper-parameter Optimization
 
-Surprisingly, optimizing hyper parameter such as the learning rate or the number of nodes is still mostly a manual process. Based on my reading I understand that *grid search* or *Bayesian Optimization* are more or less equally good or bad than a *Random Search*.
+Surprisingly, optimizing hyper-parameters such as the learning rate or the number of nodes is still mostly a manual process. Based on my reading I understand that *grid search* or *Bayesian Optimization* are more or less equally good or bad than a *Random Search*.
 
 Therefore, I plan to dedicate my next post to this topic and started working on my own optimization tool to get the best results from my network.
 Stay tuned! :)
@@ -843,7 +806,7 @@ Stay tuned! :)
 
 ## Code & Documentation
 
-You can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-dnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-dnn/master/doc/html/index.html).
+As always you can find all the code for this exercise on my [Github project page](https://github.com/mmlind/mnist-dnn/), including full [code documentation](https://rawgit.com/mmlind/mnist-dnn/master/doc/html/index.html).
 
 Happy Hacking!
 
