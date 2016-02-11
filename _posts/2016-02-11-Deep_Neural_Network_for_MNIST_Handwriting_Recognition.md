@@ -15,37 +15,69 @@ Hence, as a next step on my journey towards *coding AI wisdom* I set out to add 
 
 So, let me introduce to you in more detail how the network works, starting off with its overall architecture.
 
-![_config.yml]({{ site.baseurl }}/images/dnn_convolutional_net.png)
-
 ## Network Architecture
 
-The introduction of convolutional layers heavily influenced the design of the network. 
+More than anything else did the introduction of convolutional layers influence the design of the network. 
 
 ### Convolutional Networks
 
-Convolutional layers are a very different beast than normal fully connected layers. 
-Instead of each node in a layer connecting to all nodes in the previous layer, it connects to only some of them.
+Convolutional layers are a different beast than normal fully connected layers. 
+Instead of each node in a layer connecting to *all* nodes in the previous layer, it connects to only *some* of them.
 The selection of which nodes it connects to is defined by a quadratic filter (or kernel window) that is moved over the previous layer.
 Thereby, the geolocation of a specific node, i.e. the horizontal and vertical proximity to its neighbors, is taken into account which is crucial for image recognition.
 
 The second major difference of convolutional layers is the fact that weights are shared between nodes. 
-This siginificantly reduces the network's complexity, i.e. number of weights or parameters that need to be trained and memory requirements.
+This siginificantly reduces the network's complexity, i.e. the number of weights or parameters that need to be trained, and its memory requirements.
+
+![_config.yml]({{ site.baseurl }}/images/dnn_convolutional_net.png)
 
 This post assumes that you understand the basic functionality of a convolutional network. 
 If you don't I strongly recommend first reading Stanford's [CS231n Convolutional Neural Networks for Visual Recognition
 ](http://cs231n.github.io/convolutional-networks/) by Andrej Karpathy or, more hardcore, Yann Lecun's [LeNet-5 Convolutional Neural Networks](http://yann.lecun.com/exdb/lenet/).
 
-So, let's jump into the overall design of the network. 
+So, now let's jump into the code and let's look how the network's data structures are defined. 
 
 ### Data Model
 
-Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. Let me explain why.
+Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. 
+So in total, the neural network is now based on below 5 structures: 
 
-![_config.yml]({{ site.baseurl }}/images/dnn_network_struct_design.png)
+#### The Network
 
-### Columns
+The network structure itself contains the *learning rate* and information about number and location of all *weights* in this network. 
+And most importantly this structure serves as a container for all other components of the network.
 
-In a layer of nodes, these nodes are aligned flat in a 1-dimensional vector. 
+```c
+struct Network{
+    ByteSize size;                  // actual byte size of this structure in run-time
+    double learningRate;            // factor by which connection weight changes are applied
+    int weightCount;                // number of weights in the net's weight block
+    Weight *weightsPtr;             // pointer to the start of the network's weights block
+    Weight nullWeight;              // memory slot for a weight pointed to by dead connections
+    int layerCount;                 // number of layers in the network
+    Layer layers[];                 // array of layers (of different sizes)
+};
+```
+
+#### Network Layers
+
+Inside a network structure there is an array of layers. 
+Each layer contains a reference to its own model definition (more on that below), a pointer to its weights and all its columns.
+
+```c
+struct Layer{
+    int id;                         // index of this layer in the network
+    ByteSize size;                  // actual byte size of this structure in run-time
+    LayerDefinition *layerDef;      // pointer to the definition of this layer
+    Weight *weightsPtr;             // pointer to the weights of this layer
+    int columnCount;                // number of columns in this layer
+    Column columns[];               // array of columns
+};
+```
+
+#### Network Columns
+
+Previously, the network layer directly contained the network nodes that were all aligned flat in a 1-dimensional vector. 
 A MNIST image, for example, has 28 x 28 pixels and the respective network layer thus consists of 784 nodes that are all aligned in a single row.
 
 In image recognition, though, the exact location of a pixel inside that image matters. Convolutional networks or layers therefore build connections to neighboring nodes that are all situated within a defined region, the so called *filter* or *kernel window*.
@@ -71,16 +103,32 @@ This design overall also more closely resembles the design of the brain.
 
 ```c
 struct Column{
-    ByteSize size;              // actual memory size of this column in run-time
-    ByteSize nodeSize;          // actual memory size of this column's nodes in run-time
-    int maxConnCountPerNode;    // maximal amount of connections per node
+    ByteSize size;              // actual byte size of this structure in run-time
+    int maxConnCountPerNode;    // maximum number of connections per node in this layer
     int nodeCount;              // number of nodes in this column
-    Node nodes[];               // a variably-sized array of nodes
+    Node nodes[];               // array of nodes
 };
 ```
 
+#### Network Nodes
 
-### Connections
+Inside a column there is a number of network nodes. 
+In non-convolutional layers the number of nodes per column is always 1. 
+In this case the layer has a depth of 1 and the number of columns is the same as the number of nodes.
+
+```c
+struct Node{
+    ByteSize size;              // actual byte size of this structure in run-time
+    Weight bias;                // value of the bias weight of this node
+    double output;              // result of activation function applied to this node
+    double errorSum;            // result of error back propagation applied to this node
+    int backwardConnCount;      // number of connections to the previous layer
+    int forwardConnCount;       // number of connections to the following layer
+    Connection connections[];   // array of connections
+};
+```
+
+#### Connections
 
 The 2nd major design change is the introduction of connections. 
 If you remember, in my previous network weights were attached directly to a node because each node had exactly 1 weight.
@@ -93,24 +141,73 @@ Hence, we need to keep track of which *target nodes* (= nodes in the previous la
 Again, looking at biology, I introduced the concept of connections (similar to *synapses*) into the model.
 A connection is a simple structure storing 2 pointers: a pointer to a target node and a pointer to a certain weight.
 
-![_config.yml]({{ site.baseurl }}/images/network_struct_design.png)
+```c
+struct Connection{
+    Node *nodePtr;              // pointer to the target node
+    Weight *weightPtr;          // pointer to a weight that is applied to this connection
+};
+```
+
+#### The Weights Block
+
+The most important component of a neural network is still missing in all of the above: the weights. 
+The *connection* structure only contains a pointer to a weight.
+But where is the actual weight?
+
+The answer is I put all the weights together in a *weights block* which and locate it inside the network structure after the last layer.
+This design has several advantages: first, the weights are kept together with the rest of the network inside the same memory block. 
+Second, the separation of weights from the nodes allows for convenient weight sharing. 
+
+The following drawing shows how all the above components fit together into a *network* structure.
+
+![_config.yml]({{ site.baseurl }}/images/dnn_network_struct_design.png)
+
 
 ### Network Definition
 
-To build a network one has to first define a model, i.e. how many layers it has, how may nodes inside each layer, etc.
-To do so I introduced a new structure called *LayerDefinition* which holds the key parameters for design a network layer: 
+To build a network one has to first define a model, i.e. define how many layers the network shall have, how may nodes are inside of each layer, etc.
+For this reason I introduced a new structure called *LayerDefinition* which holds the key parameters for each layer and will be attached via a pointer to the respective layer structure (see above).
 
-layerType
-
-node structure
-
-activation Function
+```c
+struct LayerDefinition{
+    LayerType layerType;        // what kind of layer is this (INP,CONV,FC,OUT)
+    ActFctType activationType;  // what activation function is applied
+    Volume nodeMap;             // what is the width/height/depth of this layer
+    int filter;                 // only needed for CONVOLUTIONAL layers
+};
+```
 
 One can create a variable number of these layer definitions and then pass them together into a function which returns an array pointer for easier reference throught the rest of the code.
 
 Once the layers are defined, you can createe the network object by simply calling
 
 The system will automatically allocate the required memory for this type of network and return a pointer to reference the network.
+
+### Layer Types
+
+The code currently supports the following *types* of layers:
+
+```c
+typedef enum LayerType {INPUT, CONVOLUTIONAL, FULLY_CONNECTED, OUTPUT} LayerType;
+```
+
+The idea here is that based on the type of layer certain rules are applied, for example, the connections between nodes are created differently.
+
+Moving forward I want to expand this further to include other layer types, for example Hierarchical Temporal Memory (HTM) layers for sequentiell learning.
+
+### Activation Function
+
+The code currently supports below 3 activation functions:
+```c
+typedef enum ActFctType {SIGMOID, TANH, RELU} ActFctType;
+```
+Each layer can define its own activation function which is applied during feed forward (*activation*) as well as during error *back propagation*.
+In theory, you can design a network using different activation functions for different layers.
+In practive, however, this does not improve the network performance, rather the contrary.
+
+It's also important to note that other parameters, most significantly the  *learning rate* depend on what *activation function* is chosen.
+Hence, both normally need to be considered in tandem.
+
 
 ###Network Initialization
 
