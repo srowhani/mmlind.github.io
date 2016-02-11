@@ -3,7 +3,7 @@ layout: post
 title: Deep Neural Network for MNIST Handwriting Recognition
 ---
 
-I finally got my hands dirty in the recent hype around deep learning by building my own deep neural network. It can consist of any variable number of layers and now also supports convolutional layers which empirically perform best at image recognition problems. Its architecture is kept generic, extendable and tries to mimic its biological model, the brain. 
+I finally got my hands dirty in the recent hype around deep learning by building my own deep neural network. It consists of a variable number of layers and supports convolutional layers. The architecture is generic, extendable and tries to mimic its biological model, the brain.
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_mnist-logo.png)
 
@@ -780,10 +780,10 @@ Here's a summary of the different network designs that I tried and their respect
 ```
 ### Test Results
 
-| Number of Layers | Input Layer | Layer 1 | Layer 2  | Layer 3 | Output Layer | Learning Rate | Number of Trains | Accuracy | Speed |
-| ---------------- |-------------|---------|----------|---------|--------------|---------------|------------------|----------|-------|
-| 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
-| 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
+| Number of Layers | Input Layer | Layer 1        | Layer 2  | Layer 3 | Output Layer | Learning Rate | Number of Trains | Accuracy | Speed |
+| ---------------- |-------------|----------------|----------|---------|--------------|---------------|------------------|----------|-------|
+| 2                | 28 x 28 pix | CONV 13x13x5-5 |CONV 6x6x5-3 |      | 10 nodes     |    0.0001        |        600,000          |     89.50%     |  805     |
+| 2                | 28 x 28 pix |         /    |    /     |    /    | 10 nodes     |               |                  |          |       |
 | 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
 | 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
 | 2                | 28 x 28 pix |    /    |    /     |    /    | 10 nodes     |               |                  |          |       |
