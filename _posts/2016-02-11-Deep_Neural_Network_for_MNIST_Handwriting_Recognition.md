@@ -3,16 +3,19 @@ layout: post
 title: Deep Neural Network for MNIST Handwriting Recognition
 ---
 
-I finally got my hands dirty and caught up with the recent hype around deep learning by building my own deep neural network. It supports a variable number of layers (hence "*multi*") and can run convolutional layers which empirically perform best at image recognition problems. Its architecture is kept generic, is easyly extendable and tries to mimic its biological parent, the brain. 
+I finally got my hands dirty in the recent hype around deep learning by building my own deep neural network. It can consist of any variable number of layers and now also supports convolutional layers which empirically perform best at image recognition problems. Its architecture is kept generic, extendable and tries to mimic its biological parent, the brain. 
 
-![_config.yml]({{ site.baseurl }}/images/mnist-dnn-logo.png)
+![_config.yml]({{ site.baseurl }}/images/dnn_mnist-logo.png)
 
-In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. It's architecture was fixed, using a 3-layer structure with always 1 hidden layer, and it only supported normal, fully connected feed forward layers. 
+In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. It's architecture was fixed, always using a 3-layer structure with exactly 1 hidden layer. And it only supported normal, fully connected feed forward layers. 
 
-As a next step on my journey towards AI wisdom my goal was to make the network support deeper structures and be capable of running convolutional layers. While the first was rather easy, the latter proved to be a rather difficuly undertaking. 
-Let me introduce to you in more detail how the network works, starting off with its overall architecture.
+To achieve better results in image recognition tasks such as MNIST deeper networks are needed. 
+And they need to be capable of running convolutional layers.
+Hence, as a next step on my journey towards *coding AI wisdom* I set out to add these two features to my C network. 
 
-![_config.yml]({{ site.baseurl }}/images/3lnn.svg)
+So, let me introduce to you in more detail how the network works, starting off with its overall architecture.
+
+![_config.yml]({{ site.baseurl }}/images/dnn_convolutional_net.png)
 
 ##Network Architecture
 
@@ -35,11 +38,11 @@ If you don't I recommend reading Stanford's Andrej Karpathy's [CS231n Convolutio
 
 So, let's jump into the overall design of the network. 
 
-###Data Model
+### Data Model
 
 Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. Let me explain why.
 
-###Columns
+### Columns
 
 When a layer simply consists of nodes, these nodes are aligned in a flat 1-dimensional vector. 
 A MNIST image, for example, has 28 x 28 pixels and a network layer thus consists of 784 flat nodes that are all aligned in a single row.
@@ -75,7 +78,7 @@ struct Column{
 ```
 
 
-###Connections
+### Connections
 
 The 2nd major design change is the introduction of connections. 
 If you remember, in my previous network weights were attached directly to a node because each node had exactly 1 weight.
@@ -90,7 +93,7 @@ A connection is a simple structure storing 2 pointers: a pointer to a target nod
 
 ![_config.yml]({{ site.baseurl }}/images/network_struct_design.png)
 
-###Network Definition
+### Network Definition
 
 To build a network one has to first define a model, i.e. how many layers it has, how may nodes inside each layer, etc.
 To do so I introduced a new structure called *LayerDefinition* which holds the key parameters for design a network layer: 
@@ -116,16 +119,16 @@ Now, what actually happens inside this *createNetwork* function? It does mainly 
 Initializing connections means creating such connections between the layers, columns and nodes. 
 
 
-###Shared Weights
+### Shared Weights
 
 
-##Network Execution
+## Network Execution
 
 
-###Network Performance
+### Network Performance
 
 
-###Hyper-parameter Optimization
+### Hyper-parameter Optimization
 
 
 
