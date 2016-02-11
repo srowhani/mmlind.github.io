@@ -17,24 +17,23 @@ So, let me introduce to you in more detail how the network works, starting off w
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_convolutional_net.png)
 
-##Network Architecture
+## Network Architecture
 
-The introduction of convolutional layers heavily influenced the design of the network's architecture. 
+The introduction of convolutional layers heavily influenced the design of the network. 
 
-###Convolutional Networks
+### Convolutional Networks
 
 Convolutional layers are a very different beast than normal fully connected layers. 
-Instead of having each node in a layer connect to all of the nodes in the previous layer, it connects to only some of them.
-The selection of which nodes it connects to is defined by moving a quadratic filter (or kernel window) over the previous layer.
-Thereby, the geolocation of a specific node (i.e. the horizontal and vertical proximity to its neighbors) is taken into account which is crucial for immage recognition.
+Instead of each node in a layer connecting to all nodes in the previous layer, it connects to only some of them.
+The selection of which nodes it connects to is defined by a quadratic filter (or kernel window) that is moved over the previous layer.
+Thereby, the geolocation of a specific node, i.e. the horizontal and vertical proximity to its neighbors, is taken into account which is crucial for image recognition.
 
 The second major difference of convolutional layers is the fact that weights are shared between nodes. 
-This siginificantly reduces the complexity (number of weights=parameter to be trained) of the network and hence helps to improve performance and memory requirements.
-But it also requires a different design approach than my previous one for simple fully connected layers.
+This siginificantly reduces the network's complexity, i.e. number of weights or parameters that need to be trained and memory requirements.
 
 This post assumes that you understand the basic functionality of a convolutional network. 
-If you don't I recommend reading Stanford's Andrej Karpathy's [CS231n Convolutional Neural Networks for Visual Recognition
-](http://cs231n.github.io/convolutional-networks/) or more hardcode Yann Lecun's [LeNet-5 Convolutional Neural Networks](http://yann.lecun.com/exdb/lenet/).
+If you don't I strongly recommend first reading Stanford's [CS231n Convolutional Neural Networks for Visual Recognition
+](http://cs231n.github.io/convolutional-networks/) by Andrej Karpathy or, more hardcore, Yann Lecun's [LeNet-5 Convolutional Neural Networks](http://yann.lecun.com/exdb/lenet/).
 
 So, let's jump into the overall design of the network. 
 
@@ -42,11 +41,14 @@ So, let's jump into the overall design of the network.
 
 Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. Let me explain why.
 
+![_config.yml]({{ site.baseurl }}/images/network_struct_design.png)
+
 ### Columns
 
-When a layer simply consists of nodes, these nodes are aligned in a flat 1-dimensional vector. 
-A MNIST image, for example, has 28 x 28 pixels and a network layer thus consists of 784 flat nodes that are all aligned in a single row.
-Yet, since the exact location of a pixel inside the image matters, convolutional networks build connections to neighboring regions (*filter*).
+In a layer of nodes, these nodes are aligned flat in a 1-dimensional vector. 
+A MNIST image, for example, has 28 x 28 pixels and the respective network layer thus consists of 784 nodes that are all aligned in a single row.
+
+In image recognition, though, the exact location of a pixel inside that image matters. Convolutional networks or layers therefore build connections to neighboring nodes that are all situated within a defined region, the so called *filter* or *kernel window*.
 
 Example: A convolutional network node may want to create connections to a 3 x 3 area (*filter*) of 9 neighboring nodes (pixels) located at the top left of the image. If all pixels of the image are numbered from 0..783 than this area can be easily calculated as [0,1,2,28,29,30,56,57,58].
 In the respect, we essentially treat the 1-dimensional vector as 2-dimensional using simple algebra. 
