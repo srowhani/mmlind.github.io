@@ -41,7 +41,7 @@ So, let's jump into the overall design of the network.
 
 Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. Let me explain why.
 
-![_config.yml]({{ site.baseurl }}/images/network_struct_design.png)
+![_config.yml]({{ site.baseurl }}/images/dnn_network_struct_design.png)
 
 ### Columns
 
