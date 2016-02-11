@@ -7,13 +7,13 @@ I finally got my hands dirty in the recent hype around deep learning by building
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_mnist-logo.png)
 
-In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. It's architecture was fixed, always using a 3-layer structure with exactly 1 hidden layer. And it only supported normal fully connected layers. 
+In a previous blog post I wrote about a simple [3-Layer neural network for MNIST handwriting recognition](../Simple_3-Layer_Neural_Network_for_MNIST_Handwriting_Recognition/) that I built. Its architecture was fixed, always using a 3-layer structure with exactly 1 hidden layer. And it only supported normal fully connected layers. 
 
 To achieve better results in image recognition tasks deeper networks are needed. 
 And they need to be capable of running convolutional layers.
-Hence, as a next step on my journey towards *coding AI wisdom* I set out to add these two features to my C network. 
+Hence, as a next step on my journey towards *coding AI wisdom* I set out to add these features to my C network. 
 
-So, let me introduce to you in more detail how the network works, starting off with its overall architecture.
+So, let me introduce in more detail how the network works, starting off with its overall architecture.
 
 
 ## Network Architecture
