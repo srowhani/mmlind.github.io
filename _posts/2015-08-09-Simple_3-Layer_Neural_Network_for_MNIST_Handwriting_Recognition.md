@@ -47,7 +47,7 @@ The idea is simple: place an empty array _at the end_ of a struct definition and
 
 I make extensive use of this feature by stacking several layers of dynamically sized data structures. 
 
-Let's start at the smallest, most inner level of a network, the node. (*Node* refers to the same concept as a *perceptron* or *cell*, as I previously had called it.)
+Let's start at the smallest, most inner level of a network, the node. (*Node* refers to the same concept of a *perceptron* or *cell*, as I previously had called it.)
 
 ```c
 struct Node{
@@ -246,7 +246,7 @@ The *input* layer is different from the other 2 layers (*hidden* and *output*) i
 I.e. its nodes are not perceptrons because this layer does not have any connections, and hence any weights, to a previous layer.
 For our coding this means that the size of a node's weight array (`weights[]`) is 0 and therefore the size of an input node is the same as the *actual* size of a node struct `sizeof(Node)`.
 
-2. The second major difference of the input layer is that its main objective is stoing the input that is fed into the network.
+2. The second major difference of the input layer is that its main objective is storing the input that is fed into the network.
 But for coding consistency and simplicity I want to use the same data model with the same naming conventions for the input layer as for the other two layers.
 Therefore, I use the node's `output` variable to store the network's *input*. 
 (Keep this point in mind for later!)
