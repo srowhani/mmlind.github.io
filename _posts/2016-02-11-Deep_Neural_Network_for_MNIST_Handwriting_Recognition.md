@@ -74,7 +74,7 @@ struct Layer{
 };
 ```
 
-The second point worth mentioning here is that I keep the definition of the layer model outside of the `Layer` structure in a separate `LayerDefinition` structure (more on that below) and add an equivalent pointer reference to the *Layer*.
+The second point worth mentioning here is that I keep the definition of the layer model outside of the `Layer` structure in a separate `LayerDefinition` structure (more on that below) and add an equivalent pointer reference to the `Layer`.
 
 
 ### A Network Column
@@ -102,8 +102,8 @@ Adding a 3rd dimension of nodes to the network, I faced 2 design options: featur
 Intuitively, I wanted to slice the image (or the input of a previous layer for that matter) __horizontally__ which creates what the convolutional network theory sometimes refers to as *feature maps*. 
 So in the example of an RGB image, instead of having a single 1-dimensional [0..783] vector of 784 nodes, you'd have an array of 3 *feature maps* and each would consist of 784 nodes. 
 
-Alternatively, if you slice the image (or the input of a previous layer for that matter) __vertically__ you end up with *columns*. 
-The network layer then consists of an array of 784 *columns* each consisting of 3 nodes.
+Alternatively, if you slice the image (or the input of a previous layer for that matter) __vertically__ you end up with `Columns`. 
+The network layer then consists of an array of 784 `Columns` each consisting of 3 nodes.
 
 Conceptually, both designs are equivally acceptable and feasible to implement. 
 The fact that I ended up chosing the latter may have been related to my previous study of Hierarchical Temporal Memory (HTM) theory where columns are an intrinsic element. 
@@ -139,9 +139,9 @@ struct Node{
 
 ### The Connections 
 
-The 2nd new concept being added to the network model is the introduction of *connections*. 
-In my previous network *weights* were attached directly to a *node* because each node had exactly 1 weight.
-And the *target node* to which a certain node is connectd to could be easily derived from the weight's id. 
+The 2nd new concept being added to the network model is the introduction of `Connections`. 
+In my previous network `Weights` were attached directly to a `Node` because each node had exactly 1 weight.
+And the *target* `Node` to which a certain node is connectd to could be easily derived from the weight's id. 
 For example, the 1st weight of each node in the hidden layer is applied to the 1st node in the input layer.
 Thus, these 2 nodes are linked or connected. 
 The 2nd weight of each node in the hidden layer is applied to the 2nd node in the input layer.
@@ -153,9 +153,9 @@ For convolutional networks, things get more complicated.
 First, weights are shared, i.e. the same weight will be used from (i.e. applied to) multiple nodes. 
 Second, each node in the hidden layer is connected to different nodes in the previous layer. 
 Therefore, we cannot simply assume weight 1 connects to node 1, weight 2 connects to node 2, etc.
-Instead, for each node in the hidden (convolutional) layer we need to keep track of what nodes in the previous layer (= *target nodes*) it is connected to.
+Instead, for each node in the hidden (convolutional) layer we need to keep track of what nodes in the previous layer (= *target* `Nodes`) it is connected to.
 
-Looking at biology, I introduced the concept of *connections* (similar to synapses) to the model.
+Looking at biology, I introduced the concept of `Connections` (similar to synapses) to the model.
 A connection is a simple structure storing 2 pointers: a pointer to a target node and a pointer to a weight.
 
 ```c
@@ -169,14 +169,14 @@ struct Connection{
 ### The Weights Block
 
 The most important component of a neural network is still missing in all of the above: the weights. 
-The *connection* structure only contains a pointer to a weight.
+The `Connection` structure only contains a pointer to a weight.
 But where is the actual weight?
 
-The answer is I put all the weights together in a *weights block* and locate it at the end of the network structure, just after the last layer.
+The answer is I put all the weights together in a *weights block* and locate it at the end of the `Network` structure, just after the last `Layer`.
 This design has several advantages: first, the weights are kept together with the rest of the network inside the same memory block. 
 Second, the separation of weights from the nodes allows for convenient weight sharing. 
 
-The following drawing shows how all the above components fit together to create the *network* data structure.
+The following drawing shows how all the above components fit together to create the `Network` data structure.
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_network_struct_design.png)
 
@@ -184,7 +184,7 @@ The following drawing shows how all the above components fit together to create 
 ### Network Definition
 
 To build a network one has to first define a model, i.e. define how many layers the network shall have, how may nodes are inside of each layer, etc.
-To do so I introduced a new structure called *LayerDefinition* which holds the key parameters for each layer and will be attached via a pointer to the respective layer structure (see above).
+To do so I introduced a new structure called `LayerDefinition` which holds the key parameters for each layer and will be attached via a pointer to the respective layer structure (see above).
 
 ```c
 struct LayerDefinition{
@@ -195,7 +195,7 @@ struct LayerDefinition{
 };
 ```
 
-To create a network you first create a variable number of these *LayerDefinition*s and then pass them all together into the *setLayerDefinitions* function which returns an array pointer for easier reference throughout the rest of the code.
+To create a network you first create a variable number of these `LayerDefinition`s and then pass them all together into the `setLayerDefinitions` function which returns an array pointer for easier reference throughout the rest of the code.
 
 ```c
 
@@ -278,7 +278,7 @@ Hence, both of these two hyper-parameters should always be considered in tandem.
 
 ## Create the Network
 
-Once the network and its layers have been defined via the above *setLayerDefinitions* function you can create the actual network object via the *createNetwork* function
+Once the network and its layers have been defined via the above *setLayerDefinitions* function you can create the actual network object via the `createNetwork` function
 
 ```c
 
@@ -346,7 +346,7 @@ So, I'm going to skip a review of all the sub functions here. They can be review
 
 ## Initialize the Network 
 
-In the above *createNetwork* function we saw that besides setting some default values for the network, we need to *initialize* the network and set random weights.
+In the above `createNetwork` function we saw that besides setting some default values for the network, we need to *initialize* the network and set random weights.
 
 Now, what do I mean by *initializing* the network? 
 Don't forget, until now the network is simply a block of memory with some unknown content inside. 
@@ -371,12 +371,12 @@ void initNetwork(Network *nn, int layerCount, LayerDefinition *layerDefs){
 ```
 
 First, we loop through all layers and initialize them one by one. After that, we loop again to set up each layer's forward connections.
-The reason why we need 2 loops here is that in order for the *initNetworkForwardConnections* function to work, each layer's following layer must have been initialized already.
+The reason why we need 2 loops here is that in order for the `initNetworkForwardConnections` function to work, each layer's following layer must have been initialized already.
 
-The background is simple: *initNetworkForwardConnections* checks which nodes in the following layer point back to a node in this layer and then creates forward connections mirroring these backward connections.
+The background is simple: `initNetworkForwardConnections` checks which nodes in the following layer point back to a node in this layer and then creates forward connections mirroring these backward connections.
 Obviously, if the following layer hasn't been setup yet, there wouldn't be any forward connections. Hence, 2 loops.
 
-Now, let's see what actually happens inside the *initNetworkLayer* function:
+Now, let's see what actually happens inside the `initNetworkLayer` function:
 
 ```c
 
@@ -410,10 +410,10 @@ void initNetworkLayer(Network *nn, int layerId, LayerDefinition *layerDefs){
 ```
 
 In order to *initialize* a layer, we first need to know where each layer starts.
-Remember, since each layer has a different size, we cannot use a simple array reference such as *network.layer[1]* to locate a layer.
+Remember, since each layer has a different size, we cannot use a simple array reference such as `network.layer[1]` to locate a layer.
 Instead, I point a *single byte pointer* to the start of the network's layers *nn->layers* and move it forward by exactly the size of each layer.
 
-Then, I define for each layer some basics such as its *id*, its *weightPtr*, etc., and add a reference to its original *LayerDefinition*.
+Then, I define for each layer some basics such as its `id`, its `weightPtr`, etc., and add a reference to its original `LayerDefinition`.
 This will become handy because througout the code we will need to access a layer's definition quite often (remember? things like layer type, number of nodes, activation function, etc.).
 
 Now, we've setup the *head* of the layer. 
@@ -513,7 +513,7 @@ void initNetworkNodes(Network *nn, int layerId, int columnId){
 This function is central to the network's initialization process. 
 In addition to setting some default values for all nodes, it's preparing the creation of backward connections of each node to the previous layer.
 The way in which these *backward connections* are constructed is obviously different for *fully connected* and for *convolutional* layers.
-Hence there are 2 different sub functions, *initNetworkBackwardConnectionsFCNode* for fully connected nodes and *initNetworkBackwardConnectionsConvNode* for convolutional nodes.
+Hence there are 2 different sub functions, `initNetworkBackwardConnectionsFCNode` for fully connected nodes and `initNetworkBackwardConnectionsConvNode` for convolutional nodes.
 
 #### Backward Connections for Fully Connected Layers
 
@@ -562,14 +562,14 @@ void initNetworkBackwardConnectionsFCNode(Node *thisNode, Layer *prevLayer, Weig
 
 ```
 
-The function loops through the previous layer's nodes and creates a connection from the current node to __each__ node in the previous layer (hence *__fully__ connected*).
+The function loops through the previous layer's nodes and creates a connection from the current node to __each__ node in the previous layer (hence *__fully__ connected).
 Remember, since nodes are structured in columns, we need to loop through the columns first, and then through the nodes inside each column.
 
 So far so good. That was the easier of the two. Now, let's look at how the wiring (building connections) works for *convolutional* nodes.
 
 #### Backward Connections for Convolutional Layers
 
-As outlined above, a convolutional node is connected to a selected group of neighboring nodes, located within a quadratic region of *filter* size.
+As outlined above, a convolutional node is connected to a selected group of neighboring nodes, located within a quadratic region of `filter` size.
 This quadratic region (the filter or kernel window) needs to be calculated.
 It depends on a number of parameters and changes as the filter is moved across the target layer.
 
@@ -577,9 +577,9 @@ It depends on a number of parameters and changes as the filter is moved across t
 #### Example: 
 
 Let's say our network consists of 3 layers, the input layer containing the MNIST image, a convolutional layer and the output layer.
-We know that the MNIST image has 28*28 pixels, hence the input layer has 784 columns. Each column only has 1 node (the *depth* of the input layer is 1) therefore there are also exactly 728 nodes. And let's assume our convolutional layer has dimensions of [24 * 24 * 10], i.e. there are 24 * 24 = 576 columns and each column has 10 nodes. And let's assume we defined a *filter* of 5 for this layer.
+We know that the MNIST image has 28*28 pixels, hence the input layer has 784 columns. Each column only has 1 node (the `depth` of the input layer is 1) therefore there are also exactly 728 nodes. And let's assume our convolutional layer has dimensions of [24 * 24 * 10], i.e. there are 24 * 24 = 576 columns and each column has 10 nodes. And let's assume we defined a `filter` of 5 for this layer.
 
-Now we start wiring up the 1st node in the convolutional layer. We need to create connections to a region of 5 x 5 (*filter* x *filter* size) columns located at the top left of the target (in this case = input) layer. The respective ids of these columns would be: 
+Now we start wiring up the 1st node in the convolutional layer. We need to create connections to a region of 5 x 5 (`filter` * `filter` size) columns located at the top left of the target (in this case = input) layer. The respective ids of these columns would be: 
 
 [   0,   1,   2,   3,   4,
    28,  29,  30,  31,  32,
@@ -635,7 +635,7 @@ void calcFilterColumnIds(Layer *srcLayer, int srcColId, Layer *tgtLayer, Vector 
 
 ```
 
-Once we calculated this vector of *targetColumnIds* we pass it into our *initNetworkBackwardConnectionsConvNode* function which then creates connections from the source node to the target nodes specified in the vector.
+Once we calculated this vector of `targetColumnIds` we pass it into our `initNetworkBackwardConnectionsConvNode` function which then creates connections from the source node to the target nodes specified in the vector.
 
 ```c
 void initNetworkBackwardConnectionsConvNode(Node *node, int srcLevel, Weight *srcLayerWeightPtr, Layer *targetLayer, Vector *filterColIds, Weight *nullWeight){
@@ -674,7 +674,7 @@ void initNetworkBackwardConnectionsConvNode(Node *node, int srcLevel, Weight *sr
 ```
 
 Depending on how many nodes we defined in our convolutional layer, some of the nodes in the target (=previous) layer are purposely skipped. 
-This is called the *stride*. A *stride* of 2 means that every other node in the target layer is skipped. 
+This is called the `stride`. A `stride` of 2 means that every other node in the target layer is skipped. 
 The idea is to *downsize* the original image layer by layer, and have each following layer represent some higher level feature of the previous layer.
 
 ```c
@@ -735,7 +735,7 @@ void initNetworkForwardConnections(Network *nn, int layerId) {
 }
 ```
 
-It simply loops through all layers and their respective columns and calls the *initNetworkForwardConnectionsAnyNode* function which does the actual wiring:
+It simply loops through all layers and their respective columns and calls the `initNetworkForwardConnectionsAnyNode` function which does the actual wiring:
 
 
 ```c
@@ -779,7 +779,7 @@ void initNetworkForwardConnectionsAnyNode(Node *thisNode, Layer *nextLayer) {
 ### Initialize Weights
 
 Now that we've fully setup all of the connections between the nodes and from the nodes to their weights, we still need to initialize the weights.
-Remember, all weights are located in a big weight block at the end of the *Network* structure. 
+Remember, all weights are located in a big weight block at the end of the `Network` structure. 
 
 All we need to do is initialize each weight with a random value from 0-1. 
 For better performance I found that it helps to reduce the value to a random number smaller than 0.5 or 0.4 and also make every other weight negative.
