@@ -3,7 +3,7 @@ layout: post
 title: Deep Neural Network for MNIST Handwriting Recognition
 ---
 
-I finally got my hands dirty in the recent hype around deep learning by building my own deep neural network. It consists of a variable number of layers and supports convolutional layers. The architecture is generic, extendable and tries to mimic its biological model, the brain.
+I finally found some time to enhance my neural network to support deep learning. The network now masters a variable number of layers and is capable of running convolutional layers. The architecture is generic, extendable and tries to mimic its biological model, the brain.
 
 ![_config.yml]({{ site.baseurl }}/images/dnn_mnist-logo.png)
 
