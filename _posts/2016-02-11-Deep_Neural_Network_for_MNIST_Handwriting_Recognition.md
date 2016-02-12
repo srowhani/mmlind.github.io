@@ -34,13 +34,13 @@ So, now let's jump into the code and start with the network's overall design.
 
 ## Network Architecture
 
-More than anything else did the introduction of convolutional layers influence the design of the network. Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: *columns* and *connections*. 
+More than anything else did the introduction of convolutional layers influence the design of the network. Previously, my network structure consisted of layers, nodes and weights. Now, I added 2 additional concepts: `Columns` and `Connections`. 
 So in total, the neural network consists of below 5 data structures: 
 
 ### The Network
 
 The network structure serves as the overall *container* for the whole network.
-It defines the *learning rate* and information about number and location of all *weights* in this network.
+It defines the *learning rate* and information about number and location of all weights in this network.
 And, most importantly, it includes a variable-sized array of layer structures which contain the network nodes.
 
 ```c
@@ -58,7 +58,7 @@ struct Network{
 
 ### A Network Layer
 
-The *layer* structure contains all the information related to a specific layer in the network, including a pointer to its weights and a variable-sized array of all the columns inside this layer. 
+The `Layer` structure contains all the information related to a specific layer in the network, including a pointer to its weights and a variable-sized array of all the columns inside this layer. 
 
 It's worth mentioning here that in my design, the input layer is counted as one of the layers.
 Other definitions may vary. [Yann LeCun's collection of MNIST results](http://yann.lecun.com/exdb/mnist/), for example, defines a liner classifier as a 1-layer-NN, and networks with exactly 1 hidden layer as 2-layer-NNs. In my design these count as 2-layer-NN and 3-layer-NN respectively. 
@@ -74,7 +74,7 @@ struct Layer{
 };
 ```
 
-The second point worth mentioning here is that I keep the definition of the layer model outside of the *Layer* structure in a separate *LayerDefinition* structure (more on that below) and add an equivalent pointer reference to the *Layer*.
+The second point worth mentioning here is that I keep the definition of the layer model outside of the `Layer` structure in a separate `LayerDefinition` structure (more on that below) and add an equivalent pointer reference to the *Layer*.
 
 
 ### A Network Column
