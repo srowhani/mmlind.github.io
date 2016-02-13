@@ -4,15 +4,15 @@ title: About
 permalink: /about/
 ---
 
-I'm Matt Lind, a passionate hacker and machine learning enthusiast based in Shanghai.
+I'm Matt Lind, a passionate hacker and machine learning enthusiast.
 
 ### Machine Learning
 
-I'm working on using artificial neural networks (ANN) -- different flavors, from normal fully connected to convolutional, sequentiell and reinforcement -- for image recognition and NLP.
+I like to explore the world of artificial neural networks (ANN) -- different flavors, from normal fully connected to convolutional, sequentiell and reinforcement -- for image recognition and NLP.
 
 ### in C
 
-I'm mostly using C because I appreciate its simplicity, precision and speed. While some things may take a little longer to code in C, in the end they'll run amazingly fast and (almost) anywhere.
+I'm coding in plain old C because I appreciate its simplicity, precision and speed. While some things may take a little longer to code in C, in the end they'll run amazingly fast and (almost) anywhere.
 
 ### Artificial/Machine Intelligence
 
