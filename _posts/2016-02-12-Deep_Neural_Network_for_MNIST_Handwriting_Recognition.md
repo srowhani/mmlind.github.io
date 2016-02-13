@@ -509,7 +509,7 @@ void initNetworkNodes(Network *nn, int layerId, int columnId){
 
 ```
 
-### Creating Backward Connections
+### Create Backward Connections
 
 This function is central to the network's initialization process. 
 In addition to setting some default values for all nodes, it's preparing the creation of backward connections of each node to the previous layer.
@@ -679,7 +679,7 @@ int calcStride(int tgtWidth, int filter, int srcWidth){
 ```
 
 
-### Creating Forward Connections 
+### Create Forward Connections 
 
 What are forward connections and why do we need them? Let's revisit some of the above. A connection links 2 nodes and applies a weight during the *feed forward* process. 
 Then, during the *back propagation* process, the same connection is traversed in opposite direction to pass the partial error of a node back to the connected node in the previous layer.
@@ -944,7 +944,7 @@ TEST RESULTS
 
 ```
 
-As you can see from the above, my network is doing well for smaller models but not so much for larger, deeper structures.
+As you can see from the above my network is doing well for smaller models but not so much for larger, deeper structures.
 This is not due to wrong coding. It's because I haven't used the most efficient parameters during the training.
 
 This leads us to the most difficult part of machine learning: How to find the hyper-parameters that achieve the best results?
