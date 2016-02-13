@@ -11,7 +11,7 @@ In a previous blog post I wrote about a simple [3-Layer neural network for MNIST
 
 To achieve better results in image recognition tasks deeper networks are needed. 
 And, ideally, they need to be capable of running convolutional layers.
-Hence, I set out to add these features, in my continous journey towards *coding AI wisdom*. :)
+Hence, I set out to add these features, on my continous journey into the world of *machine learning*. :)
 
 ### Convolutional Networks
 
@@ -926,23 +926,26 @@ That's it. Now that we've done all the coding, let's look at performance.
 ## Network Performance
 
 To assess the performance of the network let's look at its accuracy as well as its speed.
-Here's a summary of the different network designs that I tried, their respective best results and comparative results on [Yann LeCun's collection of MNIST results](http://yann.lecun.com/exdb/mnist/):
+Here's a summary of the different network designs that I tried and their respective best results:
 
 
 ```
-Test Results
+TEST RESULTS
 
-| Network    | Hyper-Parameters                                | Accuracy | # Trains |  Speed | Comparison |
-| ---------- |-------------------------------------------------|----------|----------|--------|------------|
-| 1-layer NN |                      10 output, SIGMOID, 0.0125 |   91.61% |  913,000 |        |    88.00%  |     
-| 2-layer NN |                     300 hidden, SIGMOID, 0.0700 |   93.88% |          |        |    96.40%  |     
-| 3-layer NN |                 500+150 hidden, SIGMOID,        |          |          |        |    97.05%  |     
-| 6-layer NN | 2500-2000-1500-1000-500 hidden, SIGMOID,        |          |          |        |    99.65%  |     
-| ConvNet    |                                                 |          |          |        |    98.90%  |     
+| Network     | # of Nodes     | Act.Fct | L-Rate | # Trains | Speed* | Accuracy || Compare** |
+| ----------- |----------------|---------|--------|----------|--------|----------||-----------|
+| 1-l   FC NN |      10 output | SIGMOID | 0.0125 |  900,000 |   228s |   91.09% ||    88.00% |     
+| 2-l   FC NN |     300 hidden | SIGMOID | 0.0700 |  120,000 |   697s |   94.67% ||    96.40% |     
+| 3-l   FC NN | 500+150 hidden | SIGMOID | 0.0050 |  120,000 | 2,325s |   91.89% ||    97.05% |     
+| 3-l ConvNet | 13x13x5, 6x6x5 |  RELU   | 0.0004 |   60,000 |    88s |   80.47% ||    98.90% |     
 
+* total run-time in seconds, including training and testing, on a 2010 MacBook Pro
+** best accuracies listed on [Yann LeCun's collection of MNIST results](http://yann.lecun.com/exdb/mnist/) (without pre-processing)
 ```
 
-As you can see from the above, my network is doing well for smaller models but not so much in larger, deeper structures. 
+As you can see from the above, my network is doing well for smaller models but not so much for larger, deeper structures.
+This is not due to wrong coding. It's because I haven't used the most efficient parameters during the training.
+
 This leads us to the most difficult part of machine learning: How to find the hyper-parameters that achieve the best results?
 
 

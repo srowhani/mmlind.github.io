@@ -8,11 +8,11 @@ I'm Matt Lind, a passionate hacker and machine learning enthusiast based in Shan
 
 ### Machine Learning
 
-I'm working on using artificial neural networks (ANN) -- different flavors (from normal fully connected to convolutional, sequentiell and reinforcement -- and machine learning for image recognition and NLP.
+I'm working on using artificial neural networks (ANN) -- different flavors, from normal fully connected to convolutional, sequentiell and reinforcement -- for image recognition and NLP.
 
 ### in C
 
-I'm mostly using C because I appreciate its simplicity, precision and speed. While some things may take a little longer to code in C, in the end they'll run amazingly fast and run (almost) anywhere.
+I'm mostly using C because I appreciate its simplicity, precision and speed. While some things may take a little longer to code in C, in the end they'll run amazingly fast and (almost) anywhere.
 
 ### Artificial/Machine Intelligence
 
