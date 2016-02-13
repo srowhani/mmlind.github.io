@@ -939,8 +939,8 @@ TEST RESULTS
 | 3-l   FC NN | 500+150 hidden | SIGMOID | 0.0050 |  120,000 | 2,325s |   91.89% ||    97.05% |     
 | 3-l ConvNet | 13x13x5, 6x6x5 |  RELU   | 0.0004 |   60,000 |    88s |   80.47% ||    98.90% |     
 
-* total run-time in seconds, including training and testing, on a 2010 MacBook Pro
-** best accuracies listed on [Yann LeCun's collection of MNIST results](http://yann.lecun.com/exdb/mnist/) (without pre-processing)
+ * total run-time in seconds, including training and testing, on a 2010 MacBook Pro
+** best accuracies listed on http://yann.lecun.com/exdb/mnist/ (without pre-processing)
 ```
 
 As you can see from the above, my network is doing well for smaller models but not so much for larger, deeper structures.
