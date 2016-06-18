@@ -222,18 +222,18 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.75px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="265.73703"
+       x="251.27048"
        y="569.8089"
        id="text4219-1"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan4490"
-         x="268.72165"
-         y="569.8089">Single HTM Cell with Distal Dendrite </tspan><tspan
+         id="tspan4637"
+         x="251.27048"
+         y="569.8089">Single HTM Cell with 4 Distal Dendrite Segments</tspan><tspan
          sodipodi:role="line"
-         id="tspan4492"
-         x="265.73703"
-         y="593.2464">Segments and Distal Synapses</tspan></text>
+         id="tspan4639"
+         x="251.27048"
+         y="593.2464">and 8 Distal Synapses per Dendrite Segment</tspan></text>
     <g
        transform="matrix(-1,0,0,1,411.08791,-57.86618)"
        id="g4510-2">
