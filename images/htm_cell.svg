@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 744.09448819 1052.3622047"
+   width="400"
+   height="400"
+   viewBox="0 0 399.99999 399.99999"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.52548447"
-     inkscape:cx="175.08614"
-     inkscape:cy="526.1811"
+     inkscape:zoom="1.3825"
+     inkscape:cx="200"
+     inkscape:cy="286.79928"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,7 +35,10 @@
      inkscape:window-height="755"
      inkscape:window-x="4"
      inkscape:window-y="1"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true"
+     inkscape:snap-nodes="true"
+     units="px" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -51,24 +54,119 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(0,-652.36223)">
     <rect
-       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00174332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3336"
-       width="98.99826"
-       height="98.99826"
-       x="254.87222"
-       y="512.21808" />
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00378156;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="HTMCell"
+       width="158.99622"
+       height="158.99622"
+       x="110.50188"
+       y="778.29608"
+       inkscape:label="#rect3336" />
+    <g
+       id="g4173"
+       transform="matrix(2.3997191,0,0,2.3997191,-506.94508,-499.70588)">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4169"
+         d="m 290.42933,532.35911 -0.18244,-14.74695 0,0 0,0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.49991822;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="9.7401123"
+         inkscape:label="#path4171"
+         cy="508.57623"
+         cx="290"
+         id="DistDendrite"
+         style="fill:#00ffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:'Courier 10 Pitch';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-font-specification:'Courier 10 Pitch, Normal';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;"
-       x="283.54785"
-       y="570.90173"
-       id="text4138"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="164.96541"
+       y="860.38007"
+       id="text4219"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan4140"
-         x="283.54785"
-         y="570.90173">Cell</tspan></text>
+         id="tspan4223"
+         x="164.96541"
+         y="860.38007">Cell</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="220.84067"
+       y="708.98682"
+       id="text4246"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4345"
+         x="220.84067"
+         y="708.98682">Distal</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4347"
+         x="220.84067"
+         y="727.73682">Dendrite</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4349"
+         x="220.84067"
+         y="746.48682">Segment</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4252"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:'sans-serif, Normal';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr"><flowRegion
+         id="flowRegion4254"><rect
+           id="rect4256"
+           width="1.9030058"
+           height="87.538269"
+           x="112.27734"
+           y="-275.56705" /></flowRegion><flowPara
+         id="flowPara4258"></flowPara></flowRoot>    <g
+       id="g4173-5"
+       transform="matrix(2.3997191,0,0,-2.3997191,-506.94508,2214.8089)">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4169-3"
+         d="m 290.42933,532.35911 -0.18244,-14.74695 0,0 0,0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.49991822;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="9.7401123"
+         inkscape:label="#path4171"
+         cy="508.57623"
+         cx="290"
+         id="DistDendrite-3"
+         style="fill:#00ffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4173-8"
+       transform="matrix(0,2.3997191,2.3997191,0,-1168.0916,160.32602)">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4169-2"
+         d="m 290.42933,532.35911 -0.18244,-14.74695 0,0 0,0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.49991822;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="9.7401123"
+         inkscape:label="#path4171"
+         cy="508.57623"
+         cx="290"
+         id="DistDendrite-2"
+         style="fill:#00ffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4173-8-8"
+       transform="matrix(0,2.3997191,-2.3997191,0,1547.4861,160.32602)">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4169-2-7"
+         d="m 290.42933,532.35911 -0.18244,-14.74695 0,0 0,0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.49991822;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="9.7401123"
+         inkscape:label="#path4171"
+         cy="508.57623"
+         cx="290"
+         id="DistDendrite-2-0"
+         style="fill:#00ffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
 </svg>
