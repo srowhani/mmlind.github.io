@@ -937,7 +937,7 @@ TEST RESULTS
 | 1-l   FC NN |      10 output | SIGMOID | 0.0125 |  900,000 |   228s |   91.09% ||    88.00% |     
 | 2-l   FC NN |     300 hidden | SIGMOID | 0.0700 |  120,000 |   697s |   94.67% ||    96.40% |     
 | 3-l   FC NN | 500+150 hidden | SIGMOID | 0.0050 |  180,000 | 2,510s |   93.64% ||    97.05% |     
-| 3-l ConvNet | 13x13x5, 6x6x5 |  RELU   | 0.0004 |   60,000 |    88s |   80.47% ||    98.90% |     
+| 3-l ConvNet | 13x13x5, 6x6x5 |  RELU   | 0.0004 |  525,000 |   908s |   88.40% ||    98.90% |     
 
  * total run-time in seconds, including training and testing, on a 2010 MacBook Pro
 ** best accuracies listed on http://yann.lecun.com/exdb/mnist/ (without pre-processing)
