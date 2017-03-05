@@ -9,7 +9,7 @@ Linear regression is a statistical method for modeling the relationship between 
 It's often used for analyzing dependencies and predicting values based on a given data set.
 
 Regression represents one of the cornerstones of machine learning. 
-Hence, understanding its underlying logic and math provides a solid foundation and a good preparation for learning more advanced techniques such as neural networks.
+Comprehending its underlying logic and math provides a solid foundation and a good preparation for learning more advanced techniques such as neural networks.
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_blackboard.jpg)
 
@@ -23,18 +23,19 @@ $y = f(x)$
 that when given a value for $x$ outputs or predicts the desired target variable $y$. 
 We call this a __model__. We're modeling the relationship between $x$ and $y$ or, more specifically, the dependency of $y$ on $x$.
 
-The dependency of $y$ on $x$ is learned from the dataset which includes many _training examples_, where each training examples includes a set of explanatory variables $x$ and the respective "to-be-predicted" target variable $y$. 
+This dependency is learned from the dataset which includes many _training examples_, where each training examples includes a set of explanatory variables $x$ and the respective "to-be-predicted" target variable $y$. 
 
-Because the computer is learning the dependency based on the correct examples provided in the dataset, this type of learning is called __supervised learning__ because by providing correct examples of $y$ we're _supervising_ the learning algorithm.
+Since the computer is learning the dependency based on the correct examples provided in the dataset, this type of learning is called __supervised learning__.
+By providing correct examples of $y$ we're _supervising_ the learning algorithm.
 
 
 ### Types of Linear Regression
 
 Depending on the number of independent or explanatory variables $x$, we distinguish between the following types of linear regression:
 
-- If there is only a single variable $x$, we call the model a __uni-variate__ linear regression
-- If there are multiple $x$ variables, we call the model a __multi-variate__ linear regression
-- If the $x$ variables include exponentials, we call the model a __polynomial__ linear regression
+- If there is only a __single variable__ $x$, we call the model a __uni-variate__ linear regression
+- If there are __multiple variables__ $x$, we call the model a __multi-variate__ linear regression
+- If the independent variables include __exponentials__, we call the model a __polynomial__ linear regression.
 
 The underlying math and method are the same for all three. 
 
@@ -84,7 +85,7 @@ Most datasets are provided as a CSV file which normally includes a header line d
 ### Gradient Descent
 
 
-##Optimization Techniques
+## Optimization Techniques
 
 
 ### Feature Engineering
