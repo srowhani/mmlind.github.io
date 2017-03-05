@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Linear Regression
+mathjax: true
+
 ---
 
 This post is an easy-to-understand introductory guide to linear regression. Test Latex Math: $ \sum\limits_{i=1}^n x^{i}$
@@ -11,19 +13,19 @@ This post is an easy-to-understand introductory guide to linear regression. Test
 $$ \sum\limits_{i=1}^n x^{i}$$
 ```
 
-Math test..
+Math test 1..
 
 ```
 Sum = $ \sum\limits_{i=1}^n x^{i}$
 ```
 
-Math test..
+Math test 2..
 
 ``
-Sum = $ \sum\limits_{i=1}^n x^{i}$
+Sum = $$ \sum\limits_{i=1}^n x^{i}$$
 ``
 
-Math test..
+Math test 3..
 
 ``
 Sum = $ \sum\limits_{i=1}^n x^{i}$
