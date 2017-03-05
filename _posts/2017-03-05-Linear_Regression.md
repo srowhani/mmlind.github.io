@@ -61,8 +61,10 @@ For this blog post I'm going to use the ["House Sales in King County, USA"](http
 Most datasets are provided as a CSV file which normally includes a header line describing the variables captured.
 
 
-### Don't be afraid of math
+### Visualizing the Data
 
+
+### Don't be afraid of math
 
 ### Mathmatical Notation
 
@@ -83,6 +85,9 @@ Most datasets are provided as a CSV file which normally includes a header line d
 
 
 ##Optimization Techniques
+
+
+### Feature Engineering
 
 
 ### Feature Scaling & Mean Normalization
