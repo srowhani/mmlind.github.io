@@ -65,12 +65,12 @@ Most datasets are provided as a CSV file which normally includes a header line d
 ### Visualizing the Data
 
 
+## The Methodolody
+
+
 ### Don't be afraid of math
 
 ### Mathmatical Notation
-
-
-## The Methodolody
 
 
 ### Hypothesis Function
