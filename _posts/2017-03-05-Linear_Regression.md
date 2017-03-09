@@ -5,13 +5,13 @@ mathjax: true
 
 ---
 
-Linear regression is a statistical method for modeling the relationship between variables. 
-It's used for analyzing dependencies and predicting values 
-
 Regression represents one of the cornerstones of machine learning. 
 Comprehending its logic and math provides a solid foundation for learning more advanced machine learning techniques such as neural networks.
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_blackboard.jpg)
+
+Linear regression is a statistical method for modeling the relationship between variables. 
+It's used for analyzing dependencies and predicting values 
 
 The underlying idea of linear regression is simple: Given a dataset, we want to find the dependency of one of the variables in the dataset on one, some or all of the other variables.
 
@@ -36,7 +36,7 @@ Since each example must include the _correct_ or desired output for the respecti
 By providing correct examples of $y$ we're _supervising_ the learning algorithm.
 
 
-## The Methodolody
+## The Methodology
 
 Linear regression, or regression analysis in general, consists of 3 steps: define a hypothesis function, define a cost function, and run an optimization algorithm.
 
@@ -80,7 +80,7 @@ $x^{(i)} = $ n-dimensional vector of all features of the i-th training sample
 
 And the value of a specific feature of a specific training example if denoted as $x_{j}^{(i)}$:
 
-``$x_{j}^{(i)}$`` = value of the $j^{th}$ feature in the $i^{th}$ training sample
+$x_{j}^{(i)}$ = value of the $j^{th}$ feature in the $i^{th}$ training sample
 
 So far so good. That wasn't so hard. 
 
@@ -105,10 +105,10 @@ Great. That's all we need. Now, let's get started with the 3 steps methodology m
 
 ### Hypothesis Function
 
-Regression attempts to model a yet unknown function $h$ that maps the given inputs $x$ to an output value $y$.
+Regression attempts to model an unknown function $h$ that maps the given inputs $x$ to an output value $y$.
 Let's call this our __hypothesis function__ and denote it as
 
-$$h = f(x)$$
+$h = f(x)$
 
 Again, there could be a single input value x or many input values. (Remember, $x$ is a vector. This vector may have a size of 1 which makes it a skalar.) Depending on the number of explanatory variables $x$, we distinguish 3 types of linear regression:
 
@@ -133,7 +133,7 @@ This base is also called the __bias__.
 
 Since there is no feature mapped or related to this parameter, we set the corresponding 
 
-$$x_0 = 1$$
+$x_0 = 1$
 
 Note that having added the bias parameter both our feature vector $x$ and our parameter vector $\theta$ are of size __n+1__.
 
@@ -143,10 +143,10 @@ Note that having added the bias parameter both our feature vector $x$ and our pa
 
 ### Cost Function
 
-After we defined a hypothesis function, we can feed data into the function and it will return a prediction or an estimate of what the output value y should be for this particular set of inputs. 
+After we defined a hypothesis function, we can feed data into this function and it will return a prediction or an estimate of what the output value y should be for a particular set of inputs. But how good is this value computed via our hypothesis?
 
-Next we need to measure the __accuracy__ of our hypothesis. 
-We do so by computing the difference of our hypothesis with the actual "true" target value from the dataset.
+We need to measure the __accuracy__ of our hypothesis. 
+We do so by computing the difference of the hypothesis with the actual "true" target value from the dataset.
 (Remember from above that in supervised learning we need to provide the target value for each training example.)
 
 Since we not only have a single training example but lots of them, we can measure the difference for each.
@@ -164,7 +164,7 @@ The most common method is __mean squared error__ (MSE) and is defined as follows
 
 Mathematically, we'll denote this kind of cost function as $J$
 
-$$J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} )^2$$
+$J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} )^2$
 
 and is read as "J _with respect to_ Theta 1, ... Theta n" stating in brackets the variable that we're minimizing for (i.e. Theta).
 
@@ -204,18 +204,55 @@ The slope of a curve is computed via the derivative of the underlying function.
 That's easy. But our function does not have one but _multiple_ features, and the same number of parameters.
 Hence we need to compute the __partial derivate__ for each of those parameters.
 
+Gradient descent incrementally updates the _parameters_ in our cost function using 2 things: the gradient and a step size. 
+
+####The gradient
+
+The partial derivative ("delta") of the cost function J
+
+$J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} )^2$
+
+with respect to parameter $\theta_j$: the __gradient__:
+
+$\frac{\delta}{\delta \theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} ) \ x_j^{(i)} $
+
+####The step size
+
+An arbitrary "step size" = __learning rate__ alpha ($\alpha$)
+
+Simultaneously update all parameter $\theta_j$ for j = {0..n}:
+
+$\theta_j := \theta_j - \alpha \frac{\delta}{\delta \theta_j} J(\theta) = \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} ) \ x_j^{(i)} $
+
+Gradient descent automatically takes smaller steps when it approaches the minimum because the slope gets flatter.
+
+There are 3 types of gradient descent:
+- __batch__ gradient descent = each step uses all training samples (=> computationally expensive)
+- __stochastic__ gradient descent = each step uses only a single sample
+- __mini batch__ gradient descent = each step uses an arbitrary mini-batch size bb of training samples
 
 
+####Batch Gradient Descent
+
+Batch Gradient Descent considers all training examples for each optimization step. It directly converges to the global minimum.
 
 
-Gradient descent incrementally updates the _parameters_ in our cost function using 2
+####Stochastic Gradient Descent
+
+Stochastic gradient descent considers only a single training example at a time, therefore does not directly converge but zig-zags in on the global minimum. It does not actually reach the global minimum, but "oscillates" around it.
+
+Looping through the whole dataset only once may not be sufficient to converge to a global optimum. In practice it's often run 1-10 times on a given dataset. 
+
+SGD is a type of online learning algorithm because it does not require a whole dataset at once but can process training examples one-by-one and learn online. 
 
 
+####Mini Batch Gradient Descent
 
+Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a randomly selected subset of examples. 
 
+It's main advantage is that it's computationally much less expensive than processing a full butch for each optimization step. It typically converges faster than stochastic gradient descent because it avoids much of the zig-zag. 
 
-
-
+Given today's parallel computing technology mini-batch is especially performant if the algorithm is vectorized.
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_bigdata.jpg)
