@@ -231,12 +231,12 @@ There are 3 types of gradient descent:
 - __mini batch__ gradient descent = each step uses an arbitrary mini-batch size bb of training samples
 
 
-###Batch Gradient Descent
+#### Batch Gradient Descent
 
 Batch Gradient Descent considers all training examples for each optimization step. It directly converges to the global minimum.
 
 
-###Stochastic Gradient Descent
+#### Stochastic Gradient Descent
 
 Stochastic gradient descent considers only a single training example at a time, therefore does not directly converge but zig-zags in on the global minimum. It does not actually reach the global minimum, but "oscillates" around it.
 
@@ -245,7 +245,7 @@ Looping through the whole dataset only once may not be sufficient to converge to
 SGD is a type of online learning algorithm because it does not require a whole dataset at once but can process training examples one-by-one and learn online. 
 
 
-###Mini Batch Gradient Descent
+#### Mini Batch Gradient Descent
 
 Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a randomly selected subset of examples. 
 
