@@ -206,17 +206,16 @@ Hence we need to compute the __partial derivate__ for each of those parameters.
 
 Gradient descent incrementally updates the _parameters_ in our cost function using 2 things: the gradient and a step size. 
 
-####The gradient
-
 The partial derivative ("delta") of the cost function J
 
 $J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} )^2$
 
-with respect to parameter $\theta_j$: the __gradient__:
+with respect to parameter $\theta_j$ is called the __gradient__:
 
 $\frac{\delta}{\delta \theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} ) \ x_j^{(i)} $
 
-####The step size
+This gradient is used to update or change the parameters. It will be subtracted to 
+
 
 An arbitrary "step size" = __learning rate__ alpha ($\alpha$)
 
@@ -232,12 +231,12 @@ There are 3 types of gradient descent:
 - __mini batch__ gradient descent = each step uses an arbitrary mini-batch size bb of training samples
 
 
-####Batch Gradient Descent
+###Batch Gradient Descent
 
 Batch Gradient Descent considers all training examples for each optimization step. It directly converges to the global minimum.
 
 
-####Stochastic Gradient Descent
+###Stochastic Gradient Descent
 
 Stochastic gradient descent considers only a single training example at a time, therefore does not directly converge but zig-zags in on the global minimum. It does not actually reach the global minimum, but "oscillates" around it.
 
@@ -246,13 +245,13 @@ Looping through the whole dataset only once may not be sufficient to converge to
 SGD is a type of online learning algorithm because it does not require a whole dataset at once but can process training examples one-by-one and learn online. 
 
 
-####Mini Batch Gradient Descent
+###Mini Batch Gradient Descent
 
 Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a randomly selected subset of examples. 
 
 It's main advantage is that it's computationally much less expensive than processing a full butch for each optimization step. It typically converges faster than stochastic gradient descent because it avoids much of the zig-zag. 
 
-Given today's parallel computing technology mini-batch is especially performant if the algorithm is vectorized.
+Given today's parallel computing capabilities mini-batch is especially performant if the algorithm is vectorized.
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_bigdata.jpg)
@@ -273,28 +272,11 @@ Many more sources for public datasets can be found on [KDNuggets](http://www.kdn
 For this blog post I'm going to use the ["House Sales in King County, USA"](https://www.kaggle.com/harlfoxem/housesalesprediction) dataset from Kaggle.
 
 
-### Reading a Dataset
-
-Most datasets are provided as a CSV file which normally includes a header line describing the variables captured.
-
-
-### Visualizing the Data
-
-
-
-## Optimization Techniques
-
-
-### Feature Engineering
-
-
-### Feature Scaling & Mean Normalization
-
-
-### Normal Equation
-
-
-### Vectorized Linear Regression
-
-
+- Reading a Dataset
+- Visualizing the Data
+- Optimization Techniques
+- Feature Engineering
+- Feature Scaling & Mean Normalization
+- Normal Equation
+- Vectorized Linear Regression
 ...
