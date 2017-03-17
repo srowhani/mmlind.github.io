@@ -11,44 +11,47 @@ Comprehending its logic and math provides a solid foundation for learning more a
 ![_config.yml]({{ site.baseurl }}/images/linreg_blackboard.jpg)
 
 Linear regression is a statistical method for modeling the relationship between variables. 
-It's used for analyzing dependencies and predicting values 
+It's used for analyzing dependencies and predicting values.
 
-The underlying idea of linear regression is simple: Given a dataset, we want to find the dependency of one of the variables in the dataset on one, some or all of the other variables.
+The underlying idea of linear regression is simple: given a dataset, we want to find the dependency of one of the variables in the dataset on one, some or all of the other variables.
 
-If we notate the dependent or target variable as $y$, and the independent or explanatory variables as $x$, we're looking for a function
+If we notate the dependent or target variable as $y$, and the independent or explanatory variables as $x$, what we're looking for is the function
 
 $y = f(x)$
 
 that, given an arbitrary value for $x$, outputs the desired target variable $y$.
-The output, aka the _prediction, is actually just an estimation of the unknown actual value of $y$.
+The output represents our _prediction_ for y. It's an estimation of the unknown actual value of $y$.
 
-This function is also called a __model__. We're modeling the relationship between $x$ and $y$ or, more specifically, the dependency of $y$ on $x$.
+This function is also referred to as our __model__. We're modeling the relationship between $x$ and $y$ or, more specifically, the dependency of $y$ on $x$.
 
-The dependency is learned from a dataset.
-A dataset is simply a large collection of examples of _x_ recorded in the real world.
-Since these examples are used to _train_ the computer to estimate the target function they're also called _training examples_.
+The dependency is learned from a __dataset__.
+The dataset is simply a large collection of examples of _x_ recorded in the real world.
+These examples are used to _train_ the computer to estimate the target function and hence called __training examples__.
  
 Each training example may consist of just one or many explanatory variables $x$ plus their respective _"to-be-predicted"_ target variable $y$. 
-It's typically a many to one relationship, i.e. many independent variables are mapped to a single dependent variable.
+It's typically a many-to-one relationship, i.e. many independent variables are mapped to a single dependent variable.
 
 The objective of linear regression is to have the computer learn dependencies inside the data simply from looking at many examples. 
-Since each example must include the _correct_ or desired output for the respective inputs,  this type of learning is called __supervised learning__. 
+Each example must include the _correct_ or desired output for the respective inputs, also referred to as __the ground truth__. 
+
+This type of learning is therefore called __supervised learning__. 
 By providing correct examples of $y$ we're _supervising_ the learning algorithm.
 
 
 ## The Methodology
 
-Linear regression, or regression analysis in general, consists of 3 steps: define a hypothesis function, define a cost function, and run an optimization algorithm.
+Linear regression, or regression analysis in general, consists of 3 steps: define a hypothesis function, define a cost function and run an optimization algorithm.
 
-Before explaining these components in detail, let me briefly address a _hurdle_ that many people face when learning regression or machine learning in general: the math.
+Before explaining these components in detail, let me briefly address a hurdle that many people face when learning regression or machine learning in general: the math.
 
 If you don't have a strong math background a series of equations presented in a tutorial or paper may present an immediate turn-off. 
 I know. Why is that so?
-Math is a language, _the language of nature_. Unfortunately, the average reader is not fluent in or familiar with this language.
+
+__Math__ is a language, __the language of nature__. Unfortunately, the average reader is not fluent in or familiar with this language.
 Mathematical equations therefore easily get intimidating because they may include unkown signs or greek letters.
 
 Let's go step by step through the math, and you'll see it's not that hard at all. 
-Especially if you're a developer and used to systematic thinking. 
+Especially if you're a software developer and used to systematic thinking. 
 
 
 ### Mathematical Notation
@@ -59,41 +62,40 @@ Let's define or notate the size of the dataset as $m$:
 ``m = number of training examples in the dataset``
 
 Every training sample consists of a number of independent or explanatory values, called __features__.
-Let's notate the number of such features per training example $n$:
+Let's notate the number of such features per training example as $n$:
 
 ``n = number of features per training example``
 
 Then let's pack all of these features of a single training example into a vector. 
 In this context a vector can be regarded as simply a list or array of values.
-Let's notate the vector as $x$: 
+Let's notate this vector as $x$: 
 
 $x = [x_1, x_2, ... x_n]$
 
-The subscript index denotes the j-th feature of a training example, where $j \in ${1..n}.
+The subscript index denotes the j-th feature of a training example, where $j \in $ {1..n}.
 
-But of course we not only have a single training example but many of them.
-Therefore, we will use another index, a superscript $i$, to denote a specific training example $i$, where $i \in ${1..m}.
-
+But of course there are many training examples, not just a single one. 
+Therefore, we will use another index, a superscript $i$, to denote a specific training example $i$, where $i \in $ {1..m}.
 A specfic training example, with all its features, is then denoted as vector $x^{(i)}$:
 
 $x^{(i)} = $ n-dimensional vector of all features of the i-th training sample 
 
-And the value of a specific feature of a specific training example if denoted as $x_{j}^{(i)}$:
+Combining both, the value of a specific feature of a specific training example is denoted as $x_{j}^{(i)}$:
 
 $x_{j}^{(i)}$ = value of the $j^{th}$ feature in the $i^{th}$ training sample
 
 So far so good. That wasn't so hard. 
 
-Now, what's missing? To compute or estimate the target variable what linear regression is doing is _weighing_ each individual feature differently and adding up all the weighted features. 
+Now, what's missing? To compute, or estimate, the target variable linear regression _weighs_ each individual feature differently and then adds up all the weighted features.
 
 These weights are called the __parameters__ and are notated with the greek letter "Theta" $\theta$.
 
 Every feature gets weighted differently. 
 The number of parameters that we're trying to find is therefore the same as the number of features.
+
 But we don't compute separate parameters for each training example.
 What we want is a _single_ model, one function that covers _all_ of the training examples.
-
-Let's pack the parameters into a vector as well and denote this vector as $\theta$:
+So let's pack the parameters into a vector as well and denote this vector as $\theta$:
 
 $\theta = [\theta_1, \theta_2, ... , \theta_n]$
 
@@ -110,32 +112,30 @@ Let's call this our __hypothesis function__ and denote it as
 
 $h = f(x)$
 
-Again, there could be a single input value x or many input values. (Remember, $x$ is a vector. This vector may have a size of 1 which makes it a skalar.) Depending on the number of explanatory variables $x$, we distinguish 3 types of linear regression:
+Again, there could be a single input value x or many input values. (Remember, $x$ is a vector and this vector may have a size of 1 which would make $x$ a skalar.) 
 
-- If there is only a __single variable__ $x$, we call the model a __uni-variate__ linear regression
-- If there are __multiple variables__ $x$, we call the model a __multi-variate__ linear regression
-- If the independent variables include __exponentials__, we call the model a __polynomial__ linear regression.
+Depending on the number of explanatory variables $x$, we distinguish 3 types of linear regression:
 
-- __uni-variate__: single input feature $x$
+- If there is only a __single__ input variable or feature $x$, we call the model a __uni-variate__ linear regression:
 $$h_{\theta}(x) = \theta_{0} + \theta_{1} x $$
 
-- __multi-variate__: multiple input features $x_n$
+- If there are __multiple__ input variables or features $x$, we call the model a __multi-variate__ linear regression:
 $$h_{\theta}(x) = \theta_{0} + \theta_{1} x_{1} + \ ... \theta_{i} x_{i} \ ... + \ \theta_{n} x_{n}$$
 
-- __polynomial__: features in $n^{th}$ degree polynomials
+- If the independent variables or features include __exponentials__, we call the model a __polynomial__ linear regression.
 $$h_{\theta}(x) = \theta_{0} + \theta_{1} x_{1} + \theta_{2} x_{1}^2 + \theta_{3} x_{1}x_{2} + \theta_{4} x_{2}^2 \ ... $$
 
 Math and methodology are the same for all three. 
 
-You may have noticed, I added an additional parameter $\theta_0$.
+You may have noticed that I added an additional parameter $\theta_0$.
 The reason is that the function that we're trying to find may have a certain _base_ value that is completely independent from any of the features. 
 This base is also called the __bias__.
 
-Since there is no feature mapped or related to this parameter, we set the corresponding 
+Since there is no feature mapped or related to the bias, we set the corresponding 
 
 $x_0 = 1$
 
-Note that having added the bias parameter both our feature vector $x$ and our parameter vector $\theta$ are of size __n+1__.
+Having added the bias parameter to our feature vector $x$ _and_ to our parameter vector $\theta$, both vectors become of size __n+1__.
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_costfunction.jpg)
@@ -143,40 +143,40 @@ Note that having added the bias parameter both our feature vector $x$ and our pa
 
 ### Cost Function
 
-After we defined a hypothesis function, we can feed data into this function and it will return a prediction or an estimate of what the output value y should be for a particular set of inputs. But how good is this value computed via our hypothesis?
+After we defined the hypothesis function, we can feed data into this function and it will return a prediction or an estimate of what the output value y should be for a particular set of inputs. But how good is this value computed via our hypothesis?
 
 We need to measure the __accuracy__ of our hypothesis. 
 We do so by computing the difference of the hypothesis with the actual "true" target value from the dataset.
 (Remember from above that in supervised learning we need to provide the target value for each training example.)
 
-Since we not only have a single training example but lots of them, we can measure the difference for each.
+Since there are many training examples and not just a single one, we can measure the difference for each.
 That's what a cost function does.
 
 The difference of hypothesis and target is called the __error__ or __cost__ or __loss__.
 
-Conceptially there are many different options how to measure or express this error.
-The most common method is __mean squared error__ (MSE) and is defined as follows: 
+Conceptually, there are many different options how to measure or express this error.
+The most common method is to compute th __mean squared error__ (MSE) and is defined as follows: 
 
 - compute the difference of hypothesis and correct output for a particular training example $i$, 
 - square the difference, 
 - sum the squared differences across all $m$ training examples, and then 
 - divide the total by $m$ to get the mean (average) cost. 
 
-Mathematically, we'll denote this kind of cost function as $J$
+Mathematically, we'll denote this kind of cost function $J$ as
 
 $J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{2m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} )^2$
 
-and is read as "J _with respect to_ Theta 1, ... Theta n" stating in brackets the variable that we're minimizing for (i.e. Theta).
+and read it as "_J with respect to Theta 1, ... Theta n__" stating in brackets the variable(s) that we're minimizing for (i.e. Theta).
 
 Next, we want to __minimize__ this cost function, i.e. find those parameters or those values of $\theta$ that result in the minimum J. 
 
-Minimizing the cost is an optimization problem: we want to find the optimal representation of $h(x)$.
+Minimizing the cost is an __optimization problem__: we want to find the optimal representation of $h(x)$ which leads us to the third and last step in the methodology for linear regression. 
 
-You probably noticed that in above formula for J we're actually dividing by 2m instead of simply by m. 
-This is done for mathematical convenience later (when computing the derivate) and doesn't impact the minimization, hence a valid simplication.
+Before we do that, a short side note. You probably noticed that in above formula for J we're actually dividing by 2m instead of simply by m. 
+This is done for mathematical convenience later (when computing the derivate). 
+Since it doesn't impact the minimization it represents a valid simplication.
 
-At this point it may be worth noting that in addition to mean squared error there are other possible cost functions, e.g. using the mean absolute error or the average cross entropy. 
-MSE though is simple and the most frequently used.
+At this point it may also be worth noting that in addition to mean squared error there are other possible cost functions, e.g. one could compute the mean _absolute_ error or the average cross entropy. 
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_optimization.jpg)
@@ -195,16 +195,16 @@ The most popular optimization algorithm is called gradient descent.
 The idea of gradient descent is simple:
 - Compute the slope at an arbitrary point of the cost curve.
 - If the slope is _bigger_ than 0, slightly _decrease_ the input values, i.e. pick a new point a little further to the _left_ on the cost curve.
-- If the slope is _smaller_ than 0, we slightly _increase_ our intput values, i.e. pick a new point a little further to the _right_ on the cost curve.
+- If the slope is _smaller_ than 0, we slightly _increase_ our input values, i.e. pick a new point a little further to the _right_ on the cost curve.
 - Repeat these steps until the slope is so small that there is hardly any further reduction or improvement.
 
 Let's see how to do this mathematically.
 
 The slope of a curve is computed via the derivative of the underlying function. 
-That's easy. But our function does not have one but _multiple_ features, and the same number of parameters.
+That's easy. But our function does not have one but _multiple_ features and the same number of parameters.
 Hence we need to compute the __partial derivate__ for each of those parameters.
 
-Gradient descent incrementally updates the _parameters_ in our cost function using 2 things: the gradient and a step size. 
+Gradient descent incrementally updates the _parameters_ in our cost function using two components: the gradient and a step size. 
 
 The partial derivative ("delta") of the cost function J
 
@@ -214,12 +214,8 @@ with respect to parameter $\theta_j$ is called the __gradient__:
 
 $\frac{\delta}{\delta \theta_j} J(\theta_0, \theta_1, ..., \theta_n) = \frac{1}{m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} ) \ x_j^{(i)} $
 
-This gradient is used to update or change the parameters. It will be subtracted to 
-
-
-An arbitrary "step size" = __learning rate__ alpha ($\alpha$)
-
-Simultaneously update all parameter $\theta_j$ for j = {0..n}:
+This gradient is used to update or change the parameters. It will be subtracted at an arbitrary "step size" called the __learning rate__ alpha ($\alpha$).
+So, we simultaneously update all parameters $\theta_j$ for j = {0..n}:
 
 $\theta_j := \theta_j - \alpha \frac{\delta}{\delta \theta_j} J(\theta) = \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} ( h_{\theta} (x^{(i)}) - y^{(i)} ) \ x_j^{(i)} $
 
@@ -228,35 +224,35 @@ Gradient descent automatically takes smaller steps when it approaches the minimu
 There are 3 types of gradient descent:
 - __batch__ gradient descent = each step uses all training samples (=> computationally expensive)
 - __stochastic__ gradient descent = each step uses only a single sample
-- __mini batch__ gradient descent = each step uses an arbitrary mini-batch size bb of training samples
+- __mini batch__ gradient descent = each step uses an arbitrary mini-batch size of training samples
 
 
 #### Batch Gradient Descent
 
-Batch Gradient Descent considers all training examples for each optimization step. It directly converges to the global minimum.
+Batch Gradient Descent considers __all__ training examples for each optimization step. It directly converges to the global minimum.
 
 
 #### Stochastic Gradient Descent
 
-Stochastic gradient descent considers only a single training example at a time, therefore does not directly converge but zig-zags in on the global minimum. It does not actually reach the global minimum, but "oscillates" around it.
+Stochastic gradient descent considers only a __single__ training example at a time, therefore does not directly converge but zig-zags in on the global minimum. It does not actually reach the global minimum, but "oscillates" around it.
 
-Looping through the whole dataset only once may not be sufficient to converge to a global optimum. In practice it's often run 1-10 times on a given dataset. 
+Looping through the whole dataset only once may not be sufficient to converge to a global optimum. In practice SGD is often run 1-10 times on a given dataset. 
 
-SGD is a type of online learning algorithm because it does not require a whole dataset at once but can process training examples one-by-one and learn online. 
+SGD is a type of __online learning__ algorithm because it does not require a whole dataset at once but can process training examples one-by-one, i.e. learn _online_. 
 
 
 #### Mini Batch Gradient Descent
 
-Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a randomly selected subset of examples. 
+Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a __randomly selected subset__ of examples. 
 
-It's main advantage is that it's computationally much less expensive than processing a full butch for each optimization step. It typically converges faster than stochastic gradient descent because it avoids (much of) the zig-zag. 
+Its main advantage is that it's computationally much less expensive. It also converges faster than stochastic gradient descent because it avoids (much of) the zig-zag. 
 
 Given today's parallel computing capabilities mini-batch is especially performant if the algorithm is vectorized.
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_bigdata.jpg)
 
-Vectorization is one of the subjects that I will address in a later blog post, together with the following points of interest for linear regression:
+Vectorization is one of the subjects that I will address in a later blog post, together with the following remaining points of interest for linear regression:
 - Reading and Visualizing the Data
 - Optimization Techniques
 - Feature Engineering
