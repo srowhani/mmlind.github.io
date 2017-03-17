@@ -260,3 +260,5 @@ Vectorization is one of the subjects that I will address in a later blog post, t
 - Normal Equation
 - Vectorized Linear Regression
 
+Thanks for reading! Feel free to contact me for any questions or comments.
+
