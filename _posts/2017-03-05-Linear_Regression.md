@@ -48,7 +48,7 @@ If you don't have a strong math background a series of equations presented in a 
 I know. Why is that so?
 
 __Math__ is a language, __the language of nature__. Unfortunately, the average reader is not fluent in or familiar with this language.
-Mathematical equations therefore easily get intimidating because they may include unkown signs or greek letters.
+Mathematical equations therefore easily get intimidating because they may include unknown signs or greek letters.
 
 Let's go step by step through the math, and you'll see it's not that hard at all. 
 Especially if you're a software developer and used to systematic thinking. 
@@ -76,7 +76,7 @@ The subscript index denotes the j-th feature of a training example, where $j \in
 
 But of course there are many training examples, not just a single one. 
 Therefore, we will use another index, a superscript $i$, to denote a specific training example $i$, where $i \in $ {1..m}.
-A specfic training example, with all its features, is then denoted as vector $x^{(i)}$:
+A specific training example, with all its features, is then denoted as vector $x^{(i)}$:
 
 $x^{(i)} = $ n-dimensional vector of all features of the i-th training sample 
 
@@ -112,7 +112,7 @@ Let's call this our __hypothesis function__ and denote it as
 
 $h = f(x)$
 
-Again, there could be a single input value x or many input values. (Remember, $x$ is a vector and this vector may have a size of 1 which would make $x$ a skalar.) 
+Again, there could be a single input value x or many input values. (Remember, $x$ is a vector and this vector may have a size of 1 which would make $x$ a scalar.) 
 
 Depending on the number of explanatory variables $x$, we distinguish 3 types of linear regression:
 
@@ -174,7 +174,7 @@ Minimizing the cost is an __optimization problem__: we want to find the optimal 
 
 Before we do that, a short side note. You probably noticed that in above formula for J we're actually dividing by 2m instead of simply by m. 
 This is done for mathematical convenience later (when computing the derivate). 
-Since it doesn't impact the minimization it represents a valid simplication.
+Since it doesn't impact the minimization it represents a valid simplification.
 
 At this point it may also be worth noting that in addition to mean squared error there are other possible cost functions, e.g. one could compute the mean _absolute_ error or the average cross entropy. 
 
@@ -243,7 +243,7 @@ SGD is a type of __online learning__ algorithm because it does not require a who
 
 #### Mini Batch Gradient Descent
 
-Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a __randomly selected subset__ of examples. 
+Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or looping through) the whole dataset for each optimization step, the algorithm uses a __randomly selected subset__ of examples. 
 
 Its main advantage is that it's computationally much less expensive. It also converges faster than stochastic gradient descent because it avoids (much of) the zig-zag. 
 
