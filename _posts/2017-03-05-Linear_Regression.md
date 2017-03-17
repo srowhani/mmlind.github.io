@@ -51,7 +51,7 @@ Let's go step by step through the math, and you'll see it's not that hard at all
 Especially if you're a developer and used to systematic thinking. 
 
 
-### Mathmatical Notation
+### Mathematical Notation
 
 A dataset consists of a number of training samples. Typically, the more the better. 
 Let's define or notate the size of the dataset as $m$:
@@ -249,34 +249,18 @@ SGD is a type of online learning algorithm because it does not require a whole d
 
 Mini Batch Gradient Descent is a kind of hybrid version trying to combine the advantages of both batch and stochastic gradient descent. Instead of summing (or loopping through) the whole dataset for each optimization step, the algorithm uses a randomly selected subset of examples. 
 
-It's main advantage is that it's computationally much less expensive than processing a full butch for each optimization step. It typically converges faster than stochastic gradient descent because it avoids much of the zig-zag. 
+It's main advantage is that it's computationally much less expensive than processing a full butch for each optimization step. It typically converges faster than stochastic gradient descent because it avoids (much of) the zig-zag. 
 
 Given today's parallel computing capabilities mini-batch is especially performant if the algorithm is vectorized.
 
 
 ![_config.yml]({{ site.baseurl }}/images/linreg_bigdata.jpg)
 
-
-## It's in the Data, Dude
-
-Machine learning is the science of making computers learn from data instead of explicitly programming them.
-At the center of any machine learning excercise is thus the __dataset__ that is to be analyzed. 
-
-There are abundant sources of publicly available datasets nowadays. For example from the 
-
-- [Machine Learning Repository at the University of California, Irvine](http://archive.ics.uci.edu/ml/datasets.html) or 
-- [Kaggle](https://www.kaggle.com/datasets) the online platform for data scientists.
-
-Many more sources for public datasets can be found on [KDNuggets](http://www.kdnuggets.com/datasets/index.html).
-
-For this blog post I'm going to use the ["House Sales in King County, USA"](https://www.kaggle.com/harlfoxem/housesalesprediction) dataset from Kaggle.
-
-
-- Reading a Dataset
-- Visualizing the Data
+Vectorization is one of the subjects that I will address in a later blog post, together with the following points of interest for linear regression:
+- Reading and Visualizing the Data
 - Optimization Techniques
 - Feature Engineering
 - Feature Scaling & Mean Normalization
 - Normal Equation
 - Vectorized Linear Regression
-...
+
